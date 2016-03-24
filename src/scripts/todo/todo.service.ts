@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 import {Injectable} from 'angular2/core';
 import {Response} from 'angular2/http';
 
-import {RestService} from '../shared/services/rest.service';
+import {RestService} from '../services/rest.service';
 import {ITodo} from './todo.interface';
 
 @Injectable()

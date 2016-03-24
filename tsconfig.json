@@ -6,7 +6,7 @@
 		"target": "es5",
 		"module": "system",
 		"moduleResolution": "node",
-		"removeComments": true,
+		"removeComments": false,
 		"sourceMap": false
 	},
 	"exclude": [

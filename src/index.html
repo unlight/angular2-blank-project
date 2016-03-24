@@ -15,11 +15,11 @@
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top navbar-dark bg-primary">
-		<a class="navbar-brand" href="http://angular2-seed.io"><img src="images/angular2-seed-logo.png" width="28"></a>
+		<a class="navbar-brand" href="http://angular2-seed.io"><img src="images/repository-logo.png" width="28"></a>
 		<a class="navbar-brand" href="http://angular2-seed.io">Angular 2 - Seed Project</a>
 
 		<div class="nav navbar-nav pull-xs-right">
-			<a class="nav-item nav-link" href="https://github.com/ghpabs/angular2-seed" target="_blank">GitHub</a>
+			<a class="nav-item nav-link" href="https://github.com/unlight/angular2-blank-project" target="_blank">GitHub</a>
 		</div>
 	</nav>
 
@@ -34,10 +34,10 @@
 		 * And the `main` property points to the app entry file - `bootstrap.js`.
 		 */
 		System.config({
-			packages: { 'js': { main: 'bootstrap.js' } }
+			packages: { "js": { main: "bootstrap.js" } }
 		});
 
-		System.import('js')
+		System.import("js")
 			.catch(console.error.bind(console));
 		<!-- @endif -->
 
@@ -47,10 +47,10 @@
 		 * It also maps the entry dependecy module - `bootstrap`.
 		 */
 		System.config({
-			bundles: { 'js/app.js': ['bootstrap'] }
+			bundles: { "js/app.js": ["bootstrap"] }
 		});
 
-		System.import('bootstrap')
+		System.import("bootstrap")
 			.catch(console.error.bind(console));
 		<!-- @endif -->
 	</script>

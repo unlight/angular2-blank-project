@@ -6,7 +6,7 @@ import {MockBackend} from 'angular2/http/testing';
 
 import {Todo} from './todo';
 import {TodoService} from './todo.service';
-import {RestService, RestOptions} from '../shared/services/rest.service';
+import {RestService, RestOptions} from '../services/rest.service';
 
 describe('TodoService', () => {
 	beforeEachProviders(() => [

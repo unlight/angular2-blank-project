@@ -1,33 +1,172 @@
-'use strict';
+var gulp = require("gulp");
+var conf = require("./gulpfile.conf");
+var g = require("gulp-load-plugins")();
+var path = require("path");
+var project = g.typescript.createProject("tsconfig.json", {
+    typescript: require("typescript"),
+    outFile: conf.isProd ? "app.js" : undefined
+});
 
-var gulp = require('gulp');
+gulp.task("clean", function clean() {
+    var del = require("del");
+    return del(["build"]);
+});
 
-var clean = require('./tasks/gulp-clean'),
-	scss = require('./tasks/gulp-scss'),
-	typescript = require('./tasks/gulp-typescript'),
-	assets = require('./tasks/gulp-assets'),
-	index = require('./tasks/gulp-index'),
-	typedoc = require('./tasks/gulp-typedoc'),
-	unit = require('./tasks/gulp-karma'),
-	e2e = require('./tasks/gulp-protractor'),
-	livereload = require('./tasks/gulp-livereload'),
-	watch = require('./tasks/gulp-watch')
+gulp.task("assets", function assets() {
+    var merge2 = require("merge2");
+    var images = gulp.src("src/images/**/*.{png,jpg,gif}")
+        .pipe(gulp.dest("build/images"));
+    var libs = gulp.src(conf.paths.jslibs, {base: "."})
+        .pipe(g.if(conf.isProd, g.concat("libs.js")))
+        .pipe(g.if(conf.isProd, g.uglify()))
+        .pipe(gulp.dest("build/libs"));
+    return merge2([images, libs]);
+});
 
-gulp.task('clean', clean);
+gulp.task("typescript", function typescript() {
+    var sourceScripts = "src/scripts";
+    var glob = [
+        "src/scripts/**/*.ts",
+        "!src/scripts/**/*.spec.ts"
+    ];
+    var dest = "build/js";
+    // TODO: Incremental builds - since
+    var result = gulp.src([...glob, ...conf.typings], {since: gulp.lastRun("typescript")})
+        .pipe(g.tslint())
+        .pipe(g.tslint.report("verbose"))
+        .pipe(g.preprocess({ context: conf }))
+        .pipe(g.inlineNg2Template({ useRelativePaths: true }))
+        .pipe(g.if(conf.isDev, g.sourcemaps.init()))
+        .pipe(g.typescript(project));
+    return result.js
+        .pipe(g.if(conf.isProd, g.uglify()))
+        .pipe(g.if(conf.isDev, g.sourcemaps.write({
+            sourceRoot: sourceScripts
+        })))
+        .pipe(gulp.dest(dest))
+        .pipe(g.connect.reload());
+});
 
-gulp.task('build', gulp.series(
-	clean,
-	gulp.parallel(scss, typescript),
-	assets,
-	index,
-	typedoc
+gulp.task("index", function index() {
+    var css = ["build/css/*"];
+    var libs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
+    var source = gulp.src([...css, ...libs], { read: false });
+    return gulp.src("src/index.html")
+        .pipe(g.inject(source, { ignorePath: "build" }))
+        .pipe(g.preprocess({ context: conf }))
+        .pipe(gulp.dest("build"))
+        .pipe(g.connect.reload());
+});
+
+// gulp.task("scss", function scss() {
+//     return gulp.src("src/**/*.{scss,sass}")
+//         // .pipe(g.sassLint({ config: '.sass-lint.yml' }))
+//         // .pipe(g.sassLint.format())
+//         // .pipe(g.sassLint.failOnError())
+//         .pipe(g.rename({ dirname: "" }))
+//         .pipe(g.if(env.isDev, g.sourcemaps.init()))
+//         .pipe(g.sass())
+//         .pipe(g.if(env.isDev, g.sourcemaps.write(".")))
+//         .pipe(gulp.dest("build/css"))
+//         .pipe(g.connect.reload());
+// });
+
+gulp.task("build", gulp.series(
+    "clean",
+    gulp.parallel("typescript"), // TODO: css
+    "assets",
+    "index"
 ));
 
-gulp.task('serve', gulp.parallel(
-	watch,
-	livereload
-));
+gulp.task("livereload", function(done) {
+    var history = require("connect-history-api-fallback");
+    var connect = g.connect.server({
+        root: "build",
+        livereload: conf.isDev,
+        port: conf.PORT,
+        middleware: (connect, opt) => [history()]
+    });
+    connect.server.on("close", done);
+});
 
-gulp.task('unit', unit);
+gulp.task("watch", function() {
+    // todo: end
+    // Both `css` and `html` are included in the glob because it's injected
+    // into the JS files (output) when using external partials.
+    // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
+    gulp.watch([
+        "src/scripts/**/*.ts",
+        "src/scripts/**/*.css",
+        "src/scripts/**/*.html",
+        "!src/scripts/**/*.spec.ts"
+    ], gulp.series("typescript")); // TODO: add unit tests
+    // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
+    // gulp.watch('src/scss/**/*.scss', scss); // TODO:
+    gulp.watch("src/index.html", gulp.series("index"));
+});
 
-gulp.task('e2e', e2e);
+gulp.task("serve", gulp.parallel("watch", "livereload"));
+
+//  unit = require("./tasks/gulp-karma"),
+//  e2e = require("./tasks/gulp-protractor"),
+// gulp.task("unit", unit);
+// gulp.task("e2e", e2e);
+// 
+// 
+// var karma = require('karma'),
+//     del = require('del'),
+//     path = require('path'),
+//     remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+
+// var project = plugins.typescript.createProject('tsconfig.json', {
+//     typescript: require('typescript')
+// });
+
+// function karmaClean() {
+//     return del(['.karma']);
+// }
+
+// function karmaTypescript(root) {
+//     var root = 'src/scripts';
+//     var glob = 'src/scripts/**/*.ts';
+//     var dest = '.karma';
+
+//     var result = gulp.src([glob, ...env.typings])
+//         .pipe(plugins.tslint())
+//         .pipe(plugins.tslint.report('verbose'))
+//         .pipe(plugins.preprocess({ context: env }))
+//         .pipe(plugins.inlineNg2Template({ useRelativePaths: true }))
+//         .pipe(plugins.sourcemaps.init())
+//         .pipe(plugins.typescript(project));
+
+//     return result.js
+//         .pipe(plugins.sourcemaps.write({
+//             sourceRoot: path.join(__dirname, '../', root)
+//         }))
+//         .pipe(plugins.size({ title: 'typescript' }))
+//         .pipe(gulp.dest(dest));
+// }
+
+// function karmaRun(done) {
+//     return new karma.Server({
+//         configFile: path.join(__dirname, '../karma.conf.js')
+//     }, done).start();
+// }
+
+// function karmaRemapIstanbul() {
+//     return gulp.src('coverage/json/coverage-js.json')
+//         .pipe(remapIstanbul({
+//             reports: {
+//                 json: 'coverage/json/coverage-ts.json',
+//                 html: 'coverage/html-report'
+//             }
+//     }));
+// }
+
+// module.exports = gulp.series(
+//     karmaClean,
+//     karmaTypescript,
+//     karmaRun,
+//     karmaRemapIstanbul,
+//     karmaClean
+// );

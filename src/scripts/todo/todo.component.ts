@@ -5,7 +5,7 @@ import {TodoService} from './todo.service';
 import {TodoListComponent} from './todo-list.component';
 import {TodoInputComponent} from './todo-input.component';
 
-import {RestOptions, RestService} from '../shared/services/rest.service';
+import {RestOptions, RestService} from '../services/rest.service';
 
 @Component({
 	selector: 'todo',

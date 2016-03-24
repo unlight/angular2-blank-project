@@ -5,7 +5,7 @@ import {Todo} from './todo';
 import {ITodo} from './todo.interface';
 import {TodoService} from './todo.service';
 
-import {LogElement} from '../shared/directives/log-element.directive';
+import {LogElement} from '../directives/log-element.directive';
 
 @Component({
 	selector: 'todo-input',
