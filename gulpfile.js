@@ -138,6 +138,8 @@ gulp.task("livereload", function(done) {
 
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 
+gulp.task("develop", gulp.series("build", "serve"));
+
 (function() {
     // TODO: Add watch
     // TODO: Refactor this
