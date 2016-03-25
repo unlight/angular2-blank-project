@@ -48,8 +48,8 @@ TODO
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 	.pipe(g.memoryCache("typings")),
 ```
-* Combine `typescript` and `typescript-karma` tasks
-* Sass Lint
-* Less
+* Styles
 * Production is broken
+* Less
+* Combine `typescript` and `typescript-karma` tasks
 * Incremental unit tests
