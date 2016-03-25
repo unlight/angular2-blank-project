@@ -87,22 +87,24 @@ gulp.task("watch", () => {
     // }
 });
 
-// gulp.task("scss", function scss() {
-//     return gulp.src("src/**/*.{scss,sass}")
-//         // .pipe(g.sassLint({ config: '.sass-lint.yml' }))
-//         // .pipe(g.sassLint.format())
-//         // .pipe(g.sassLint.failOnError())
-//         .pipe(g.rename({ dirname: "" }))
-//         .pipe(g.if(env.isDev, g.sourcemaps.init()))
-//         .pipe(g.sass())
-//         .pipe(g.if(env.isDev, g.sourcemaps.write(".")))
-//         .pipe(gulp.dest("build/css"))
-//         .pipe(g.connect.reload());
-// });
+function scss() {
+    return gulp.src("src/**/*.{scss,sass}")
+        // .pipe(g.sassLint({ config: '.sass-lint.yml' }))
+        // .pipe(g.sassLint.format())
+        // .pipe(g.sassLint.failOnError())
+        .pipe(g.rename({ dirname: "" }))
+        .pipe(g.if(conf.isDev, g.sourcemaps.init()))
+        .pipe(g.sass())
+        .pipe(g.if(conf.isDev, g.sourcemaps.write(".")))
+        .pipe(gulp.dest("build/css"))
+        .pipe(g.connect.reload());
+}
+
+gulp.task("scss", scss);
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel("typescript"), // TODO: css
+    gulp.parallel(typescript, scss), // TODO: css
     "assets",
     "index"
 ));

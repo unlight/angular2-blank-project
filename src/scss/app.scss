@@ -1,4 +1,4 @@
-@import 'bootstrap';
+// @import 'bootstrap';
 
 html {
   body {
@@ -46,7 +46,7 @@ html {
 
   &.completed {
     .todo-item-text {
-      color: $gray-lighter;
+      // color: $gray-lighter;
       text-decoration: line-through;
     }
   }
