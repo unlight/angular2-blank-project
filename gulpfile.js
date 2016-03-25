@@ -15,7 +15,7 @@ gulp.task("clean", function clean() {
 
 gulp.task("assets", function assets() {
     var images = gulp.src("src/images/**/*.{png,jpg,gif}")
-        .pipe(gulp.dest("build/images"));
+        .pipe(gulp.dest("build/design/images"));
     var libs = gulp.src(conf.paths.jslibs, {base: "."})
         .pipe(g.if(conf.isProd, g.concat("libs.js")))
         .pipe(g.if(conf.isProd, g.uglify()))
@@ -35,11 +35,14 @@ function typescript (options) {
     var sourceRoot = "src/scripts";
     var dest = options.dest || "build/js";
     var sourceStream = merge2(
-        gulp.src(conf.typings), // TODO: cache
+        gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
+            .pipe(g.util.env.debug ? g.debug({title: "After reading definitions:"}) : g.util.noop())
+            .pipe(g.memoryCache("typings")),
         gulp.src(glob, {since: gulp.lastRun("typescript")})
+            .pipe(g.util.env.debug ? g.debug({title: "After reading sources:"}) : g.util.noop())
     );
     var result = sourceStream
-        .pipe(g.util.env.debug ? g.debug() : g.util.noop())
+        .pipe(g.util.env.debug ? g.debug({title: "After merge streams:"}) : g.util.noop())
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose", {emitError: false}))
         .pipe(g.preprocess({ context: conf }))
@@ -52,45 +55,50 @@ function typescript (options) {
             sourceRoot: sourceRoot
         })))
         .pipe(gulp.dest(dest))
+        .pipe(g.util.env.debug ? g.debug({title: "Written:"}) : g.util.noop())
         .pipe(g.connect.reload());
 }
 
 gulp.task("typescript", typescript);
 
 gulp.task("index", function index() {
-    var css = ["build/css/*"];
-    var libs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
-    var source = gulp.src([...css, ...libs], { read: false });
+    var styles = ["build/design/*"];
+    var jslibs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
+    var source = gulp.src([...styles, ...jslibs], { read: false })
+            .pipe(g.util.env.debug ? g.debug() : g.util.noop());
     return gulp.src("src/index.html")
-        .pipe(g.inject(source, { ignorePath: "build" }))
+        .pipe(g.inject(source, { addRootSlash: false, ignorePath: "build" }))
         .pipe(g.preprocess({ context: conf }))
         .pipe(gulp.dest("build"))
         .pipe(g.connect.reload());
 });
 
 gulp.task("watch", () => {
-    // todo: done
-    var ts = typescript({watch: true});
-    var w = gulp.watch("src/index.html", gulp.series("index"));
-    // () => {
-    //     // todo: end
-    //     // Both `css` and `html` are included in the glob because it's injected
-    //     // into the JS files (output) when using external partials.
-    //     // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
-    //     // gulp.watch([
-    //     //     "src/scripts/**/*.ts",
-    //     //     "src/scripts/**/*.css",
-    //     //     "src/scripts/**/*.html",
-    //     //     "!src/scripts/**/*.spec.ts"
-    //     // ], gulp.series("typescript")); // TODO: add unit tests
-    //     // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
-    //     // gulp.watch('src/scss/**/*.scss', scss); // TODO:
-    // }
+    typescript({ watch: true });
+    gulp.watch("src/index.html", gulp.series("index"));
+    gulp.watch("src/**/*.{scss,sass}", gulp.series("sass"));
 });
 
-// todo: collect css from components
-function sass() {
-    return gulp.src("src/**/*.{scss,sass}")
+// gulp.task("watch", () => {
+//     // () => {
+//     //     // todo: end
+//     //     // Both `css` and `html` are included in the glob because it's injected
+//     //     // into the JS files (output) when using external partials.
+//     //     // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
+//     //     // gulp.watch([
+//     //     //     "src/scripts/**/*.ts",
+//     //     //     "src/scripts/**/*.css",
+//     //     //     "src/scripts/**/*.html",
+//     //     //     "!src/scripts/**/*.spec.ts"
+//     //     // ], gulp.series("typescript")); // TODO: add unit tests
+//     //     // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
+//     //     // gulp.watch('src/scss/**/*.scss', scss); // TODO:
+//     // }
+// });
+
+gulp.task("sass", function sass() {
+    return gulp.src("src/**/*.{scss,sass}", {since: gulp.lastRun("sass")})
+        .pipe(g.util.env.debug ? g.debug({title: "Reading sass:"}) : g.util.noop())
         // todo: SASS LINT
         // .pipe(g.sassLint({ config: '.sass-lint.yml' }))
         // .pipe(g.sassLint.format())
@@ -99,15 +107,14 @@ function sass() {
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
         .pipe(g.sass())
         .pipe(g.if(conf.isDev, g.sourcemaps.write()))
-        .pipe(gulp.dest("build/css"))
+        .pipe(gulp.dest("build/design"))
+        .pipe(g.util.env.debug ? g.debug({title: "Writing sass:"}) : g.util.noop())
         .pipe(g.connect.reload());
-}
-
-gulp.task("sass", sass);
+});
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel(typescript, sass),
+    gulp.parallel(typescript, "sass"),
     "assets",
     "index"
 ));
@@ -129,7 +136,7 @@ gulp.task("serve", gulp.parallel("watch", "livereload"));
 
 (function() {
     // TODO: Add watch
-    // TODO: refactor this
+    // TODO: Refactor this
     var karma = require("karma");
     var del = require("del");
     var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");

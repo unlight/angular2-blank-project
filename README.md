@@ -5,13 +5,13 @@
 - [Angular 2](https://angular.io/)
 - [TypeScript](http://www.typescriptlang.org/)
 - [Typings](https://github.com/typings/typings)
-- [Karma](http://karma-runner.github.io/) (not yet)
+- [Karma](http://karma-runner.github.io/)
 
 ### Global Dependencies
 
 | Dependency | Install                               |
 | ---------- | ------------------------------------- |
-| NodeJS     | [node.org](http://nodejs.org/)        |
+| NodeJS     | [nodejs.org](http://nodejs.org/)        |
 | Gulp CLI   | `npm install gulpjs/gulp-cli#4.0 -g`  |
 | Typings    | `npm install typings -g`              |
 
@@ -29,15 +29,27 @@ Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
 
 #### Tasks
-- `clean` Remove generated folders - `build`, `docs` and `coverage`.
-- `unit` Run Karma against all `src/scripts/**/*.spec.js` files.
+- `clean` Remove generated folders - `build`, `coverage`.
+- `test` Run Karma against all `src/scripts/**/*.spec.ts` files.
 - `build` Create distribution package.
 - `serve` Start web-server and live-reload.
 
-#### Environments
-
-##### Development:
+#### Development:
 `gulp build serve`
 
-##### Production
+#### Production
 `gulp build serve --production`
+
+
+TODO
+----
+* Make more fast cache for typescript task (without gulp.src)
+```
+gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
+	.pipe(g.memoryCache("typings")),
+```
+* Combine `typescript` and `typescript-karma` tasks
+* Sass Lint
+* Less
+* Production is broken
+* Incremental unit tests

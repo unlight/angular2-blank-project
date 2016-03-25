@@ -2,52 +2,10 @@
 
 html {
   body {
-    margin: 90px 0 50px;
+    margin: 20px;
   }
 }
 
 .router-link-active {
   @extend .nav-link.active;
-}
-
-// --------------
-// Todo Component
-// --------------
-
-.todo-item-text {
-  display: block;
-  padding: .435rem .8rem;
-  text-transform: capitalize;
-}
-
-.todo-item-input {
-  @extend .form-control;
-}
-
-.todo-item-select {
-  display: none;
-  margin: 13px 0 0;
-}
-
-.todo-item-delete {
-  @extend .btn;
-  @extend .btn-danger;
-  @extend .pull-xs-right;
-  display: none;
-}
-
-.todo-item {
-  &:hover {
-    .todo-item-select,
-    .todo-item-delete {
-      display: block;
-    }
-  }
-
-  &.completed {
-    .todo-item-text {
-      // color: $gray-lighter;
-      text-decoration: line-through;
-    }
-  }
 }
