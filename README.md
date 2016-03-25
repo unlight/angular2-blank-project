@@ -11,7 +11,7 @@
 
 | Dependency | Install                               |
 | ---------- | ------------------------------------- |
-| NodeJS     | [http://node.org](http://nodejs.org/) |
+| NodeJS     | [node.org](http://nodejs.org/)        |
 | Gulp CLI   | `npm install gulpjs/gulp-cli#4.0 -g`  |
 | Typings    | `npm install typings -g`              |
 
@@ -20,13 +20,14 @@
 git clone https://github.com/unlight/angular2-blank-project.git && cd angular2-blank-project
 npm install
 typings install
-gulp build serve
 ```
 
+### Usage
+```
+gulp build serve
+```
 Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
-
-### Usage
 
 #### Tasks
 - `clean` Remove generated folders - `build`, `docs` and `coverage`.

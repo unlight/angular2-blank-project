@@ -2,18 +2,18 @@ var gulp = require("gulp");
 var conf = require("./gulpfile.conf");
 var g = require("gulp-load-plugins")();
 var path = require("path");
+var merge2 = require("merge2");
 var project = g.typescript.createProject("tsconfig.json", {
     typescript: require("typescript"),
     outFile: conf.isProd ? "app.js" : undefined
 });
-
+// todo: arg production
 gulp.task("clean", function clean() {
     var del = require("del");
     return del(["build"]);
 });
 
 gulp.task("assets", function assets() {
-    var merge2 = require("merge2");
     var images = gulp.src("src/images/**/*.{png,jpg,gif}")
         .pipe(gulp.dest("build/images"));
     var libs = gulp.src(conf.paths.jslibs, {base: "."})
@@ -23,15 +23,22 @@ gulp.task("assets", function assets() {
     return merge2([images, libs]);
 });
 
-gulp.task("typescript", function typescript() {
-    var sourceScripts = "src/scripts";
+function typescript (options) {
     var glob = [
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.spec.ts"
     ];
+    if (options && options.watch) {
+        return gulp.watch(glob, gulp.series(typescript));
+    }
+    var sourceRoot = "src/scripts";
     var dest = "build/js";
-    // TODO: Incremental builds - since
-    var result = gulp.src([...glob, ...conf.typings], {since: gulp.lastRun("typescript")})
+    var sourceStream = merge2(
+        gulp.src(conf.typings), // TODO: cache
+        gulp.src(glob, {since: gulp.lastRun("typescript")})
+    );
+    var result = sourceStream
+        // .pipe(g.debug())
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose"))
         .pipe(g.preprocess({ context: conf }))
@@ -41,11 +48,13 @@ gulp.task("typescript", function typescript() {
     return result.js
         .pipe(g.if(conf.isProd, g.uglify()))
         .pipe(g.if(conf.isDev, g.sourcemaps.write({
-            sourceRoot: sourceScripts
+            sourceRoot: sourceRoot
         })))
         .pipe(gulp.dest(dest))
         .pipe(g.connect.reload());
-});
+}
+
+gulp.task("typescript", typescript);
 
 gulp.task("index", function index() {
     var css = ["build/css/*"];
@@ -56,6 +65,26 @@ gulp.task("index", function index() {
         .pipe(g.preprocess({ context: conf }))
         .pipe(gulp.dest("build"))
         .pipe(g.connect.reload());
+});
+
+gulp.task("watch", () => {
+    // todo: done
+    var ts = typescript({watch: true});
+    var w = gulp.watch("src/index.html", gulp.series("index"));
+    // () => {
+    //     // todo: end
+    //     // Both `css` and `html` are included in the glob because it's injected
+    //     // into the JS files (output) when using external partials.
+    //     // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
+    //     // gulp.watch([
+    //     //     "src/scripts/**/*.ts",
+    //     //     "src/scripts/**/*.css",
+    //     //     "src/scripts/**/*.html",
+    //     //     "!src/scripts/**/*.spec.ts"
+    //     // ], gulp.series("typescript")); // TODO: add unit tests
+    //     // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
+    //     // gulp.watch('src/scss/**/*.scss', scss); // TODO:
+    // }
 });
 
 // gulp.task("scss", function scss() {
@@ -84,25 +113,11 @@ gulp.task("livereload", function(done) {
         root: "build",
         livereload: conf.isDev,
         port: conf.PORT,
-        middleware: (connect, opt) => [history()]
+        middleware: (connect, opt) => [
+            history()
+        ]
     });
     connect.server.on("close", done);
-});
-
-gulp.task("watch", function() {
-    // todo: end
-    // Both `css` and `html` are included in the glob because it's injected
-    // into the JS files (output) when using external partials.
-    // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
-    gulp.watch([
-        "src/scripts/**/*.ts",
-        "src/scripts/**/*.css",
-        "src/scripts/**/*.html",
-        "!src/scripts/**/*.spec.ts"
-    ], gulp.series("typescript")); // TODO: add unit tests
-    // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
-    // gulp.watch('src/scss/**/*.scss', scss); // TODO:
-    gulp.watch("src/index.html", gulp.series("index"));
 });
 
 gulp.task("serve", gulp.parallel("watch", "livereload"));
