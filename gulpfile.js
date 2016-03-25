@@ -7,10 +7,10 @@ var project = g.typescript.createProject("tsconfig.json", {
     typescript: require("typescript"),
     outFile: conf.isProd ? "app.js" : undefined
 });
-// todo: arg production
+
 gulp.task("clean", function clean() {
     var del = require("del");
-    return del(["build"]);
+    return del(["build", ".karma", "coverage"]);
 });
 
 gulp.task("assets", function assets() {
@@ -28,19 +28,20 @@ function typescript (options) {
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.spec.ts"
     ];
-    if (options && options.watch) {
+    if (!options) options = {};
+    if (options.watch) {
         return gulp.watch(glob, gulp.series(typescript));
     }
     var sourceRoot = "src/scripts";
-    var dest = "build/js";
+    var dest = options.dest || "build/js";
     var sourceStream = merge2(
         gulp.src(conf.typings), // TODO: cache
         gulp.src(glob, {since: gulp.lastRun("typescript")})
     );
     var result = sourceStream
-        // .pipe(g.debug())
+        .pipe(g.util.env.debug ? g.debug() : g.util.noop())
         .pipe(g.tslint())
-        .pipe(g.tslint.report("verbose"))
+        .pipe(g.tslint.report("verbose", {emitError: false}))
         .pipe(g.preprocess({ context: conf }))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
@@ -87,24 +88,26 @@ gulp.task("watch", () => {
     // }
 });
 
-function scss() {
+// todo: collect css from components
+function sass() {
     return gulp.src("src/**/*.{scss,sass}")
+        // todo: SASS LINT
         // .pipe(g.sassLint({ config: '.sass-lint.yml' }))
         // .pipe(g.sassLint.format())
         // .pipe(g.sassLint.failOnError())
         .pipe(g.rename({ dirname: "" }))
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
         .pipe(g.sass())
-        .pipe(g.if(conf.isDev, g.sourcemaps.write(".")))
+        .pipe(g.if(conf.isDev, g.sourcemaps.write()))
         .pipe(gulp.dest("build/css"))
         .pipe(g.connect.reload());
 }
 
-gulp.task("scss", scss);
+gulp.task("sass", sass);
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel(typescript, scss), // TODO: css
+    gulp.parallel(typescript, sass),
     "assets",
     "index"
 ));
@@ -124,66 +127,59 @@ gulp.task("livereload", function(done) {
 
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 
-//  unit = require("./tasks/gulp-karma"),
-//  e2e = require("./tasks/gulp-protractor"),
-// gulp.task("unit", unit);
-// gulp.task("e2e", e2e);
-// 
-// 
-// var karma = require('karma'),
-//     del = require('del'),
-//     path = require('path'),
-//     remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+(function() {
+    // TODO: Add watch
+    // TODO: refactor this
+    var karma = require("karma");
+    var del = require("del");
+    var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
 
-// var project = plugins.typescript.createProject('tsconfig.json', {
-//     typescript: require('typescript')
-// });
+    function karmaClean() {
+        return del([".karma"]);
+    }
 
-// function karmaClean() {
-//     return del(['.karma']);
-// }
+    function karmaTypescript() {
+        var sourceRoot = "src/scripts";
+        var glob = "src/scripts/**/*.ts";
+        var dest = ".karma";
 
-// function karmaTypescript(root) {
-//     var root = 'src/scripts';
-//     var glob = 'src/scripts/**/*.ts';
-//     var dest = '.karma';
+        var result = gulp.src([glob, ...conf.typings])
+            .pipe(g.tslint())
+            .pipe(g.tslint.report("verbose", {emitError: false}))
+            .pipe(g.preprocess({ context: conf }))
+            .pipe(g.inlineNg2Template({ useRelativePaths: true }))
+            .pipe(g.sourcemaps.init())
+            .pipe(g.typescript(project));
 
-//     var result = gulp.src([glob, ...env.typings])
-//         .pipe(plugins.tslint())
-//         .pipe(plugins.tslint.report('verbose'))
-//         .pipe(plugins.preprocess({ context: env }))
-//         .pipe(plugins.inlineNg2Template({ useRelativePaths: true }))
-//         .pipe(plugins.sourcemaps.init())
-//         .pipe(plugins.typescript(project));
+        return result.js
+            .pipe(g.sourcemaps.write({
+                sourceRoot: path.join(__dirname, sourceRoot)
+            }))
+            .pipe(gulp.dest(dest));
+    }
 
-//     return result.js
-//         .pipe(plugins.sourcemaps.write({
-//             sourceRoot: path.join(__dirname, '../', root)
-//         }))
-//         .pipe(plugins.size({ title: 'typescript' }))
-//         .pipe(gulp.dest(dest));
-// }
+    function karmaRun(done) {
+        return new karma.Server({
+            configFile: path.join(__dirname, "karma.conf.js")
+        }, done).start();
+    }
 
-// function karmaRun(done) {
-//     return new karma.Server({
-//         configFile: path.join(__dirname, '../karma.conf.js')
-//     }, done).start();
-// }
+    function karmaRemapIstanbul() {
+        return gulp.src("coverage/json/coverage-js.json")
+            .pipe(remapIstanbul({
+                reports: {
+                    json: "coverage/json/coverage-ts.json",
+                    html: "coverage/html-report"
+                }
+        }));
+    }
 
-// function karmaRemapIstanbul() {
-//     return gulp.src('coverage/json/coverage-js.json')
-//         .pipe(remapIstanbul({
-//             reports: {
-//                 json: 'coverage/json/coverage-ts.json',
-//                 html: 'coverage/html-report'
-//             }
-//     }));
-// }
+    gulp.task("test", gulp.series(
+        karmaClean,
+        karmaTypescript,
+        karmaRun,
+        karmaRemapIstanbul,
+        karmaClean
+    ));
 
-// module.exports = gulp.series(
-//     karmaClean,
-//     karmaTypescript,
-//     karmaRun,
-//     karmaRemapIstanbul,
-//     karmaClean
-// );
+})();

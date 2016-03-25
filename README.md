@@ -5,7 +5,7 @@
 - [Angular 2](https://angular.io/)
 - [TypeScript](http://www.typescriptlang.org/)
 - [Typings](https://github.com/typings/typings)
-- [Karma](http://karma-runner.github.io/)
+- [Karma](http://karma-runner.github.io/) (not yet)
 
 ### Global Dependencies
 
@@ -18,8 +18,7 @@
 ### Install
 ```
 git clone https://github.com/unlight/angular2-blank-project.git && cd angular2-blank-project
-npm install
-typings install
+npm install && typings install
 ```
 
 ### Usage
@@ -36,11 +35,9 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 - `serve` Start web-server and live-reload.
 
 #### Environments
-Default: `NODE_ENV=development` and `PORT=8080`.
 
-#### Development:
-- `$ gulp build serve` is equivalent to
-`$ NODE_ENV=development PORT=8080 gulp build serve`.
+##### Development:
+`gulp build serve`
 
-#### Production
-- `$ NODE_ENV=production gulp build serve`.
+##### Production
+`gulp build serve --production`

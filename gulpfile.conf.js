@@ -1,7 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : "development";
 process.env.PORT = process.env.PORT ? process.env.PORT : "8080";
 
-// todo: add production arguments
+var gutil = require("gulp-util");
 
 var baseLibs = [
 	"node_modules/systemjs/dist/system-polyfills.js",
@@ -12,7 +12,7 @@ var baseLibs = [
 	"node_modules/angular2/bundles/angular2.dev.js",
 	"node_modules/angular2/bundles/router.dev.js",
 	"node_modules/angular2/bundles/http.dev.js",
-	"node_modules/lodash/index.js"
+	"node_modules/lodash/lodash.js"
 ];
 
 var paths = {
@@ -51,7 +51,7 @@ module.exports = {
 		return !this.isProd;
 	},
 	get isProd() {
-		return this.NODE_ENV === "production";
+		return this.NODE_ENV === "production" || gutil.env.production === true;
 	},
 	get paths() {
 		return this.isDev ? paths.dev : paths.prod;
