@@ -4,6 +4,7 @@
 - [Gulp 4](http://gulpjs.com/)
 - [Angular 2](https://angular.io/)
 - [TypeScript](http://www.typescriptlang.org/)
+- [SystemJS](https://github.com/systemjs/systemjs)
 - [Typings](https://github.com/typings/typings)
 - [Karma](http://karma-runner.github.io/)
 
@@ -66,3 +67,4 @@ gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 * Combine `typescript` and `typescript-karma` tasks
 * Incremental unit tests
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
+* HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
