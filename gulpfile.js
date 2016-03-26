@@ -1,12 +1,111 @@
-var gulp = require("gulp");
-var conf = require("./gulpfile.conf");
-var g = require("gulp-load-plugins")();
-var path = require("path");
-var merge2 = require("merge2");
-var project = g.typescript.createProject("tsconfig.json", {
+// ========================================================
+// CONFIGURATION
+// ========================================================
+const gulp = require("gulp");
+const g = require("gulp-load-plugins")();
+const path = require("path");
+const merge2 = require("merge2");
+const project = g.typescript.createProject("tsconfig.json", {
     typescript: require("typescript"),
     outFile: conf.isProd ? "app.js" : undefined
 });
+
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+process.env.PORT = process.env.PORT || "8080";
+
+const unixify = require("unixify");
+const gutil = require("gulp-util");
+const pkgDir = require("pkg-dir");
+
+const projectRoot = pkgDir.sync();
+
+const baseLibs = [
+    // lib("systemjs/dist/system-polyfills.js"),
+    lib("systemjs/dist/system.js"),
+    // lib("es6-shim"),
+    lib("rxjs/bundles/Rx.js"),
+    lib("angular2/bundles/angular2-polyfills.js"),
+    lib("angular2/bundles/angular2.dev.js"),
+    lib("angular2/bundles/router.dev.js"),
+    lib("angular2/bundles/http.dev.js"),
+    // lib("lodash-es")
+];
+
+const paths = {
+    typings: [
+        lib("angular2/typings/browser.d.ts"),
+        "typings/main.d.ts"
+    ],
+
+    dev: {
+        jslibs: [
+            ...baseLibs
+            // Add dev only libs here
+        ]
+    },
+
+    prod: {
+        jslibs: [
+            ...baseLibs
+            // Add prod only libs here
+        ]
+    },
+
+    test: {
+        jslibs: [
+            ...baseLibs,
+            lib("angular2/bundles/testing.dev.js"),
+            "karma.shim.js"
+        ]
+    }
+};
+
+const conf = {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    get isDev() {
+        return !this.isProd;
+    },
+    get isProd() {
+        return this.NODE_ENV === "production" || gutil.env.production === true;
+    },
+    get paths() {
+        return this.isDev ? paths.dev : paths.prod;
+    },
+    test: paths.test,
+    testBaseLibs: paths.test.jslibs.map(lib => ({pattern: lib, watched: false})),
+    typings: paths.typings,
+    lib: lib,
+    debug: debug,
+    projectRoot: projectRoot,
+    karma: {
+        configFile: "karma.conf.js"
+    }
+};
+
+function lib(path) {
+    path = require.resolve(path).slice(projectRoot.length + 1);
+    return unixify(path);
+}
+
+function debug(title, namespace) {
+    var arg = gutil.env.debug;
+    var debugStream = g.debug({title: title});
+    if (arg === true || arg === "*") {
+        return debugStream;
+    } else if (typeof arg === "string") {
+        title = title.toLowerCase();
+        arg = arg.toLowerCase();
+        if (title.indexOf(arg) !== -1 || (namespace && namespace.indexOf(arg) !== -1)) {
+            return debugStream;
+        }
+    }
+    return gutil.noop();
+}
+
+// ========================================================
+// TASKS
+// ========================================================
 
 gulp.task("clean", function clean() {
     var del = require("del");
@@ -23,26 +122,26 @@ gulp.task("assets", function assets() {
     return merge2([images, libs]);
 });
 
-function typescript (options) {
+function scripts (options) {
     var glob = [
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.spec.ts"
     ];
     if (!options) options = {};
     if (options.watch) {
-        return gulp.watch(glob, gulp.series("typescript"));
+        return gulp.watch(glob, gulp.series("scripts"));
     }
     var sourceRoot = "src/scripts";
     var dest = options.dest || "build/js";
     var sourceStream = merge2(
         gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(conf.debug("Reading definitions", "typescript"))
+            .pipe(conf.debug("Reading definitions", "scripts"))
             .pipe(g.memoryCache("typings")),
-        gulp.src(glob, {since: gulp.lastRun("typescript")})
-            .pipe(conf.debug("Reading sources", "typescript"))
+        gulp.src(glob, {since: gulp.lastRun("scripts")})
+            .pipe(conf.debug("Reading sources", "scripts"))
     );
     var result = sourceStream
-        .pipe(conf.debug("Merged streams", "typescript"))
+        .pipe(conf.debug("Merged streams", "scripts"))
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose", {emitError: false}))
         .pipe(g.preprocess({ context: conf }))
@@ -52,13 +151,13 @@ function typescript (options) {
     return result.js
         .pipe(g.if(conf.isProd, g.uglify({mangle: false})))
         .pipe(g.if(conf.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
-        .pipe(g.size({ title: "typescript" }))
+        .pipe(g.size({ title: "scripts" }))
         .pipe(gulp.dest(dest))
-        .pipe(conf.debug("Written", "typescript"))
+        .pipe(conf.debug("Written", "scripts"))
         .pipe(g.connect.reload());
 }
 
-gulp.task("typescript", typescript);
+gulp.task("scripts", scripts);
 
 gulp.task("index", function index() {
     var styles = ["build/design/*"];
@@ -122,7 +221,7 @@ gulp.task("styles", function styles() {
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel(typescript, "styles"),
+    gulp.parallel("scripts", "styles"),
     "assets",
     "index"
 ));
@@ -170,7 +269,13 @@ gulp.task("develop", gulp.series("build", "serve"));
 
         return result.js
             .pipe(g.sourcemaps.write({
-                sourceRoot: path.join(__dirname, sourceRoot)
+                // https://github.com/ivogabe/gulp-typescript/issues/201
+                // sourceRoot: path.join(__dirname, sourceRoot)
+                // Return relative source map root directories per file.
+                sourceRoot: function(file) {
+                    var sourceFile = path.join(file.cwd, file.sourceMap.file);
+                    return path.relative(path.dirname(sourceFile), file.cwd);
+                }
             }))
             .pipe(gulp.dest(dest));
     }
