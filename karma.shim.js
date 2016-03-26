@@ -9,6 +9,7 @@ __karma__.loaded = function() {};
 System.config({
     packages: {
         "base/build": {
+            format: "register",
             defaultExtension: "js",
             map: Object.keys(window.__karma__.files)
                 .filter(filterSourceFiles)

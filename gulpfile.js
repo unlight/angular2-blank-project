@@ -112,7 +112,7 @@ function debug(title, namespace) {
 
 gulp.task("clean", function clean() {
     var del = require("del");
-    return del(["build"]);
+    return del(["build", ".coverage"]);
 });
 
 gulp.task("assets", function assets() {
@@ -183,22 +183,6 @@ gulp.task("watch", gulp.parallel(
         gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
     }
 ));
-
-// gulp.task("watch", () => {
-//     // () => {
-//     //     // todo: end
-//     //     // Both `css` and `html` are included in the glob because it's injected
-//     //     // into the JS files (output) when using external partials.
-//     //     // Injection is done by the `inlineNg2Template` plugin in the `typescript` task.
-//     //     // gulp.watch([
-//     //     //     "src/scripts/**/*.ts",
-//     //     //     "src/scripts/**/*.css",
-//     //     //     "src/scripts/**/*.html",
-//     //     //     "!src/scripts/**/*.spec.ts"
-//     //     // ], gulp.series("typescript")); // TODO: add unit tests
-//     //     // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
-//     // }
-// });
 
 gulp.task("styles", function styles() {
     var sassStream = merge2([
@@ -290,6 +274,19 @@ gulp.task("karma", done => {
     karmaServer(config.karma, done);
 });
 
+gulp.task("coverage", function() {
+    var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
+    return gulp.src(".coverage/**/coverage.json")
+        .pipe(remapIstanbul({
+            basePath: "./",
+            reports: {
+                "html": ".coverage/istanbul-html-report",
+                "json": ".coverage/istanbul-report.json",
+                "lcovonly": ".coverage/istanbul-lcov-report.info"
+            }
+        }));
+});
+
 // ========================================================
 // COLLECTION
 // ========================================================
@@ -298,36 +295,11 @@ gulp.task("build", gulp.series(
     "clean",
     gulp.parallel("scripts", "styles"),
     "assets",
-    "index",
-    "karma.scripts",
-    "karma"
+    "index"
 ));
+
+gulp.task("test", gulp.series("karma.scripts", "karma", "coverage"));
 
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 
-gulp.task("develop", gulp.series("build", "serve"));
-
-
-// (function() {
-//     // TODO: Add watch
-//     var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
-
-//     function karmaRemapIstanbul() {
-//         return gulp.src("coverage/json/coverage-js.json")
-//             .pipe(remapIstanbul({
-//                 reports: {
-//                     json: "coverage/json/coverage-ts.json",
-//                     html: "coverage/html-report"
-//                 }
-//         }));
-//     }
-
-//     gulp.task("test", gulp.series(
-//         karmaClean,
-//         karmaTypescript,
-//         karmaRun,
-//         karmaRemapIstanbul,
-//         karmaClean
-//     ));
-
-// })();
+gulp.task("develop", gulp.series("build", "test", "serve"));
