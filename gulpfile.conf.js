@@ -66,5 +66,6 @@ module.exports = {
 		return this.isDev ? paths.dev : paths.prod;
 	},
 	test: paths.test,
-	typings: paths.typings
+	typings: paths.typings,
+	lib: lib
 };
