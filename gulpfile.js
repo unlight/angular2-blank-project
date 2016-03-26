@@ -30,19 +30,19 @@ function typescript (options) {
     ];
     if (!options) options = {};
     if (options.watch) {
-        return gulp.watch(glob, gulp.series(typescript));
+        return gulp.watch(glob, gulp.series("typescript"));
     }
     var sourceRoot = "src/scripts";
     var dest = options.dest || "build/js";
     var sourceStream = merge2(
         gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(g.util.env.debug ? g.debug({title: "After reading definitions:"}) : g.util.noop())
+            .pipe(g.util.env.debug ? g.debug({title: "Reading definitions"}) : g.util.noop())
             .pipe(g.memoryCache("typings")),
         gulp.src(glob, {since: gulp.lastRun("typescript")})
-            .pipe(g.util.env.debug ? g.debug({title: "After reading sources:"}) : g.util.noop())
+            .pipe(g.util.env.debug ? g.debug({title: "Reading sources"}) : g.util.noop())
     );
     var result = sourceStream
-        .pipe(g.util.env.debug ? g.debug({title: "After merge streams:"}) : g.util.noop())
+        .pipe(g.util.env.debug ? g.debug({title: "Merged streams"}) : g.util.noop())
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose", {emitError: false}))
         .pipe(g.preprocess({ context: conf }))
@@ -52,8 +52,9 @@ function typescript (options) {
     return result.js
         .pipe(g.if(conf.isProd, g.uglify({mangle: false})))
         .pipe(g.if(conf.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
+        .pipe(g.size({ title: "typescript" }))
         .pipe(gulp.dest(dest))
-        .pipe(g.util.env.debug ? g.debug({title: "Written:"}) : g.util.noop())
+        .pipe(g.util.env.debug ? g.debug({title: "Written"}) : g.util.noop())
         .pipe(g.connect.reload());
 }
 
@@ -63,7 +64,7 @@ gulp.task("index", function index() {
     var styles = ["build/design/*"];
     var jslibs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
     var source = gulp.src([...styles, ...jslibs], { read: false })
-            .pipe(g.util.env.debug ? g.debug({title: "Injecting:"}) : g.util.noop());
+            .pipe(g.util.env.debug ? g.debug({title: "Injecting"}) : g.util.noop());
     return gulp.src("src/index.html")
         .pipe(g.inject(source, { addRootSlash: false, ignorePath: "build" }))
         .pipe(g.preprocess({ context: conf }))
@@ -90,12 +91,14 @@ gulp.task("watch", () => {
 //     //     //     "!src/scripts/**/*.spec.ts"
 //     //     // ], gulp.series("typescript")); // TODO: add unit tests
 //     //     // gulp.watch('src/scripts/**/*.spec.ts', unit); // TODO:
-//     //     // gulp.watch('src/scss/**/*.scss', scss); // TODO:
 //     // }
 // });
 
 gulp.task("styles", function styles() {
-    var sassStream = gulp.src("src/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
+    var sassStream = merge2([
+            gulp.src("src/scss/*.{scss,sass}", { base: "src/scss", since: gulp.lastRun("styles") }),
+            gulp.src("src/scripts/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
+        ])
         .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(g.util.env.production, g.sassLint.failOnError()));
@@ -106,13 +109,14 @@ gulp.task("styles", function styles() {
         // gulp.src("src/**/*.css", { since: gulp.lastRun("styles") }),
     ]);
     return sourceStream
-        .pipe(g.util.env.debug ? g.debug({title: "Reading styles:"}) : g.util.noop())
+        .pipe(g.util.env.debug ? g.debug({title: "Reading styles"}) : g.util.noop())
         .pipe(g.rename({ dirname: "" }))
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
         .pipe(g.if("*.{scss,sass}", g.sass()))
         .pipe(g.if(conf.isDev, g.sourcemaps.write()))
+        .pipe(g.size({ title: "styles" }))
         .pipe(gulp.dest("build/design"))
-        .pipe(g.util.env.debug ? g.debug({title: "Writing styles:"}) : g.util.noop())
+        .pipe(g.util.env.debug ? g.debug({title: "Writing styles"}) : g.util.noop())
         .pipe(g.connect.reload());
 });
 

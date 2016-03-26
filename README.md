@@ -48,8 +48,8 @@ TODO
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 	.pipe(g.memoryCache("typings")),
 ```
-* Styles
-* Production is broken
+* Styling
 * Less
 * Combine `typescript` and `typescript-karma` tasks
 * Incremental unit tests
+* Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56

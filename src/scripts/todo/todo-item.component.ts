@@ -25,7 +25,7 @@ import {TruncatePipe} from '../pipes/truncate.pipe';
 			</div>
 
 			<div class="col-xs-3">
-				<button class="todo-item-delete" (click)="delete(todo)">Delete</button>
+				<button class="btn btn-sm btn-danger todo-item-delete" (click)="delete(todo)">Delete</button>
 			</div>
 		</div>
 	`
