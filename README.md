@@ -62,6 +62,8 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 	.pipe(g.memoryCache("typings")),
 ```
+* Karma coverage
+* Karma watch
 * Styling
 * Less
 * Combine `typescript` and `typescript-karma` tasks

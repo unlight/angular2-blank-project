@@ -1,28 +1,31 @@
+"use strict";
 // ========================================================
 // CONFIGURATION
 // ========================================================
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+process.env.PORT = process.env.PORT || "8080";
+
 const gulp = require("gulp");
 const g = require("gulp-load-plugins")();
 const path = require("path");
 const merge2 = require("merge2");
-const project = g.typescript.createProject("tsconfig.json", {
-    typescript: require("typescript"),
-    outFile: conf.isProd ? "app.js" : undefined
-});
-
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
-process.env.PORT = process.env.PORT || "8080";
-
 const unixify = require("unixify");
-const gutil = require("gulp-util");
 const pkgDir = require("pkg-dir");
 
 const projectRoot = pkgDir.sync();
+var tsProject = () => {
+    const project = g.typescript.createProject("tsconfig.json", {
+        typescript: require("typescript"),
+        outFile: config.isProd ? "app.js" : undefined
+    });
+    tsProject = () => project;
+    return project;
+};
 
 const baseLibs = [
-    // lib("systemjs/dist/system-polyfills.js"),
+    lib("systemjs/dist/system-polyfills.js"),
     lib("systemjs/dist/system.js"),
-    // lib("es6-shim"),
+    lib("es6-shim"),
     lib("rxjs/bundles/Rx.js"),
     lib("angular2/bundles/angular2-polyfills.js"),
     lib("angular2/bundles/angular2.dev.js"),
@@ -36,21 +39,18 @@ const paths = {
         lib("angular2/typings/browser.d.ts"),
         "typings/main.d.ts"
     ],
-
     dev: {
         jslibs: [
             ...baseLibs
             // Add dev only libs here
         ]
     },
-
     prod: {
         jslibs: [
             ...baseLibs
             // Add prod only libs here
         ]
     },
-
     test: {
         jslibs: [
             ...baseLibs,
@@ -60,14 +60,14 @@ const paths = {
     }
 };
 
-const conf = {
+const config = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     get isDev() {
         return !this.isProd;
     },
     get isProd() {
-        return this.NODE_ENV === "production" || gutil.env.production === true;
+        return this.NODE_ENV === "production" || g.util.env.production === true;
     },
     get paths() {
         return this.isDev ? paths.dev : paths.prod;
@@ -79,7 +79,10 @@ const conf = {
     debug: debug,
     projectRoot: projectRoot,
     karma: {
-        configFile: "karma.conf.js"
+        get files() {
+            return karmaFiles();
+        },
+        configFile: projectRoot + "/karma.conf.js"
     }
 };
 
@@ -89,7 +92,7 @@ function lib(path) {
 }
 
 function debug(title, namespace) {
-    var arg = gutil.env.debug;
+    var arg = g.util.env.debug;
     var debugStream = g.debug({title: title});
     if (arg === true || arg === "*") {
         return debugStream;
@@ -100,7 +103,7 @@ function debug(title, namespace) {
             return debugStream;
         }
     }
-    return gutil.noop();
+    return g.util.noop();
 }
 
 // ========================================================
@@ -109,73 +112,77 @@ function debug(title, namespace) {
 
 gulp.task("clean", function clean() {
     var del = require("del");
-    return del(["build", ".karma", "coverage"]);
+    return del(["build"]);
 });
 
 gulp.task("assets", function assets() {
     var images = gulp.src("src/images/**/*.{png,jpg,gif}")
         .pipe(gulp.dest("build/design/images"));
-    var libs = gulp.src(conf.paths.jslibs, {base: "."})
-        .pipe(g.if(conf.isProd, g.concat("libs.js")))
-        .pipe(g.if(conf.isProd, g.uglify()))
+    var libs = gulp.src(config.paths.jslibs, {base: "."})
+        .pipe(g.if(config.isProd, g.concat("libs.js")))
+        .pipe(g.if(config.isProd, g.uglify()))
         .pipe(gulp.dest("build/libs"));
     return merge2([images, libs]);
 });
 
-function scripts (options) {
+gulp.task("scripts", function scripts () {
     var glob = [
         "src/scripts/**/*.ts",
-        "!src/scripts/**/*.spec.ts"
+        "!src/scripts/**/*.{spec,test,e2e}.ts"
     ];
-    if (!options) options = {};
-    if (options.watch) {
-        return gulp.watch(glob, gulp.series("scripts"));
-    }
     var sourceRoot = "src/scripts";
-    var dest = options.dest || "build/js";
+    var dest = "build/js";
     var sourceStream = merge2(
-        gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(conf.debug("Reading definitions", "scripts"))
+        gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
+            .pipe(debug("Reading definitions", "scripts"))
             .pipe(g.memoryCache("typings")),
         gulp.src(glob, {since: gulp.lastRun("scripts")})
-            .pipe(conf.debug("Reading sources", "scripts"))
+            .pipe(debug("Reading sources", "scripts"))
     );
-    var result = sourceStream
-        .pipe(conf.debug("Merged streams", "scripts"))
+    return sourceStream
+        .pipe(debug("Merged streams", "scripts"))
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose", {emitError: false}))
-        .pipe(g.preprocess({ context: conf }))
+        .pipe(g.preprocess({ context: config }))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
-        .pipe(g.if(conf.isDev, g.sourcemaps.init()))
-        .pipe(g.typescript(project));
-    return result.js
-        .pipe(g.if(conf.isProd, g.uglify({mangle: false})))
-        .pipe(g.if(conf.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
+        .pipe(g.if(config.isDev, g.sourcemaps.init()))
+        .pipe(g.typescript(tsProject()))
+        .js
+        .pipe(g.if(config.isProd, g.uglify({mangle: false})))
+        .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
         .pipe(g.size({ title: "scripts" }))
         .pipe(gulp.dest(dest))
-        .pipe(conf.debug("Written", "scripts"))
+        .pipe(debug("Written", "scripts"))
         .pipe(g.connect.reload());
-}
+});
 
-gulp.task("scripts", scripts);
+gulp.task("scripts.watch", () => {
+    var glob = [
+        "src/scripts/**/*.ts",
+        "!src/scripts/**/*.{spec,test,e2e}.ts"
+    ];
+    gulp.watch(glob, gulp.series("scripts"));
+});
 
 gulp.task("index", function index() {
     var styles = ["build/design/*"];
-    var jslibs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
+    var jslibs = config.isProd ? ["build/libs/*"] : config.paths.jslibs.map(lib => path.join("build/libs", lib));
     var source = gulp.src([...styles, ...jslibs], { read: false })
-            .pipe(conf.debug("Injecting"));
+            .pipe(debug("Injecting"));
     return gulp.src("src/index.html")
         .pipe(g.inject(source, { addRootSlash: false, ignorePath: "build" }))
-        .pipe(g.preprocess({ context: conf }))
+        .pipe(g.preprocess({ context: config }))
         .pipe(gulp.dest("build"))
         .pipe(g.connect.reload());
 });
 
-gulp.task("watch", () => {
-    typescript({ watch: true });
-    gulp.watch("src/index.html", gulp.series("index"));
-    gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
-});
+gulp.task("watch", gulp.parallel(
+    "scripts.watch",
+    () => {
+        gulp.watch("src/index.html", gulp.series("index"));
+        gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
+    }
+));
 
 // gulp.task("watch", () => {
 //     // () => {
@@ -208,30 +215,23 @@ gulp.task("styles", function styles() {
         // gulp.src("src/**/*.css", { since: gulp.lastRun("styles") }),
     ]);
     return sourceStream
-        .pipe(conf.debug("Reading styles"))
+        .pipe(debug("Reading styles"))
         .pipe(g.rename({ dirname: "" }))
-        .pipe(g.if(conf.isDev, g.sourcemaps.init()))
+        .pipe(g.if(config.isDev, g.sourcemaps.init()))
         .pipe(g.if("*.{scss,sass}", g.sass()))
-        .pipe(g.if(conf.isDev, g.sourcemaps.write()))
+        .pipe(g.if(config.isDev, g.sourcemaps.write()))
         .pipe(g.size({ title: "styles" }))
         .pipe(gulp.dest("build/design"))
-        .pipe(conf.debug("Writing styles"))
+        .pipe(debug("Writing styles"))
         .pipe(g.connect.reload());
 });
-
-gulp.task("build", gulp.series(
-    "clean",
-    gulp.parallel("scripts", "styles"),
-    "assets",
-    "index"
-));
 
 gulp.task("livereload", function(done) {
     var history = require("connect-history-api-fallback");
     var connect = g.connect.server({
         root: "build",
-        livereload: conf.isDev,
-        port: conf.PORT,
+        livereload: config.isDev,
+        port: config.PORT,
         middleware: (connect, opt) => [
             history()
         ]
@@ -239,69 +239,95 @@ gulp.task("livereload", function(done) {
     connect.server.on("close", done);
 });
 
+// ========================================================
+// TEST
+// ========================================================
+const karma = require("karma");
+
+function karmaFiles() {
+    var baseLibs = config.testBaseLibs;
+    var sources = [
+        // Paths loaded via module imports.
+        {pattern: "build/**/*.js", included: false, watched: true},
+        // Paths loaded via Angular's component compiler
+        // {pattern: "build/**/*.html", included: false, watched: true},
+        // {pattern: "build/**/*.css", included: false, watched: true}
+    ];
+    return [...baseLibs, ...sources];
+}
+
+function karmaServer(options, done) {
+    const server = new karma.Server(options, error => {
+        if (error) process.exit(error);
+        done();
+    });
+    server.start();
+}
+
+gulp.task("karma.scripts", () => {
+    // TODO: Maybe combine with scripts task?
+    var glob = [
+        "src/scripts/**/*.{spec,test}.ts"
+    ];
+    var sourceRoot = "src/scripts";
+    var dest = "build/js";
+    var sourceStream = merge2(
+        gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
+            .pipe(g.memoryCache("typings")),
+        gulp.src(glob)
+    );
+    return sourceStream
+        .pipe(debug("Karma"))
+        .pipe(g.if(config.isDev, g.sourcemaps.init()))
+        .pipe(g.typescript(tsProject()))
+        .js
+        .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
+        .pipe(gulp.dest(dest));
+});
+
+gulp.task("karma", done => {
+    config.karma.singleRun = true;
+    karmaServer(config.karma, done);
+});
+
+// ========================================================
+// COLLECTION
+// ========================================================
+
+gulp.task("build", gulp.series(
+    "clean",
+    gulp.parallel("scripts", "styles"),
+    "assets",
+    "index",
+    "karma.scripts",
+    "karma"
+));
+
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 
 gulp.task("develop", gulp.series("build", "serve"));
 
-(function() {
-    // TODO: Add watch
-    // TODO: Refactor this
-    var karma = require("karma");
-    var del = require("del");
-    var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
 
-    function karmaClean() {
-        return del([".karma"]);
-    }
+// (function() {
+//     // TODO: Add watch
+//     var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
 
-    function karmaTypescript() {
-        var sourceRoot = "src/scripts";
-        var glob = "src/scripts/**/*.ts";
-        var dest = ".karma";
-        // TODO: combine with typescript task
-        var result = gulp.src([glob, ...conf.typings])
-            .pipe(g.tslint())
-            .pipe(g.tslint.report("verbose", {emitError: false}))
-            .pipe(g.preprocess({ context: conf }))
-            .pipe(g.inlineNg2Template({ useRelativePaths: true }))
-            .pipe(g.sourcemaps.init())
-            .pipe(g.typescript(project));
+//     function karmaRemapIstanbul() {
+//         return gulp.src("coverage/json/coverage-js.json")
+//             .pipe(remapIstanbul({
+//                 reports: {
+//                     json: "coverage/json/coverage-ts.json",
+//                     html: "coverage/html-report"
+//                 }
+//         }));
+//     }
 
-        return result.js
-            .pipe(g.sourcemaps.write({
-                // https://github.com/ivogabe/gulp-typescript/issues/201
-                // sourceRoot: path.join(__dirname, sourceRoot)
-                // Return relative source map root directories per file.
-                sourceRoot: function(file) {
-                    var sourceFile = path.join(file.cwd, file.sourceMap.file);
-                    return path.relative(path.dirname(sourceFile), file.cwd);
-                }
-            }))
-            .pipe(gulp.dest(dest));
-    }
+//     gulp.task("test", gulp.series(
+//         karmaClean,
+//         karmaTypescript,
+//         karmaRun,
+//         karmaRemapIstanbul,
+//         karmaClean
+//     ));
 
-    function karmaRun(done) {
-        return new karma.Server({
-            configFile: path.join(__dirname, "karma.conf.js")
-        }, done).start();
-    }
-
-    function karmaRemapIstanbul() {
-        return gulp.src("coverage/json/coverage-js.json")
-            .pipe(remapIstanbul({
-                reports: {
-                    json: "coverage/json/coverage-ts.json",
-                    html: "coverage/html-report"
-                }
-        }));
-    }
-
-    gulp.task("test", gulp.series(
-        karmaClean,
-        karmaTypescript,
-        karmaRun,
-        karmaRemapIstanbul,
-        karmaClean
-    ));
-
-})();
+// })();
