@@ -50,7 +50,7 @@ function typescript (options) {
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
         .pipe(g.typescript(project));
     return result.js
-        .pipe(g.if(conf.isProd, g.uglify()))
+        .pipe(g.if(conf.isProd, g.uglify({mangle: false})))
         .pipe(g.if(conf.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
         .pipe(gulp.dest(dest))
         .pipe(g.util.env.debug ? g.debug({title: "Written:"}) : g.util.noop())
