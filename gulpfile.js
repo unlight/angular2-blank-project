@@ -36,13 +36,13 @@ function typescript (options) {
     var dest = options.dest || "build/js";
     var sourceStream = merge2(
         gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(g.util.env.debug ? g.debug({title: "Reading definitions"}) : g.util.noop())
+            .pipe(conf.debug("Reading definitions", "typescript"))
             .pipe(g.memoryCache("typings")),
         gulp.src(glob, {since: gulp.lastRun("typescript")})
-            .pipe(g.util.env.debug ? g.debug({title: "Reading sources"}) : g.util.noop())
+            .pipe(conf.debug("Reading sources", "typescript"))
     );
     var result = sourceStream
-        .pipe(g.util.env.debug ? g.debug({title: "Merged streams"}) : g.util.noop())
+        .pipe(conf.debug("Merged streams", "typescript"))
         .pipe(g.tslint())
         .pipe(g.tslint.report("verbose", {emitError: false}))
         .pipe(g.preprocess({ context: conf }))
@@ -54,7 +54,7 @@ function typescript (options) {
         .pipe(g.if(conf.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
         .pipe(g.size({ title: "typescript" }))
         .pipe(gulp.dest(dest))
-        .pipe(g.util.env.debug ? g.debug({title: "Written"}) : g.util.noop())
+        .pipe(conf.debug("Written", "typescript"))
         .pipe(g.connect.reload());
 }
 
@@ -64,7 +64,7 @@ gulp.task("index", function index() {
     var styles = ["build/design/*"];
     var jslibs = conf.isProd ? ["build/libs/*"] : conf.paths.jslibs.map(lib => path.join("build/libs", lib));
     var source = gulp.src([...styles, ...jslibs], { read: false })
-            .pipe(g.util.env.debug ? g.debug({title: "Injecting"}) : g.util.noop());
+            .pipe(conf.debug("Injecting"));
     return gulp.src("src/index.html")
         .pipe(g.inject(source, { addRootSlash: false, ignorePath: "build" }))
         .pipe(g.preprocess({ context: conf }))
@@ -109,14 +109,14 @@ gulp.task("styles", function styles() {
         // gulp.src("src/**/*.css", { since: gulp.lastRun("styles") }),
     ]);
     return sourceStream
-        .pipe(g.util.env.debug ? g.debug({title: "Reading styles"}) : g.util.noop())
+        .pipe(conf.debug("Reading styles"))
         .pipe(g.rename({ dirname: "" }))
         .pipe(g.if(conf.isDev, g.sourcemaps.init()))
         .pipe(g.if("*.{scss,sass}", g.sass()))
         .pipe(g.if(conf.isDev, g.sourcemaps.write()))
         .pipe(g.size({ title: "styles" }))
         .pipe(gulp.dest("build/design"))
-        .pipe(g.util.env.debug ? g.debug({title: "Writing styles"}) : g.util.noop())
+        .pipe(conf.debug("Writing styles"))
         .pipe(g.connect.reload());
 });
 

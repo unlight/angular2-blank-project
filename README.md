@@ -28,21 +28,34 @@ gulp build serve
 Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
 
-#### Tasks
+### Tasks
 - `clean` Remove generated folders - `build`, `coverage`.
 - `test` Run Karma against all `src/scripts/**/*.spec.ts` files.
 - `build` Create distribution package.
 - `serve` Start web-server and live-reload.
 
-#### Development:
-`gulp build serve`
+**Additional arguments:**
 
-#### Production
-`gulp build serve --production`
+* ##### debug
+  Tasks will be more versbosed informiong about processing files, etc. You can specify namespace of debug messages.  
+  For example, show debug messages from typescript task only:
+  ```
+  gulp build serve --debug=typescript
+  ```
+  Debug all:
+  ```
+  gulp build serve --debug
+  gulp build serve --debug=*
+  ```
 
+* ##### production
+  In production mode all javascript and css files will be combined and minified.
+  ```
+  gulp build serve --production
+  ```
 
-TODO
-----
+### TODO
+
 * Make more fast cache for typescript task (without gulp.src)
 ```
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })

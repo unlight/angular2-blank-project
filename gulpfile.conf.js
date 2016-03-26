@@ -7,11 +7,6 @@ var pkgDir = require("pkg-dir");
 
 var projectRoot = pkgDir.sync();
 
-function lib(path) {
-	path = require.resolve(path).slice(projectRoot.length + 1);
-	return unixify(path);
-}
-
 var baseLibs = [
 	lib("systemjs/dist/system-polyfills.js"),
 	lib("systemjs/dist/system.js"),
@@ -67,5 +62,27 @@ module.exports = {
 	},
 	test: paths.test,
 	typings: paths.typings,
-	lib: lib
+	lib: lib,
+	debug: debug,
+	projectRoot: projectRoot
 };
+
+function lib(path) {
+	path = require.resolve(path).slice(projectRoot.length + 1);
+	return unixify(path);
+}
+
+function debug(title, namespace) {
+	var arg = gutil.env.debug;
+	var debugStream = require("gulp-debug")({title: title});
+	if (arg === true || arg === "*") {
+		return debugStream;
+	} else if (typeof arg === "string") {
+		title = title.toLowerCase();
+		arg = arg.toLowerCase();
+		if (title.indexOf(arg) !== -1 || (namespace && namespace.indexOf(arg) !== -1)) {
+			return debugStream;
+		}
+	}
+	return gutil.noop();
+}
