@@ -19,17 +19,16 @@ module.exports = function(karma) {
         plugins: [
             "karma-jasmine",
             "karma-coverage",
-            "karma-phantomjs-launcher"
+            "karma-phantomjs-launcher",
+            "karma-sourcemap-loader",
         ],
         frameworks: [
-            "jasmine"
+            "jasmine",
         ],
         preprocessors: {
-            /**
-             * Source files, that you want to generate coverage for.
-             * Do not include tests or libraries.
-             */
-            "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"]
+            // Source files, that you want to generate coverage for, do not include tests or libraries.
+            "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"],
+            "build/js/**/*.js": ["sourcemap"]
         },
         reporters: ["progress", "coverage"],
         coverageReporter: {

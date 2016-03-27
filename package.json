@@ -45,6 +45,7 @@
     "karma-coverage": "^0.5.5",
     "karma-jasmine": "^0.3.8",
     "karma-phantomjs-launcher": "1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
     "merge2": "^1.0.1",
     "phantomjs-prebuilt": "2",
     "pkg-dir": "^1.0.0",
