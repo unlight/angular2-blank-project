@@ -30,10 +30,10 @@ Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### Tasks
-- `clean` Remove generated folders - `build`, `coverage`.
-- `test` Run Karma against all `src/scripts/**/*.spec.ts` files.
-- `build` Create distribution package.
-- `serve` Start web-server and live-reload.
+- `clean` Remove generated folders
+- `test` Run Karma against all `src/scripts/**/*.spec.ts` files
+- `build` Create distribution package
+- `serve` Start web-server and live-reload
 
 **Additional arguments:**
 
@@ -62,11 +62,12 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 	.pipe(g.memoryCache("typings")),
 ```
-* Karma coverage
 * Karma watch
 * Styling
 * Less
+* Combine css in production
 * Combine `typescript` and `typescript-karma` tasks
 * Incremental unit tests
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
+* When Node6 be ready rewrite gulpfile

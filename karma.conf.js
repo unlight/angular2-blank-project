@@ -1,5 +1,20 @@
+var config = require("./gulpfile.conf");
+
+function karmaFiles() {
+    var baseLibs = config.testBaseLibs;
+    var sources = [
+        // Paths loaded via module imports.
+        {pattern: "build/**/*.js", included: false, watched: true},
+        // Paths loaded via Angular's component compiler
+        // {pattern: "build/**/*.html", included: false, watched: true},
+        // {pattern: "build/**/*.css", included: false, watched: true}
+    ];
+    return [...baseLibs, ...sources];
+}
+
 module.exports = function(karma) {
     karma.set({
+        files: karmaFiles(),
         browsers: ["PhantomJS"],
         plugins: [
             "karma-jasmine",
@@ -13,7 +28,6 @@ module.exports = function(karma) {
             /**
              * Source files, that you want to generate coverage for.
              * Do not include tests or libraries.
-             * These files will be instrumented by Istanbul.
              */
             "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"]
         },
