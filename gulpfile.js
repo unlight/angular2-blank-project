@@ -5,6 +5,7 @@ const g = require("gulp-load-plugins")();
 const path = require("path");
 const merge2 = require("merge2");
 const config = require("./gulpfile.conf");
+const lastRun = require("last-run");
 const debug = config.debug;
 
 // ========================================================
@@ -53,10 +54,10 @@ gulp.task("scripts", function scripts () {
 });
 
 gulp.task("styles", function styles() {
-    var sassStream = merge2([
-            gulp.src("src/scss/*.{scss,sass}", { base: "src/scss", since: gulp.lastRun("styles") }),
+    var sassStream = merge2(
+            gulp.src(["src/scss/*.{scss,sass}", "!src/scss/_*"], { base: "src/scss", since: gulp.lastRun("styles") }),
             gulp.src("src/scripts/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
-        ])
+        )
         .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(config.isProd, g.sassLint.failOnError()));
@@ -73,6 +74,7 @@ gulp.task("styles", function styles() {
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
         .pipe(g.if("*.{scss,sass}", g.sass()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
+        .pipe(g.if(config.isProd, merge2(g.concat("app.css"), g.util.noop()))) // todo: minify css
         .pipe(g.size({ title: "styles" }))
         .pipe(gulp.dest("build/design"))
         .pipe(debug("Writing styles"))
@@ -92,8 +94,20 @@ gulp.task("htdocs", function htdocs() {
 });
 
 gulp.task("watch", () => {
-    var globScripts = ["src/scripts/**/*.ts", "!src/scripts/**/*.{spec,test,e2e}.ts"];
+    var globScripts = [
+        "src/scripts/**/*.ts",
+        "!src/scripts/**/*.{spec,test,e2e}.ts"
+    ];
     gulp.watch(globScripts, gulp.series("scripts"));
+    // If we changnig *.html we must recompile corresponsding component,
+    // since we do know how - we will reload all.
+    // TODO: Need fix it.
+    // gulp.watch("src/scripts/**/*.html", ).on("change", path => {
+    // });
+    gulp.watch("src/scripts/**/*.html", () => {
+        clearLastRun("scripts");
+        return gulp.series("scripts")();
+    });
     gulp.watch("src/index.html", gulp.series("htdocs"));
     gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
 });
@@ -151,6 +165,8 @@ gulp.task("tests", () => {
 });
 
 gulp.task("tests.watch", done => {
+    var tests = gulp._getTask("tests");
+    lastRun.capture(tests);
     gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
     karmaServer(config.karma, done);
 });
@@ -172,6 +188,11 @@ gulp.task("coverage", function() {
 // ========================================================
 // OTHER
 // ========================================================
+
+function clearLastRun(name) {
+    var task = gulp._getTask(name);
+    lastRun.release(task);
+}
 
 gulp.task("clean", function clean() {
     var del = require("del");

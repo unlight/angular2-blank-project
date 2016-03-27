@@ -4,7 +4,7 @@ function karmaFiles() {
     var baseLibs = config.testBaseLibs;
     var sources = [
         // Paths loaded via module imports.
-        {pattern: "build/**/*.js", included: false, watched: true},
+        {pattern: "build/js/**/*.js", included: false, watched: true},
         // Paths loaded via Angular's component compiler
         // {pattern: "build/**/*.html", included: false, watched: true},
         // {pattern: "build/**/*.css", included: false, watched: true}

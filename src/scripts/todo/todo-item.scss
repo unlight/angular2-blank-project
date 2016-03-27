@@ -9,7 +9,6 @@
 }
 
 .todo-item-select {
-  display: none;
   margin: 13px 0 0;
 }
 
@@ -17,16 +16,9 @@
   @extend .btn;
   @extend .btn-danger;
   @extend .pull-xs-right;
-  display: none;
 }
 
 .todo-item {
-  &:hover {
-    .todo-item-select,
-    .todo-item-delete {
-      display: block;
-    }
-  }
 
   &.completed {
     .todo-item-text {

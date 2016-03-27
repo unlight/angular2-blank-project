@@ -1,4 +1,5 @@
 ## Angular 2 - Seed Project
+Light-weight and easy to use seed project for Angular 2 apps
 
 ### Stack
 - [Gulp 4](http://gulpjs.com/)
@@ -62,13 +63,12 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
 	.pipe(g.memoryCache("typings")),
 ```
+* Fix when changing html reload corresponding component
 * Concat, minify css in production
-* Karma watch
 * Styling
 * Less
 * Combine css in production
 * Combine `typescript` and `typescript-karma` tasks
-* Incremental unit tests
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
 * When Node6 be ready rewrite gulpfile
