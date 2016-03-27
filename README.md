@@ -68,12 +68,11 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 * Combine css in production
 * Combine `typescript` and `typescript-karma` tasks
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
-* HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
 * When Node6 be ready rewrite gulpfile
 * Karma reporter plugin (remove absolute path)
 * Check gulp-typescript for reading d.ts files
+* Beep on error
+* HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
 * Make more fast cache for typescript task (without gulp.src)
-```
-gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-  .pipe(g.memoryCache("typings")),
-```
+`gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
+  .pipe(g.memoryCache("typings"))`
