@@ -4,8 +4,10 @@ const gulp = require("gulp");
 const g = require("gulp-load-plugins")();
 const path = require("path");
 const merge2 = require("merge2");
-const config = require("./gulpfile.conf");
+const combine = require("stream-combiner");
 const lastRun = require("last-run");
+const _ = require("lodash");
+const config = require("./gulpfile.conf");
 const debug = config.debug;
 
 // ========================================================
@@ -55,26 +57,34 @@ gulp.task("scripts", function scripts () {
 
 gulp.task("styles", function styles() {
     var sassStream = merge2(
-            gulp.src(["src/scss/*.{scss,sass}", "!src/scss/_*"], { base: "src/scss", since: gulp.lastRun("styles") }),
+            gulp.src(["src/scss/*.{scss,sass}"], { base: "src/scss", since: gulp.lastRun("styles") }),
             gulp.src("src/scripts/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
         )
         .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(config.isProd, g.sassLint.failOnError()));
+    var lessStream = gulp.src("src/scripts/*.less", { since: gulp.lastRun("styles") });
     var cssStream = gulp.src("src/**/*.css", { since: gulp.lastRun("styles") });
-    // var lessStream = gulp.src("src/**/*.less", { since: gulp.lastRun("styles") });
     var sourceStream = merge2([
         sassStream,
-        // lessStream,
+        lessStream,
         cssStream
+    ]);
+    var postcssPlugins = _.once(() => [
+        require("autoprefixer")({browsers: ["last 3 version"]})
     ]);
     return sourceStream
         .pipe(debug("Reading styles"))
         .pipe(g.rename({ dirname: "" }))
-        .pipe(g.if(config.isDev, g.sourcemaps.init()))
+        .pipe(g.if(config.isDev, g.sourcemaps.init({loadMaps: true, identityMap: true})))
         .pipe(g.if("*.{scss,sass}", g.sass()))
+        .pipe(g.if("*.less", g.less()))
+        .pipe(g.postcss(postcssPlugins()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
-        .pipe(g.if(config.isProd, merge2(g.concat("app.css"), g.util.noop()))) // todo: minify css
+        .pipe(g.if(config.isProd, combine(
+            g.concat("app.css"),
+            g.csso()
+        )))
         .pipe(g.size({ title: "styles" }))
         .pipe(gulp.dest("build/design"))
         .pipe(debug("Writing styles"))
@@ -109,6 +119,7 @@ gulp.task("watch", () => {
         return gulp.series("scripts")();
     });
     gulp.watch("src/index.html", gulp.series("htdocs"));
+    // !src/scss/_*
     gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
 });
 

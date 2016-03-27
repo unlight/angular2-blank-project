@@ -9,6 +9,11 @@ Light-weight and easy to use seed project for Angular 2 apps
 - [Typings](https://github.com/typings/typings)
 - [Karma](http://karma-runner.github.io/)
 
+### Features
+- Gulp 4 incremental builds (since, lastRun)
+- Unit tests coverage (with remap to TypeScript source)
+- Merged pipeline of SASS, LESS and CSS + PostCSS
+
 ### Global Dependencies
 
 | Dependency | Install                               |
@@ -61,11 +66,10 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### TODO
 
+* Import lodash-es from TS
+* If changed _bootstrap.scss reset time and reload all
 * Fix when changing html reload corresponding component
-* Concat, minify css in production
 * Styling
-* Less
-* Combine css in production
 * Combine `typescript` and `typescript-karma` tasks
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * When Node6 be ready rewrite gulpfile
