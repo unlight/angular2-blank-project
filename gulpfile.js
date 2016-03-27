@@ -6,7 +6,6 @@ const path = require("path");
 const merge2 = require("merge2");
 const config = require("./gulpfile.conf");
 const debug = config.debug;
-const args = g.util.env;
 
 // ========================================================
 // BUILD
@@ -60,7 +59,7 @@ gulp.task("styles", function styles() {
         ])
         .pipe(g.sassLint())
             .pipe(g.sassLint.format())
-            .pipe(g.if(args.production, g.sassLint.failOnError()));
+            .pipe(g.if(config.isProd, g.sassLint.failOnError()));
     var cssStream = gulp.src("src/**/*.css", { since: gulp.lastRun("styles") });
     // var lessStream = gulp.src("src/**/*.less", { since: gulp.lastRun("styles") });
     var sourceStream = merge2([
@@ -156,15 +155,16 @@ gulp.task("tests.watch", done => {
     karmaServer(config.karma, done);
 });
 
+// TODO: Maybe adapt karma-remap-instanbul-plugin
 gulp.task("coverage", function() {
     var remapIstanbul = require("remap-istanbul/lib/gulpRemapIstanbul");
     return gulp.src(".coverage/**/coverage.json")
         .pipe(remapIstanbul({
             basePath: "./",
             reports: {
-                "html": ".coverage/istanbul-html-report",
-                "json": ".coverage/istanbul-report.json",
-                "lcovonly": ".coverage/istanbul-lcov-report.info"
+                "html": ".coverage/html-report",
+                "json": ".coverage/report.json",
+                "lcovonly": ".coverage/lcov-report.info"
             }
         }));
 });
@@ -190,3 +190,5 @@ gulp.task("test", gulp.series("tests", "karma", "coverage"));
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 
 gulp.task("develop", gulp.series("build", "test", "serve"));
+
+gulp.task("default", gulp.series("build", "test"));
