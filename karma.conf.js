@@ -1,7 +1,7 @@
 var config = require("./gulpfile.conf");
 
 function karmaFiles() {
-    var baseLibs = config.testBaseLibs;
+    var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false}));
     var sources = [
         // Paths loaded via module imports.
         {pattern: "build/js/**/*.js", included: false, watched: true},
@@ -9,7 +9,7 @@ function karmaFiles() {
         // {pattern: "build/**/*.html", included: false, watched: true},
         // {pattern: "build/**/*.css", included: false, watched: true}
     ];
-    return [...baseLibs, ...sources];
+    return [...jsLibs, ...sources];
 }
 
 module.exports = function(karma) {

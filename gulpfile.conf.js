@@ -18,7 +18,11 @@ const baseLibs = [
     lib("angular2/bundles/angular2.dev.js"),
     lib("angular2/bundles/router.dev.js"),
     lib("angular2/bundles/http.dev.js"),
-    lib("lodash")
+    // lib("lodash")
+];
+
+const tsLibs = [
+    lib("lodash-es")
 ];
 
 const paths = {
@@ -27,19 +31,19 @@ const paths = {
         "typings/main.d.ts"
     ],
     dev: {
-        jslibs: [
+        // Add dev only libs here
+        jsLibs: [
             ...baseLibs
-            // Add dev only libs here
         ]
     },
     prod: {
-        jslibs: [
+        // Add prod only libs here
+        jsLibs: [
             ...baseLibs
-            // Add prod only libs here
         ]
     },
     test: {
-        jslibs: [
+        jsLibs: [
             ...baseLibs,
             lib("angular2/bundles/testing.dev.js"),
             "karma.shim.js"
@@ -61,8 +65,11 @@ const config = {
     get paths() {
         return this.isDev ? paths.dev : paths.prod;
     },
+    get jsLibs() {
+        return this.isDev ? paths.dev.jsLibs : paths.prod.jsLibs;
+    }, 
+    tsLibs: tsLibs,
     test: paths.test,
-    testBaseLibs: paths.test.jslibs.map(lib => ({pattern: lib, watched: false})),
     typings: paths.typings,
     lib: lib,
     debug: debug,
@@ -76,6 +83,7 @@ const config = {
 		}
 		return _tsProject;
     },
+    tscOptions: require("./tsconfig").compilerOptions,
     karma: {
         configFile: projectRoot + "/karma.conf.js"
     }

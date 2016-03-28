@@ -34,7 +34,15 @@
 		 * And the `main` property points to the app entry file - `bootstrap.js`.
 		 */
 		System.config({
-			packages: { "js": { main: "bootstrap.js" } }
+			packageConfigPaths: ["node_modules/*/package.json"],
+			packages: {
+				"js": {
+					main: "bootstrap.js"
+				}
+			},
+			paths: {
+				"lodash": "node_modules/lodash-es/lodash.js"
+			}
 		});
 
 		System.import("js")

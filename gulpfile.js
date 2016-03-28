@@ -9,6 +9,7 @@ const lastRun = require("last-run");
 const _ = require("lodash");
 const config = require("./gulpfile.conf");
 const debug = config.debug;
+const lib = config.lib;
 
 // ========================================================
 // BUILD
@@ -17,9 +18,14 @@ const debug = config.debug;
 gulp.task("assets", function assets() {
     var images = gulp.src("src/images/**/*.{png,jpg,gif}")
         .pipe(gulp.dest("build/design/images"));
-    var libs = gulp.src(config.paths.jslibs, {base: "."})
-        .pipe(g.if(config.isProd, g.concat("libs.js")))
-        .pipe(g.if(config.isProd, g.uglify()))
+    var jsLibs = gulp.src(config.jsLibs, {base: "node_modules"});
+    var tsLibs = gulp.src(config.tsLibs, {base: "node_modules"})
+        .pipe(g.typescript(config.tscOptions)).js;
+    var libs = merge2(jsLibs, tsLibs)
+        .pipe(g.if(config.isProd, combine(
+            g.concat("libs.js"),
+            g.uglify()
+        )))
         .pipe(gulp.dest("build/libs"));
     return merge2([images, libs]);
 });
@@ -35,13 +41,16 @@ gulp.task("scripts", function scripts () {
         gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
             .pipe(debug("Reading definitions", "scripts"))
             .pipe(g.memoryCache("typings")),
+        // gulp.src(config.lib("lodash-es")),
         gulp.src(glob, {since: gulp.lastRun("scripts")})
             .pipe(debug("Reading sources", "scripts"))
     );
     return sourceStream
         .pipe(debug("Merged streams", "scripts"))
-        .pipe(g.tslint())
-        .pipe(g.tslint.report("verbose", {emitError: false}))
+        .pipe(g.if("*.ts", combine(
+            g.tslint(),
+            g.tslint.report("verbose", {emitError: false})
+        )))
         .pipe(g.preprocess({ context: config }))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
@@ -93,8 +102,8 @@ gulp.task("styles", function styles() {
 
 gulp.task("htdocs", function htdocs() {
     var styles = ["build/design/app.css", "build/design/*"];
-    var jslibs = config.isProd ? ["build/libs/*"] : config.paths.jslibs.map(lib => path.join("build/libs", lib));
-    var source = gulp.src([...styles, ...jslibs], { read: false })
+    var jsLibs = config.isProd ? ["build/libs/*"] : config.jsLibs.map(lib => path.join("build/libs", path.relative("node_modules", lib)));
+    var source = gulp.src([...styles, ...jsLibs], { read: false })
             .pipe(debug("Injecting"));
     return gulp.src("src/index.html")
         .pipe(g.inject(source, { addRootSlash: false, ignorePath: "build" }))
@@ -212,8 +221,10 @@ gulp.task("clean", function clean() {
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel("scripts", "styles"),
-    "assets",
+    gulp.parallel(
+        "assets",
+        "scripts",
+        "styles"),
     "htdocs"
 ));
 

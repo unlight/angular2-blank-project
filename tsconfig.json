@@ -7,7 +7,9 @@
 		"module": "system",
 		"moduleResolution": "node",
 		"removeComments": false,
+		"declaration": false,
 		"declarationFiles": false,
+		"allowJs": true,
 		"sourceMap": false
 	},
 	"files": [
