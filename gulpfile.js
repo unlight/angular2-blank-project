@@ -19,9 +19,9 @@ gulp.task("assets", function assets() {
     var images = gulp.src("src/images/**/*.{png,jpg,gif}")
         .pipe(gulp.dest("build/design/images"));
     var jsLibs = gulp.src(config.jsLibs, {base: "node_modules"});
-    var tsLibs = gulp.src(config.tsLibs, {base: "node_modules"})
-        .pipe(g.typescript(config.tscOptions)).js;
-    var libs = merge2(jsLibs, tsLibs)
+    // var tsLibs = gulp.src(config.tsLibs, {base: "node_modules"})
+    //     .pipe(g.typescript(config.tscOptions)).js;
+    var libs = merge2(jsLibs)
         .pipe(g.if(config.isProd, combine(
             g.concat("libs.js"),
             g.uglify()
@@ -54,8 +54,7 @@ gulp.task("scripts", function scripts () {
         .pipe(g.preprocess({ context: config }))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
-        .pipe(g.typescript(config.tsProject))
-        .js
+        .pipe(g.typescript(config.tsProject)).js
         .pipe(g.if(config.isProd, g.uglify({mangle: false})))
         .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
         .pipe(g.size({ title: "scripts" }))

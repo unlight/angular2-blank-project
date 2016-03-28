@@ -11,7 +11,7 @@ const projectRoot = pkgDir.sync();
 
 const baseLibs = [
     lib("systemjs/dist/system-polyfills.js"),
-    lib("systemjs/dist/system.js"),
+    lib("systemjs/dist/system.src.js"),
     lib("es6-shim"),
     lib("rxjs/bundles/Rx.js"),
     lib("angular2/bundles/angular2-polyfills.js"),
