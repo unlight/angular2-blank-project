@@ -51,7 +51,7 @@ gulp.task("scripts", function scripts () {
             g.tslint(),
             g.tslint.report("verbose", {emitError: false})
         )))
-        .pipe(g.preprocess({ context: config }))
+        .pipe(g.if("bootstrap.ts", g.preprocess({ context: config })))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
         .pipe(g.typescript(config.tsProject)).js
