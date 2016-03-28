@@ -39,14 +39,14 @@ gulp.task("scripts", function scripts () {
     var dest = "build/js";
     var sourceStream = merge2(
         gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(debug("Reading definitions", "scripts"))
+            // .pipe(debug("Reading definitions", "scripts"))
             .pipe(g.memoryCache("typings")),
         // gulp.src(config.lib("lodash-es")),
         gulp.src(glob, {since: gulp.lastRun("scripts")})
-            .pipe(debug("Reading sources", "scripts"))
+            // .pipe(debug("Reading sources", "scripts"))
     );
     return sourceStream
-        .pipe(debug("Merged streams", "scripts"))
+        .pipe(debug("Merged scripts", "scripts"))
         .pipe(g.if("*.ts", combine(
             g.tslint(),
             g.tslint.report("verbose", {emitError: false})
@@ -129,6 +129,12 @@ gulp.task("watch", () => {
     gulp.watch("src/index.html", gulp.series("htdocs"));
     // !src/scss/_*
     gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
+    if (g.util.env.tests) {
+        gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
+        gulp.once("stop.build", gulp.series("tests", (done) => {
+            karmaServer(config.karma, done);
+        }));
+    }
 });
 
 gulp.task("livereload", function(done) {
@@ -177,17 +183,9 @@ gulp.task("tests", () => {
     return sourceStream
         .pipe(debug("Test file", "karma"))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
-        .pipe(g.typescript(config.tsProject))
-        .js
+        .pipe(g.typescript(config.tsProject)).js
         .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
         .pipe(gulp.dest(dest));
-});
-
-gulp.task("tests.watch", done => {
-    var tests = gulp._getTask("tests");
-    lastRun.capture(tests);
-    gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
-    karmaServer(config.karma, done);
 });
 
 // TODO: Maybe adapt karma-remap-instanbul-plugin
@@ -207,6 +205,8 @@ gulp.task("coverage", function() {
 // ========================================================
 // OTHER
 // ========================================================
+
+gulp.on("stop", (task) => gulp.emit("stop." + task.name, task));
 
 function clearLastRun(name) {
     var task = gulp._getTask(name);
@@ -228,9 +228,6 @@ gulp.task("build", gulp.series(
 ));
 
 gulp.task("test", gulp.series("tests", "karma", "coverage"));
-
 gulp.task("serve", gulp.parallel("watch", "livereload"));
-
-gulp.task("develop", gulp.series("build", "test", "serve"));
-
+gulp.task("develop", gulp.series("build", "serve"));
 gulp.task("default", gulp.series("build", "test"));

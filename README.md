@@ -54,11 +54,17 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
   gulp build serve --debug
   gulp build serve --debug=*
   ```
+* ##### tests
+  Run additional task unit tests. On every change of source or test, unit test will re-run.
+  ```
+  gulp build serve --tests
+  gulp build serve --tests --debug 
+  ```
 
 * ##### production
   In production mode all javascript and css files will be combined and minified.
   ```
-  gulp build serve --production
+  gulp build --production
   ```
 
 ### RESOURCES
