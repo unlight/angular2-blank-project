@@ -5,6 +5,7 @@ process.env.PORT = process.env.PORT || "8080";
 
 const unixify = require("unixify");
 const pkgDir = require("pkg-dir");
+const _ = require("lodash");
 const g = require("gulp-load-plugins")();
 const args = g.util.env;
 const projectRoot = pkgDir.sync();

@@ -63,6 +63,10 @@ gulp.task("scripts", function scripts () {
         .pipe(g.connect.reload());
 });
 
+var postcssPlugins = _.constant([
+    require("autoprefixer")({browsers: ["last 3 version"]})
+]);
+
 gulp.task("styles", function styles() {
     var sassStream = merge2(
             gulp.src(["src/scss/*.{scss,sass}"], { base: "src/scss", since: gulp.lastRun("styles") }),
@@ -77,9 +81,6 @@ gulp.task("styles", function styles() {
         sassStream,
         lessStream,
         cssStream
-    ]);
-    var postcssPlugins = _.once(() => [
-        require("autoprefixer")({browsers: ["last 3 version"]})
     ]);
     return sourceStream
         .pipe(debug("Reading styles"))
