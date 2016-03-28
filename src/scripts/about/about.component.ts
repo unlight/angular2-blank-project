@@ -5,6 +5,9 @@ import {Component} from 'angular2/core';
 	templateUrl: './about.template.html'
 })
 export class AboutComponent {
+	
+	title: string = 'Angular 2 - Seed Project';
+
 	constructor() {
 		/**
 		 * This snippet shows how third-party libraries ie. Lodash can be consumed
