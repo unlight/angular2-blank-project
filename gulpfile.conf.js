@@ -18,7 +18,7 @@ const baseLibs = [
     lib("angular2/bundles/angular2.dev.js"),
     lib("angular2/bundles/router.dev.js"),
     lib("angular2/bundles/http.dev.js"),
-    // lib("lodash")
+    lib("lodash")
 ];
 
 const tsLibs = [

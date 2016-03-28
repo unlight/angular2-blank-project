@@ -37,9 +37,9 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### Tasks
 - `build` Create distribution package
-- `clean` Remove generated folders
-- `test` Run Karma against all `src/scripts/**/*.spec.ts` files
+- `test`  Build and run unit tests
 - `serve` Start web-server and live-reload
+- `clean` Remove generated folders
 
 **Additional arguments:**
 
