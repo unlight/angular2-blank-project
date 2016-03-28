@@ -24,7 +24,7 @@ gulp.task("assets", function assets() {
     var libs = merge2(jsLibs)
         .pipe(g.if(config.isProd, combine(
             g.concat("libs.js"),
-            g.uglify()
+            g.uglify({mangle: false})
         )))
         .pipe(gulp.dest("build/libs"));
     return merge2([images, libs]);
