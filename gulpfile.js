@@ -72,8 +72,8 @@ gulp.task("styles", function styles() {
         .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(config.isProd, g.sassLint.failOnError()));
-    var lessStream = gulp.src("src/scripts/*.less", { since: gulp.lastRun("styles") });
-    var cssStream = gulp.src("src/**/*.css", { since: gulp.lastRun("styles") });
+    var lessStream = gulp.src("src/scripts/**/.less", { since: gulp.lastRun("styles") });
+    var cssStream = gulp.src("src/scripts/**/*.css", { since: gulp.lastRun("styles") });
     var sourceStream = merge2([
         sassStream,
         lessStream,
