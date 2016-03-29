@@ -57,6 +57,7 @@ var _tsProject;
 const config = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
+    APP_BASE: "/",
     get isDev() {
         return !this.isProd;
     },

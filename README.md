@@ -73,6 +73,7 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### TODO
 
+* Fix images/more.svg 404 (Not Found)
 * Import lodash-es from TS
 * If changed _bootstrap.scss reset time and reload all
 * Fix when changing html reload corresponding component
