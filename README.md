@@ -70,6 +70,7 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### RESOURCES
 * TypeScript Compiler Options - http://www.typescriptlang.org/docs/handbook/compiler-options.html
+* Angular2 Changelog - https://github.com/angular/angular/blob/master/CHANGELOG.md
 
 ### TODO
 
