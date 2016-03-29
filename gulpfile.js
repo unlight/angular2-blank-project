@@ -16,8 +16,10 @@ const lib = config.lib;
 // ========================================================
 
 gulp.task("assets", function assets() {
-    var images = gulp.src("src/images/**/*.{png,jpg,gif}")
+    var images = gulp.src("src/images/**/*.{png,jpg,gif,svg}")
         .pipe(gulp.dest("build/design/images"));
+    var data = gulp.src("data/**", {base: "."})
+        .pipe(gulp.dest("build"));
     var jsLibs = gulp.src(config.jsLibs, {base: "node_modules"});
     // var tsLibs = gulp.src(config.tsLibs, {base: "node_modules"})
     //     .pipe(g.typescript(config.tscOptions)).js;
@@ -69,12 +71,12 @@ var postcssPlugins = _.constant([
 
 gulp.task("styles", function styles() {
     var sassStream = merge2(
-            gulp.src(["src/scss/*.{scss,sass}"], { base: "src/scss", since: gulp.lastRun("styles") }),
+            gulp.src(["src/styles/*.{scss,sass}"], { base: "src/styles", since: gulp.lastRun("styles") }),
             gulp.src("src/scripts/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
         )
         .pipe(g.sassLint())
-            .pipe(g.sassLint.format())
-            .pipe(g.if(config.isProd, g.sassLint.failOnError()));
+        .pipe(g.sassLint.format())
+        .pipe(g.if(config.isProd, g.sassLint.failOnError()));
     var lessStream = gulp.src("src/scripts/**/.less", { since: gulp.lastRun("styles") });
     var cssStream = gulp.src("src/scripts/**/*.css", { since: gulp.lastRun("styles") });
     var sourceStream = merge2([
@@ -91,7 +93,7 @@ gulp.task("styles", function styles() {
         .pipe(g.postcss(postcssPlugins()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
         .pipe(g.if(config.isProd, combine(
-            g.concat("app.css"),
+            g.concat("style.css"),
             g.csso()
         )))
         .pipe(g.size({ title: "styles" }))
@@ -101,7 +103,7 @@ gulp.task("styles", function styles() {
 });
 
 gulp.task("htdocs", function htdocs() {
-    var styles = ["build/design/app.css", "build/design/*"];
+    var styles = ["build/design/style.css", "build/design/*"];
     var jsLibs = config.isProd ? ["build/libs/*"] : config.jsLibs.map(lib => path.join("build/libs", path.relative("node_modules", lib)));
     var source = gulp.src([...styles, ...jsLibs], { read: false })
             .pipe(debug("Injecting"));
@@ -128,7 +130,7 @@ gulp.task("watch", () => {
         return gulp.series("scripts")();
     });
     gulp.watch("src/index.html", gulp.series("htdocs"));
-    // !src/scss/_*
+    // todo: exclude !src/scss/_*
     gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
     if (g.util.env.tests) {
         gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
