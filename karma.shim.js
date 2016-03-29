@@ -1,3 +1,6 @@
+// Fixes undefined module function in SystemJS bundle
+function module() {}
+
 // Karma entry file.
 // Tun on full stack traces in errors to help debugging.
 Error.stackTraceLimit = Infinity;

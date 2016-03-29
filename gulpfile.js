@@ -49,10 +49,10 @@ gulp.task("scripts", function scripts () {
     );
     return sourceStream
         .pipe(debug("Merged scripts", "scripts"))
-        .pipe(g.if("*.ts", combine(
-            g.tslint(),
-            g.tslint.report("verbose", {emitError: false})
-        )))
+        // .pipe(g.if("*.ts", combine(
+        //     g.tslint(),
+        //     g.tslint.report("verbose", {emitError: false})
+        // )))
         .pipe(g.if("bootstrap.ts", g.preprocess({ context: config })))
         .pipe(g.inlineNg2Template({ useRelativePaths: true }))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))

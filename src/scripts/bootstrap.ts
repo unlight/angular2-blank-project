@@ -1,9 +1,9 @@
 import {provide, enableProdMode} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 import {ROUTER_PROVIDERS, APP_BASE_HREF} from 'angular2/router';
-import {AppComponent} from './components/app/app.component';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import 'rxjs/add/operator/map';
+import {AppComponent} from './components/app/app.component';
 
 // @if isProd
 enableProdMode();
