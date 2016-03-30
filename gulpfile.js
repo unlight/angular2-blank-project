@@ -88,7 +88,7 @@ gulp.task("styles", function styles() {
         .pipe(debug("Reading styles"))
         .pipe(g.rename({ dirname: "" }))
         .pipe(g.if(config.isDev, g.sourcemaps.init({loadMaps: true, identityMap: true})))
-        .pipe(g.if("*.scss}", g.sass()))
+        .pipe(g.if("*.scss", g.sass()))
         .pipe(g.if("*.less", g.less()))
         .pipe(g.postcss(postcssPlugins()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
