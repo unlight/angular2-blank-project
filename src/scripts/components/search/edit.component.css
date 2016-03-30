@@ -1,4 +1,9 @@
-:host {
+/*:host {
+  display: block;
+  padding: 0 16px;
+}*/
+
+sd-search {
   display: block;
   padding: 0 16px;
 }

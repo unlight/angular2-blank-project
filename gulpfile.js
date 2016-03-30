@@ -71,13 +71,13 @@ var postcssPlugins = _.constant([
 
 gulp.task("styles", function styles() {
     var sassStream = merge2(
-            gulp.src(["src/styles/*.{scss,sass}"], { base: "src/styles", since: gulp.lastRun("styles") }),
-            gulp.src("src/scripts/**/*.{scss,sass}", { since: gulp.lastRun("styles") })
+            gulp.src(["src/styles/*.scss"], { base: "src/styles", since: gulp.lastRun("styles") }),
+            gulp.src("src/scripts/**/*.scss", { since: gulp.lastRun("styles") })
         )
         .pipe(g.sassLint())
         .pipe(g.sassLint.format())
         .pipe(g.if(config.isProd, g.sassLint.failOnError()));
-    var lessStream = gulp.src("src/scripts/**/.less", { since: gulp.lastRun("styles") });
+    var lessStream = gulp.src("src/scripts/**/*.less", { since: gulp.lastRun("styles") });
     var cssStream = gulp.src("src/scripts/**/*.css", { since: gulp.lastRun("styles") });
     var sourceStream = merge2([
         sassStream,
@@ -88,7 +88,7 @@ gulp.task("styles", function styles() {
         .pipe(debug("Reading styles"))
         .pipe(g.rename({ dirname: "" }))
         .pipe(g.if(config.isDev, g.sourcemaps.init({loadMaps: true, identityMap: true})))
-        .pipe(g.if("*.{scss,sass}", g.sass()))
+        .pipe(g.if("*.scss}", g.sass()))
         .pipe(g.if("*.less", g.less()))
         .pipe(g.postcss(postcssPlugins()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
@@ -131,7 +131,7 @@ gulp.task("watch", () => {
     });
     gulp.watch("src/index.html", gulp.series("htdocs"));
     // todo: exclude !src/scss/_*
-    gulp.watch("src/**/*.{scss,sass,less,css}", gulp.series("styles"));
+    gulp.watch("src/**/*.{scss,less,css}", gulp.series("styles"));
     if (g.util.env.tests) {
         gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
         gulp.once("stop.build", gulp.series("tests", (done) => {

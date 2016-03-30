@@ -5,7 +5,6 @@ import {ROUTER_DIRECTIVES} from 'angular2/router';
   selector: 'sd-navbar',
   moduleId: module.id,
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
   directives: [ROUTER_DIRECTIVES]
 })
 export class NavbarComponent {}
