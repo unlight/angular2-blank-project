@@ -115,27 +115,39 @@ gulp.task("htdocs", function htdocs() {
 });
 
 gulp.task("watch", (done) => {
+    const fs = require("fs");
+    const w = [];
     const globScripts = [
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.{spec,test,e2e}.ts"
     ];
-    gulp.watch(globScripts, gulp.series("scripts"));
-    // If we changnig *.html we must recompile corresponsding component,
-    // since we do know how - we will reload all.
-    // TODO: Need fix it.
-    // gulp.watch("src/scripts/**/*.html", ).on("change", path => {
-    // });
-    gulp.watch("src/scripts/**/*.html", gulp.series(clearLastRun("scripts"), "scripts"));
-    gulp.watch("src/index.html", gulp.series("htdocs"));
-    gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles"));
-    gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
+    w[w.length] = gulp.watch(globScripts, gulp.series("scripts"));
+    // If we changnig *.html we must recompile corresponsding component.
+    w[w.length] = gulp.watch("src/scripts/**/*.html").on("change", path => {
+        var tsfile = g.util.replaceExtension(path, ".ts");
+        if (fs.existsSync(tsfile)) {
+            var fd = fs.openSync(tsfile, "r+");
+            var newTime = new Date(Date.now() - 1000);
+            fs.futimesSync(fd, newTime, newTime);
+            fs.closeSync(fd);
+            // Do not need to run scripts, watcher triggers it by itself.
+        } else {
+            gulp.series(clearLastRun("scripts"), "scripts").call();
+        }
+    });
+    w[w.length] = gulp.watch("src/index.html", gulp.series("htdocs"));
+    w[w.length] = gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles"));
+    w[w.length] = gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
     if (g.util.env.tests) {
-        gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
+        w[w.length] = gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
         gulp.once("stop.build", gulp.series("tests", (end) => {
             karmaServer(config.karma, end);
         }));
     }
-    process.on("SIGINT", done);
+    process.on("SIGINT", () => {
+        w.forEach(watcher => watcher.close());
+        done();
+    });
 });
 
 gulp.task("livereload", function(done) {
