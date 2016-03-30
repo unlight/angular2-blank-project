@@ -140,9 +140,11 @@ gulp.task("watch", (done) => {
     w[w.length] = gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
     if (g.util.env.tests) {
         w[w.length] = gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
-        gulp.once("stop.build", gulp.series("tests", (end) => {
-            karmaServer(config.karma, end);
-        }));
+        gulp.series("tests").call();
+        // TODO: Fix memory leak here! If using gulp.series()
+        setTimeout(() => {
+            karmaServer(config.karma, done);
+        }, 8000);
     }
     process.on("SIGINT", () => {
         w.forEach(watcher => watcher.close());
@@ -174,6 +176,7 @@ function karmaServer(options, done) {
         done();
     });
     server.start();
+    return server;
 }
 
 gulp.task("karma", done => {
@@ -218,8 +221,6 @@ gulp.task("coverage", function() {
 // ========================================================
 // OTHER
 // ========================================================
-
-gulp.on("stop", (task) => gulp.emit("stop." + task.name, task));
 
 function clearLastRun(name) {
     var task = gulp._getTask(name);

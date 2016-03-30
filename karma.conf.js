@@ -44,6 +44,7 @@ module.exports = function(karma) {
         //     "/src/": "/base/src/"
         // },
         autoWatch: true,
+        autoWatchBatchDelay: 200,
         singleRun: false,
         port: 9876,
         colors: true,
