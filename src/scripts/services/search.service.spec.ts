@@ -36,7 +36,7 @@ describe('Search Service', () => {
 
     it('should filter by search term',
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
-            var res: Response;
+            var res: Array<any>;
             mockBackend.connections.subscribe(c => {
                 expect(c.request.url).toBe('data/people.json');
                 let response = new ResponseOptions({ body: '[{"name": "John Elway"}, {"name": "Gary Kubiak"}]' });
@@ -52,7 +52,7 @@ describe('Search Service', () => {
 
     it('should fetch by id',
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
-            var res: Response;
+            var res: Array<any>;
             mockBackend.connections.subscribe(c => {
                 expect(c.request.url).toBe('data/people.json');
                 let response = new ResponseOptions({ body: '[{"id": 1, "name": "John Elway"}, {"id": 2, "name": "Gary Kubiak"}]' });
