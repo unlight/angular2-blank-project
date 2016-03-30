@@ -125,13 +125,10 @@ gulp.task("watch", (done) => {
     // TODO: Need fix it.
     // gulp.watch("src/scripts/**/*.html", ).on("change", path => {
     // });
-    gulp.watch("src/scripts/**/*.html", () => {
-        clearLastRun("scripts");
-        return gulp.series("scripts")();
-    });
+    gulp.watch("src/scripts/**/*.html", gulp.series(clearLastRun("scripts"), "scripts"));
     gulp.watch("src/index.html", gulp.series("htdocs"));
-    // todo: exclude !src/scss/_*
-    gulp.watch("src/**/*.{scss,less,css}", gulp.series("styles"));
+    gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles"));
+    gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
     if (g.util.env.tests) {
         gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
         gulp.once("stop.build", gulp.series("tests", (end) => {
@@ -214,7 +211,10 @@ gulp.on("stop", (task) => gulp.emit("stop." + task.name, task));
 
 function clearLastRun(name) {
     var task = gulp._getTask(name);
-    lastRun.release(task);
+    return function reset(done) {
+        lastRun.release(task);
+        done();
+    };
 }
 
 gulp.task("clean", function clean() {
