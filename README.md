@@ -75,9 +75,7 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 ### TODO
 
 * Import lodash-es from TS
-* If changed _bootstrap.scss reset time and reload all
 * Fix when changing html reload corresponding component
-* Styling
 * Combine `typescript` and `typescript-karma` tasks
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * When Node6 be ready rewrite gulpfile
