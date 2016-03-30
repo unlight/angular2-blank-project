@@ -29,7 +29,7 @@ const tsLibs = [
 const paths = {
     typings: [
         lib("angular2/typings/browser.d.ts"),
-        "typings/main.d.ts"
+        "typings/browser.d.ts"
     ],
     dev: {
         // Add dev only libs here
@@ -57,6 +57,7 @@ var _tsProject;
 const config = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
+    APP_BASE: "/",
     get isDev() {
         return !this.isProd;
     },
