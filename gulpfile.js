@@ -114,8 +114,8 @@ gulp.task("htdocs", function htdocs() {
         .pipe(g.connect.reload());
 });
 
-gulp.task("watch", () => {
-    var globScripts = [
+gulp.task("watch", (done) => {
+    const globScripts = [
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.{spec,test,e2e}.ts"
     ];
@@ -134,10 +134,11 @@ gulp.task("watch", () => {
     gulp.watch("src/**/*.{scss,less,css}", gulp.series("styles"));
     if (g.util.env.tests) {
         gulp.watch("src/scripts/**/*.{spec,test}.ts", gulp.series("tests"));
-        gulp.once("stop.build", gulp.series("tests", (done) => {
-            karmaServer(config.karma, done);
+        gulp.once("stop.build", gulp.series("tests", (end) => {
+            karmaServer(config.karma, end);
         }));
     }
+    process.on("SIGINT", done);
 });
 
 gulp.task("livereload", function(done) {

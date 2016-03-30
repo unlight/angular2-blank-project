@@ -74,7 +74,6 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### TODO
 
-* watcher - close watchers, unwatch
 * Import lodash-es from TS
 * If changed _bootstrap.scss reset time and reload all
 * Fix when changing html reload corresponding component
@@ -86,6 +85,4 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 * Check gulp-typescript for reading d.ts files
 * Beep on error
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
-* Make more fast cache for typescript task (without gulp.src)
-`gulp.src(conf.typings, { since: g.memoryCache.lastMtime("typings") })
-  .pipe(g.memoryCache("typings"))`
+* Make more fast cache for (conf.typings) typescript task (without gulp.src)
