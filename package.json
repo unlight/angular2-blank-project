@@ -55,6 +55,7 @@
     "phantomjs-prebuilt": "2",
     "pkg-dir": "^1.0.0",
     "remap-istanbul": "^0.5.1",
+    "save-stream": "^0.2.1",
     "stream-combiner": "^0.2.2",
     "tslint": "*",
     "typescript": "1",
