@@ -8,11 +8,11 @@
 		"moduleResolution": "node",
 		"removeComments": false,
 		"declaration": false,
-		"declarationFiles": false,
 		"allowJs": true,
 		"sourceMap": false
 	},
-	"files": [
-		"src/scripts/**/*.ts"
-	]
+    "exclude": [
+        "node_modules",
+        "build"
+    ]
 }
