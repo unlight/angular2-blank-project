@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "Angular 2 Blank Project – Gulp 4, TypeScript, Typings, Karma and more.",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "typings i"
+    },
   "dependencies": {
     "angular2": "2.0.0-beta.12",
     "bootstrap": "4.0.0-alpha.2",
