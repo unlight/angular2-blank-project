@@ -1,6 +1,6 @@
 ## Angular 2 - Project
 Light-weight and easy to use seed project for Angular 2 apps.  
-Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-project) and [angular2-tutorial](https://github.com/mraible/angular2-tutorial)
+Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-project) and [mraible/angular2-tutorial](https://github.com/mraible/angular2-tutorial)
 
 ### Stack
 - [Gulp 4](http://gulpjs.com/)
