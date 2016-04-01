@@ -128,7 +128,7 @@ gulp.task("watch", (done) => {
         var tsfile = g.util.replaceExtension(path, ".ts");
         if (fs.existsSync(tsfile)) {
             var fd = fs.openSync(tsfile, "r+");
-            var newTime = new Date(Date.now() - 1000);
+            var newTime = new Date();
             fs.futimesSync(fd, newTime, newTime);
             fs.closeSync(fd);
             // Do not need to run scripts, watcher triggers it by itself.
