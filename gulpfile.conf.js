@@ -80,6 +80,7 @@ const config = {
 		if (!_tsProject) {
 			_tsProject = g.typescript.createProject("tsconfig.json", {
 				typescript: require("typescript"),
+                isolatedModules: config.isDev && (args.isolatedModules || args.im),
 				outFile: config.isProd ? "app.js" : undefined
 			});
 		}
