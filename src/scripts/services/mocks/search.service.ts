@@ -21,7 +21,7 @@ export class MockSearchService extends SpyObject {
     this.saveSpy = this.spy('save').andReturn(this);
   }
 
-  subscribe(callback) {
+  subscribe(callback: Function | any) {
     callback(this.fakeResponse);
   }
 

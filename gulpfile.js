@@ -50,12 +50,12 @@ gulp.task("scripts", function scripts () {
     );
     return sourceStream
         .pipe(debug("Merged scripts", "scripts"))
-        // .pipe(g.if("*.ts", combine(
-        //     g.tslint(),
-        //     g.tslint.report("verbose", {emitError: false})
-        // )))
+        .pipe(g.if("!*.d.ts", combine(
+            g.tslint(),
+            g.tslint.report("verbose", {emitError: false})
+        )))
         .pipe(g.if("bootstrap.ts", g.preprocess({ context: config })))
-        .pipe(g.inlineNg2Template({ useRelativePaths: true }))
+        .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
         .pipe(g.if(config.isDev, g.sourcemaps.init()))
         .pipe(g.typescript(config.tsProject)).js
         .pipe(g.if(config.isProd, g.uglify({mangle: false})))
@@ -242,7 +242,8 @@ gulp.task("build", gulp.series(
     gulp.parallel(
         "assets",
         "scripts",
-        "styles"),
+        "styles"
+    ),
     "htdocs"
 ));
 

@@ -10,8 +10,8 @@ enableProdMode();
 // @endif
 
 bootstrap(AppComponent, [
-	HTTP_PROVIDERS, ROUTER_PROVIDERS,
-	provide(APP_BASE_HREF, { useValue: '/* @echo APP_BASE */' })
+    HTTP_PROVIDERS, ROUTER_PROVIDERS,
+    provide(APP_BASE_HREF, { useValue: '/* @echo APP_BASE */' })
 ]);
 
 // In order to start the Service Worker located at "./sw.js"
