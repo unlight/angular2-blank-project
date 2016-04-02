@@ -36,6 +36,7 @@
     "gulp-less": "^3.0.5",
     "gulp-load-plugins": "1",
     "gulp-memory-cache": "^0.3.0",
+    "gulp-order": "^1.1.1",
     "gulp-postcss": "^6.1.0",
     "gulp-preprocess": "^2.0.0",
     "gulp-rename": "1",

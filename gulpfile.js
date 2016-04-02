@@ -94,6 +94,7 @@ gulp.task("styles", function styles() {
         .pipe(g.postcss(postcssPlugins()))
         .pipe(g.if(config.isDev, g.sourcemaps.write()))
         .pipe(g.if(config.isProd, combine(
+            g.order(["style.css"]),
             g.concat("style.css"),
             g.csso()
         )))

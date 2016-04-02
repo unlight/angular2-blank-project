@@ -76,7 +76,6 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 ### TODO
 
 * https://github.com/ivogabe/gulp-typescript/issues/316
-* Fix incorect order of css concat
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
 * Fix when changing html reload corresponding component
