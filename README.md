@@ -75,6 +75,7 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 
 ### TODO
 
+* Use http://api.randomuser.me/?results=5 instead of people.json
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
