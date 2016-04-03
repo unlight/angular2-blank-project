@@ -87,4 +87,3 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 * Check gulp-typescript for reading d.ts files
 * Beep on error
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
-* Make more fast cache for (conf.typings) typescript task (without gulp.src)

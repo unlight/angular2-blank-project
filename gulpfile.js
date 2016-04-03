@@ -33,20 +33,19 @@ gulp.task("assets", function assets() {
     return merge2([images, libs]);
 });
 
-gulp.task("scripts", function scripts () {
+var typingsStream = _.once(() => gulp.src(config.typings).pipe(saveStream()));
+
+gulp.task("scripts", function scripts() {
     var glob = [
         "src/scripts/**/*.ts",
         "!src/scripts/**/*.{spec,test,e2e}.ts"
     ];
     var sourceRoot = "src/scripts";
     var dest = "build/js";
+
     var sourceStream = merge2(
-        gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
-            // .pipe(debug("Reading definitions", "scripts"))
-            .pipe(g.memoryCache("typings")),
-        // gulp.src(config.lib("lodash-es")),
+        typingsStream().load(),
         gulp.src(glob, {since: gulp.lastRun("scripts")})
-            // .pipe(debug("Reading sources", "scripts"))
     );
     return sourceStream
         .pipe(debug("Merged scripts", "scripts"))
@@ -154,7 +153,7 @@ gulp.task("watch", (done) => {
     });
 });
 
-gulp.task("livereload", function(done) {
+gulp.task("livereload", (done) => {
     var history = require("connect-history-api-fallback");
     var connect = g.connect.server({
         root: "build",
