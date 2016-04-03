@@ -128,8 +128,7 @@ gulp.task("watch", (done) => {
         var tsfile = g.util.replaceExtension(path, ".ts");
         if (fs.existsSync(tsfile)) {
             var fd = fs.openSync(tsfile, "r+");
-            var newTime = new Date();
-            fs.futimesSync(fd, newTime, newTime);
+            fs.futimesSync(fd, new Date(), new Date());
             fs.closeSync(fd);
             // Do not need to run scripts, watcher triggers it by itself.
         } else {
@@ -145,7 +144,7 @@ gulp.task("watch", (done) => {
         // TODO: Fix memory leak here! If using gulp.series()
         setTimeout(() => {
             karmaServer(config.karma, done);
-        }, 8000);
+        }, 5000);
     }
     process.on("SIGINT", () => {
         w.forEach(watcher => watcher.close());
