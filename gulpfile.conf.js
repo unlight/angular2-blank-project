@@ -23,7 +23,7 @@ const baseLibs = [
 ];
 
 const tsLibs = [
-    lib("lodash-es")
+    // lib("lodash-es")
 ];
 
 const paths = {
@@ -45,6 +45,7 @@ const paths = {
     },
     test: {
         jsLibs: [
+            lib("core-js"),
             ...baseLibs,
             lib("angular2/bundles/testing.dev.js"),
             "karma.shim.js"

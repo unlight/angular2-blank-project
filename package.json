@@ -9,6 +9,7 @@
   "dependencies": {
     "angular2": "2.0.0-beta.13",
     "bootstrap": "4.0.0-alpha.2",
+    "core-js": "2.2.1",
     "es6-promise": "^3.1.2",
     "es6-shim": "0.35.0",
     "lodash": "^4.6.1",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.5",
+    "browserify": "^13.0.0",
     "connect-history-api-fallback": "^1.2.0",
     "del": "2",
     "gulp": "github:gulpjs/gulp#4.0",
@@ -50,6 +52,7 @@
     "gulp-util": "^3.0.7",
     "jasmine-core": "^2.4.1",
     "karma": "0",
+    "karma-browserify": "^5.0.3",
     "karma-coverage": "^0.5.5",
     "karma-jasmine": "^0.3.8",
     "karma-phantomjs-launcher": "1.0.0",

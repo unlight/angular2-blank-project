@@ -37,7 +37,7 @@ System.import("angular2/src/platform/browser/browser_adapter")
         __karma__.start();
     })
     .catch(function(error) {
-        __karma__.error(error.stack || error);
+        __karma__.error(error.stack || String(error));
     });
 
 function filterSourceFiles(path) {

@@ -18,14 +18,17 @@ module.exports = function(karma) {
         browsers: ["PhantomJS"],
         plugins: [
             "karma-jasmine",
+            "karma-browserify",
             "karma-coverage",
             "karma-phantomjs-launcher",
             "karma-sourcemap-loader",
         ],
         frameworks: [
+            "browserify",
             "jasmine",
         ],
         preprocessors: {
+            "node_modules/core-js/**/*.js": ["browserify"],
             // Source files, that you want to generate coverage for, do not include tests or libraries.
             "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"],
             "build/js/**/*.js": ["sourcemap"]
