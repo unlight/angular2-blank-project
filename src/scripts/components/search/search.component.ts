@@ -4,28 +4,27 @@ import {ROUTER_DIRECTIVES, RouteParams} from 'angular2/router';
 import {Person, SearchService} from '../../services/search.service';
 
 @Component({
-  selector: 'sd-search',
-  moduleId: module.id,
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
-  directives: [FORM_DIRECTIVES, CORE_DIRECTIVES, ROUTER_DIRECTIVES]
+    selector: 'sd-search',
+    moduleId: module.id,
+    templateUrl: './search.component.html',
+    directives: [FORM_DIRECTIVES, CORE_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 export class SearchComponent {
-  loading: boolean;
-  query: string;
-  searchResults: Array<Person>;
+    loading: boolean;
+    query: string;
+    searchResults: Array<Person>;
 
-  constructor(public searchService: SearchService, params: RouteParams) {
-    if (params.get('term')) {
-      this.query = decodeURIComponent(params.get('term'));
-      this.search();
+    constructor(public searchService: SearchService, params: RouteParams) {
+        if (params.get('term')) {
+            this.query = decodeURIComponent(params.get('term'));
+            this.search();
+        }
     }
-  }
 
-  search(): void {
-    this.searchService.search(this.query).subscribe(
-      data => {this.searchResults = data;},
-      error => console.log(error)
-    );
-  }
+    search(): void {
+        this.searchService.search(this.query).subscribe(
+            data => { this.searchResults = data; },
+            error => console.log(error)
+        );
+    }
 }
