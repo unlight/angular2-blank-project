@@ -1,5 +1,7 @@
-// Fixes undefined module function in SystemJS bundle
-function module() {}
+// Fixes undefined module function in SystemJS bundle.
+if (typeof module === "undefined") {
+    function module() {}
+}
 
 // Karma entry file.
 // Tun on full stack traces in errors to help debugging.
@@ -11,10 +13,16 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
 __karma__.loaded = function() {};
 
 System.config({
+    paths: {
+        "core-js/*": "base/node_modules/core-js/*"
+    },
     packages: {
+        "base/node_modules/core-js": {
+            defaultExtension: "js",
+            format: "cjs"
+        },
         "base/build": {
             format: "register",
-            defaultExtension: "js",
             map: Object.keys(window.__karma__.files)
                 .filter(filterSourceFiles)
                 .reduce(function(mapping, path) {
@@ -26,7 +34,10 @@ System.config({
     }
 });
 
-System.import("angular2/src/platform/browser/browser_adapter")
+System.import("core-js/es6/symbol.js")
+    .then(function() {
+        return System.import("angular2/src/platform/browser/browser_adapter");
+    })
     .then(function(browserAdapter) {
         browserAdapter.BrowserDomAdapter.makeCurrent();
     })

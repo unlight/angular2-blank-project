@@ -3,6 +3,7 @@ var config = require("./gulpfile.conf");
 function karmaFiles() {
     var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false}));
     var sources = [
+        {pattern: "node_modules/core-js/**/*.js", included: false, watched: false},
         // Paths loaded via module imports.
         {pattern: "build/js/**/*.js", included: false, watched: true},
         // Paths loaded via Angular's component compiler
@@ -18,17 +19,14 @@ module.exports = function(karma) {
         browsers: ["PhantomJS"],
         plugins: [
             "karma-jasmine",
-            "karma-browserify",
             "karma-coverage",
             "karma-phantomjs-launcher",
             "karma-sourcemap-loader",
         ],
         frameworks: [
-            "browserify",
             "jasmine",
         ],
         preprocessors: {
-            "node_modules/core-js/**/*.js": ["browserify"],
             // Source files, that you want to generate coverage for, do not include tests or libraries.
             "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"],
             "build/js/**/*.js": ["sourcemap"]
@@ -47,7 +45,7 @@ module.exports = function(karma) {
         //     "/src/": "/base/src/"
         // },
         autoWatch: true,
-        autoWatchBatchDelay: 200,
+        autoWatchBatchDelay: 100,
         singleRun: false,
         port: 9876,
         colors: true,
