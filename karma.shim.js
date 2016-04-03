@@ -48,7 +48,7 @@ System.import("core-js/es6/symbol.js")
         __karma__.start();
     })
     .catch(function(error) {
-        __karma__.error(error.stack || String(error));
+        __karma__.error(error);
     });
 
 function filterSourceFiles(path) {
