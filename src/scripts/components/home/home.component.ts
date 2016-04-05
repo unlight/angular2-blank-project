@@ -5,7 +5,6 @@ import {NameListService} from '../../services/name-list.service';
 
 @Component({
   selector: 'sd-home',
-  moduleId: module.id,
   templateUrl: './home.component.html',
   directives: [FORM_DIRECTIVES, CORE_DIRECTIVES]
 })

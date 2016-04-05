@@ -5,7 +5,6 @@ import {CanDeactivate, ComponentInstruction} from 'angular2/router';
 
 @Component({
     selector: 'sd-edit',
-    moduleId: module.id,
     templateUrl: './edit.component.html'
 })
 export class EditComponent implements OnInit, CanDeactivate {

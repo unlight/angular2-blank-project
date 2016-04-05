@@ -12,7 +12,6 @@ import {SearchService} from '../../services/search.service';
 @Component({
   selector: 'sd-app',
   viewProviders: [NameListService, SearchService],
-  moduleId: module.id,
   templateUrl: './app.component.html',
   directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })

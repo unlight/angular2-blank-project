@@ -7,17 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Angular 2 Project</title>
-
     <!-- inject:js -->
     <!-- endinject -->
-
     <!-- inject:css -->
     <!-- endinject -->
 </head>
 <body>
-
     <sd-app>Loading...</sd-app>
-
     <script>
     // function.name (all IE)
     // Remove once https://github.com/angular/angular/issues/6501 is fixed.
@@ -36,9 +32,6 @@
             }
         });
     }
-    // Fixes undefined module function in SystemJS bundle
-    function module() {}
-        
     <!-- @if isDev -->
     // The package name `js` matches the folder structure inside `/build`.
     // And the `main` property points to the app entry file - `bootstrap.js`.
@@ -49,20 +42,15 @@
             }
         }
     });
-
-    System.import("js")
-        .catch(console.error.bind(console));
+    System.import("js");
     <!-- @endif -->
-
     <!-- @if isProd -->
     // The bundle name `js/app.js` matches the file under the `/build` folder.
     // It also maps the entry dependecy module - `bootstrap`.
     System.config({
         bundles: { "js/app.js": ["bootstrap"] }
     });
-
-    System.import("bootstrap")
-        .catch(console.error.bind(console));
+    System.import("bootstrap");
     <!-- @endif -->
     </script>
 </body>

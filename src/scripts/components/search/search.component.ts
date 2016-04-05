@@ -5,7 +5,6 @@ import {Person, SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'sd-search',
-    moduleId: module.id,
     templateUrl: './search.component.html',
     directives: [FORM_DIRECTIVES, CORE_DIRECTIVES, ROUTER_DIRECTIVES]
 })
