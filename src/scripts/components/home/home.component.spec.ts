@@ -11,7 +11,7 @@ import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {HomeComponent} from './home.component';
 import {NameListService} from '../../services/name-list.service';
 
-xdescribe('Home component', () => {
+describe('Home component', () => {
     it('should work',
         injectAsync([TestComponentBuilder], (tcb: TestComponentBuilder) => {
             return tcb.createAsync(TestComponent)
@@ -26,16 +26,17 @@ xdescribe('Home component', () => {
 
                     expect(homeInstance.nameListService).toEqual(jasmine.any(NameListService));
                     expect(nameListLen()).toEqual(4);
-                    expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
+                    // BUG: DOM is null https://github.com/angular/angular/issues/6904
+                    // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
 
                     homeInstance.newName = 'Minko';
                     homeInstance.addName();
                     rootTC.detectChanges();
 
                     expect(nameListLen()).toEqual(5);
-                    expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
+                    // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
 
-                    expect(DOM.querySelectorAll(homeDOMEl, 'li')[4].textContent).toEqual('Minko');
+                    // expect(DOM.querySelectorAll(homeDOMEl, 'li')[4].textContent).toEqual('Minko');
                 });
         }));
 });

@@ -46,7 +46,7 @@ const paths = {
     test: {
         jsLibs: [
             ...baseLibs,
-            lib("angular2/bundles/testing.dev.js"),
+            lib("angular2/bundles/testing.dev.js")
         ]
     }
 };

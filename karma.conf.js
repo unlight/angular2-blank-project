@@ -3,6 +3,8 @@ var config = require("./gulpfile.conf");
 function karmaFiles() {
     var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false, included: true}));
     var files = [
+        {pattern: "node_modules/angular2/testing_internal.js", watched: false, included: false},
+        {pattern: "node_modules/angular2/src/testing/**/*.js", watched: false, included: false},
         // Paths loaded via module imports.
         {pattern: "build/js/**/*.js", included: false, watched: true},
         "karma.shim.js"

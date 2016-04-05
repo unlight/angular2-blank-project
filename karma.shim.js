@@ -17,7 +17,14 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 __karma__.loaded = function() {};
 
 System.config({
+    map: {
+        "angular2/testing_internal": "base/node_modules/angular2/testing_internal.js"
+    },
     packages: {
+        "base/node_modules/angular2/src": {
+            format: "cjs",
+            defaultExtension: "js"
+        },
         "base/build": {
             defaultExtension: false,
             format: "register",
@@ -40,8 +47,17 @@ System.config({
     }
 });
 
-System.import("angular2/platform/browser").then(function(browser_adapter) {
-        browser_adapter.BrowserDomAdapter.makeCurrent();
+Promise.all([
+        System.import("angular2/src/platform/browser_common"),
+        System.import("angular2/testing"),
+        System.import("angular2/platform/testing/browser")
+    ])
+    .then(function(modules) {
+        var browser_common = modules[0];
+        browser_common.initDomAdapter();
+        var testing = modules[1];
+        var tb = modules[2];
+        testing.setBaseTestProviders(tb.TEST_BROWSER_PLATFORM_PROVIDERS, tb.TEST_BROWSER_APPLICATION_PROVIDERS);
     })
     .then(function() {
         return Promise.all(
