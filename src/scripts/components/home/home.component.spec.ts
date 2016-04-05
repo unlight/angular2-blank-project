@@ -28,14 +28,16 @@ describe('Home component', () => {
                     expect(nameListLen()).toEqual(4);
                     // BUG: DOM is null https://github.com/angular/angular/issues/6904
                     // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
+                    // But we do not need it.
+                    expect(homeDOMEl.querySelectorAll('li').length).toEqual(nameListLen());
 
                     homeInstance.newName = 'Minko';
                     homeInstance.addName();
                     rootTC.detectChanges();
 
                     expect(nameListLen()).toEqual(5);
+                    // BUG: DOM is null https://github.com/angular/angular/issues/6904
                     // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
-
                     // expect(DOM.querySelectorAll(homeDOMEl, 'li')[4].textContent).toEqual('Minko');
                 });
         }));

@@ -8,17 +8,17 @@ import {
     it
 } from 'angular2/testing';
 import {Component} from 'angular2/core';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {AboutComponent} from './about.component';
 
-xdescribe('About component', () => {
+describe('About component', () => {
+    
     it('should work',
         injectAsync([TestComponentBuilder], (tcb: TestComponentBuilder) => {
             return tcb.createAsync(TestComponent)
                 .then((rootTC) => {
                     let aboutDOMEl = rootTC.debugElement.children[0].nativeElement;
-
-                    expect(DOM.querySelectorAll(aboutDOMEl, 'h2')[0].textContent).toEqual('Features');
+                    var [h2] = aboutDOMEl.querySelectorAll('h2');
+                    expect(h2.textContent).toEqual('Features');
                 });
         }));
 });
