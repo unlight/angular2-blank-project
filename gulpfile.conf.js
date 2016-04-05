@@ -32,13 +32,13 @@ const paths = {
         "typings/browser.d.ts"
     ],
     dev: {
-        // Add dev only libs here
+        // Add dev only libs here.
         jsLibs: [
             ...baseLibs
         ]
     },
     prod: {
-        // Add prod only libs here
+        // Add prod only libs here.
         jsLibs: [
             ...baseLibs
         ]
