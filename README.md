@@ -31,7 +31,7 @@ npm install && typings install
 
 ### Usage
 ```
-gulp build serve
+gulp develop
 ```
 Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
@@ -48,19 +48,19 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
   Tasks will be more versbosed informiong about processing files, etc. You can specify namespace of debug messages.  
   For example, show debug messages from typescript task only:
   ```
-  gulp build serve --debug=typescript
+  gulp develop --debug=typescript
   ```
   Debug all:
   ```
-  gulp build serve --debug
-  gulp build serve --debug=*
+  gulp develop --debug
+  gulp develop --debug=*
   ```
 
 * ##### tests
   Run additional task unit tests. On every change of source or test, unit test will re-run.
   ```
-  gulp build serve --tests
-  gulp build serve --tests --debug 
+  gulp develop --tests
+  gulp develop --tests --debug 
   ```
 
 * ##### production
