@@ -45,10 +45,8 @@ const paths = {
     },
     test: {
         jsLibs: [
-            lib("core-js"),
             ...baseLibs,
             lib("angular2/bundles/testing.dev.js"),
-            "karma.shim.js"
         ]
     }
 };
