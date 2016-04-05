@@ -32,24 +32,25 @@
             }
         });
     }
-    <!-- @if isDev -->
-    // The package name `js` matches the folder structure inside `/build`.
-    // And the `main` property points to the app entry file - `bootstrap.js`.
     System.config({
+        map: {
+            "services": "js/node_modules/services.js",
+        },
         packages: {
             "js": {
                 main: "bootstrap.js"
             }
-        }
+        },
+        bundles: { "js/app.js": ["bootstrap"] }
     });
+    <!-- @if isDev -->
+    // The package name `js` matches the folder structure inside `/build`.
+    // And the `main` property points to the app entry file - `bootstrap.js`.
     System.import("js");
     <!-- @endif -->
     <!-- @if isProd -->
     // The bundle name `js/app.js` matches the file under the `/build` folder.
     // It also maps the entry dependecy module - `bootstrap`.
-    System.config({
-        bundles: { "js/app.js": ["bootstrap"] }
-    });
     System.import("bootstrap");
     <!-- @endif -->
     </script>

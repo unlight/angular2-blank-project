@@ -1,7 +1,8 @@
 import {Component} from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 import {ROUTER_DIRECTIVES, RouteParams} from 'angular2/router';
-import {Person, SearchService} from '../../services/search.service';
+import {Person} from '../../services/search.service';
+import {SearchService} from 'services';
 
 @Component({
     selector: 'sd-search',

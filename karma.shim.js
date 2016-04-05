@@ -18,7 +18,8 @@ __karma__.loaded = function() {};
 
 System.config({
     map: {
-        "angular2/testing_internal": "base/node_modules/angular2/testing_internal.js"
+        "angular2/testing_internal": "base/node_modules/angular2/testing_internal.js",
+        "services": "base/build/js/node_modules/services.js",
     },
     packages: {
         "base/node_modules/angular2/src": {
