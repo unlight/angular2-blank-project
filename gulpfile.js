@@ -185,15 +185,13 @@ gulp.task("karma", done => {
 });
 
 gulp.task("tests", () => {
-    // TODO: Maybe combine with scripts task?
     var glob = [
         "src/scripts/**/*.{spec,test}.ts"
     ];
     var sourceRoot = "src/scripts";
     var dest = "build/js";
     var sourceStream = merge2(
-        gulp.src(config.typings, { since: g.memoryCache.lastMtime("typings") })
-            .pipe(g.memoryCache("typings")),
+        typingsStream().load(),
         gulp.src(glob, { since: gulp.lastRun("tests") })
     );
     return sourceStream

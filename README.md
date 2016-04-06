@@ -79,8 +79,6 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
-* Fix when changing html reload corresponding component
-* Combine `typescript` and `typescript-karma` tasks
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * When Node6 be ready rewrite gulpfile
 * Karma reporter plugin (remove absolute path)
