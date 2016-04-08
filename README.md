@@ -9,6 +9,7 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 - [SystemJS](https://github.com/systemjs/systemjs)
 - [Typings](https://github.com/typings/typings)
 - [Karma](http://karma-runner.github.io/)
+- [Protractor](http://www.protractortest.org/)
 
 ### Features
 - Gulp 4 incremental builds (since, lastRun)
@@ -19,14 +20,17 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 
 | Dependency | Install                               |
 | ---------- | ------------------------------------- |
-| NodeJS     | [nodejs.org](http://nodejs.org/)        |
+| NodeJS     | [nodejs.org](http://nodejs.org/)      |
 | Gulp CLI   | `npm install gulpjs/gulp-cli#4.0 -g`  |
 | Typings    | `npm install typings -g`              |
+| Protractor | `npm install -g protractor`           |
 
 ### Install
 ```
 git clone https://github.com/unlight/angular2-blank-project.git && cd angular2-blank-project
 npm install && typings install
+# to run end-to-end tests by protractor you need chromium
+choco install chromium
 ```
 
 ### Usage
@@ -41,6 +45,8 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
 - `test`  Build and run unit tests
 - `serve` Start web-server and live-reload
 - `clean` Remove generated folders
+- `karma` Run unit tests
+- `protractor` Run end-to-end tests
 
 **Additional arguments:**
 
