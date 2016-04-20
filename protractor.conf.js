@@ -4,11 +4,8 @@ const path = require("path");
 exports.config = {
 	framework: "jasmine2",
 	baseUrl: "http://localhost:8080/",
-	// chromeDriver: 'c:/ProgramData/chocolatey/lib/nodist/tools/nodist-master/bin/node_modules/protractor/selenium/chromedriver_2.21.exe',
-	// seleniumServerJar: 'c:/ProgramData/chocolatey/lib/nodist/tools/nodist-master/bin/node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
 	capabilities: {
 		browserName: "chrome",
-		// binary: path.join(process.env.LOCALAPPDATA, "Google/Chrome SxS/Application/chrome.exe"),
 		chromeOptions: {
 			args: ["show-fps-counter=true", "incognito"]
 		}
