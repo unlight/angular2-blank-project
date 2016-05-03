@@ -1,11 +1,11 @@
-import {provide} from 'angular2/core';
+import {provide} from '@angular/core';
 import {
     ComponentInstruction,
     Router,
     RouteParams
-} from 'angular2/router';
+} from '@angular/router';
 import {ResolvedInstruction} from 'angular2/src/router/instruction';
-import {SpyObject} from 'angular2/testing_internal';
+import {SpyObject} from '@angular/testing/testing_internal';
 
 export class MockRouteParams extends SpyObject {
     private ROUTE_PARAMS = {};

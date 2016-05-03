@@ -5,10 +5,10 @@ import {
   injectAsync,
   it,
   beforeEachProviders
-} from 'angular2/testing';
-import {Component, provide, DirectiveResolver} from 'angular2/core';
+} from '@angular/core/testing';
+import {Component, provide, DirectiveResolver} from '@angular/core';
 
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from 'angular2/router';
+import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router';
 import {SpyLocation} from 'angular2/src/mock/location_mock';
 import {RootRouter} from 'angular2/src/router/router';
 

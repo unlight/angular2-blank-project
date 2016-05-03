@@ -1,13 +1,13 @@
 import {
-    TestComponentBuilder,
     describe,
     xdescribe,
     expect,
     injectAsync,
     fit,
     it
-} from 'angular2/testing';
-import {Component} from 'angular2/core';
+} from '@angular/core/testing';
+import TestComponentBuilder from '@angular/compiler/testing';
+import {Component} from '@angular/core';
 import {AboutComponent} from './about.component';
 
 describe('About component', () => {

@@ -1,5 +1,5 @@
-import {Component} from 'angular2/core';
-import {ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
+import {Component} from '@angular/core';
+import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
 import {NavbarComponent} from './navbar.component';
 import {ToolbarComponent} from './toolbar.component';
 import {HomeComponent} from '../../components/home/home.component';
@@ -10,15 +10,15 @@ import {NameListService} from '../../services/name-list.service';
 import {SearchService} from '../../services/search.service';
 
 @Component({
-  selector: 'sd-app',
-  viewProviders: [NameListService, SearchService],
-  templateUrl: './app.component.html',
-  directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
+    selector: 'sd-app',
+    viewProviders: [NameListService, SearchService],
+    templateUrl: './app.component.html',
+    directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })
-@RouteConfig([
-  { path: '/',      name: 'Home',  component: HomeComponent  },
-  { path: '/about', name: 'About', component: AboutComponent },
-  { path: '/search', name: 'Search', component: SearchComponent },
-  { path: '/edit/:id', name: 'Edit', component: EditComponent }
+@Routes([
+    { path: '/', component: HomeComponent },
+    { path: '/about', component: AboutComponent },
+    { path: '/search', component: SearchComponent },
+    { path: '/edit/:id', component: EditComponent }
 ])
-export class AppComponent {}
+export class AppComponent { }

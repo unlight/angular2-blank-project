@@ -1,6 +1,7 @@
-import {Component} from 'angular2/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
-import {ROUTER_DIRECTIVES, RouteParams} from 'angular2/router';
+import {Component} from '@angular/core';
+import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
+import {ROUTER_DIRECTIVES} from '@angular/router';
+import {URLSearchParams} from '@angular/http';
 import {Person} from '../../services/search.service';
 import {SearchService} from 'services';
 
@@ -14,7 +15,7 @@ export class SearchComponent {
     query: string;
     searchResults: Array<Person>;
 
-    constructor(public searchService: SearchService, params: RouteParams) {
+    constructor(public searchService: SearchService, params: URLSearchParams) {
         if (params.get('term')) {
             this.query = decodeURIComponent(params.get('term'));
             this.search();

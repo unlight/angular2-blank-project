@@ -1,4 +1,5 @@
-import { describe, it, expect, beforeEach, injectAsync, TestComponentBuilder, ComponentFixture } from "angular2/testing";
+import { describe, it, expect, beforeEach, injectAsync} from "@angular/core/testing";
+import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
 
 describe("Empty test", () => {
 

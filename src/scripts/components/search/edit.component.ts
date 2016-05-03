@@ -1,7 +1,10 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 import {Person, Address, SearchService} from '../../services/search.service';
-import {RouteParams, Router} from 'angular2/router';
-import {CanDeactivate, ComponentInstruction} from 'angular2/router';
+// import {RouteParams, Router} from '@angular/router';
+import {Router} from '@angular/router';
+import {URLSearchParams} from '@angular/http';
+// import {CanDeactivate, ComponentInstruction} from '@angular/router';
+import {CanDeactivate} from '@angular/router';
 
 @Component({
     selector: 'sd-edit',
@@ -17,8 +20,11 @@ export class EditComponent implements OnInit, CanDeactivate {
     constructor(
         private _service: SearchService,
         private _router: Router,
-        private _routeParams: RouteParams
-    ) { }
+        // private _routeParams: RouteParams
+        private _routeParams: URLSearchParams
+    ) { 
+        debugger;
+    }
 
     ngOnInit() {
         let id = +this._routeParams.get('id');
@@ -34,7 +40,7 @@ export class EditComponent implements OnInit, CanDeactivate {
         });
     }
 
-    routerCanDeactivate(next: ComponentInstruction, prev: ComponentInstruction): any {
+    routerCanDeactivate(next: any, prev: any): any {
         if (!this.person || this.person.name === this.editName || this.person.phone === this.editPhone
             || this.person.address === this.editAddress) {
             return true;

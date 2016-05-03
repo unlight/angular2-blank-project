@@ -1,5 +1,4 @@
-import {it, describe, expect, beforeEach} from 'angular2/testing';
-
+import {it, describe, expect, beforeEach} from '@angular/core/testing';
 import {TruncatePipe} from './truncate.pipe';
 
 describe('TruncatePipe', () => {

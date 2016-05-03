@@ -18,7 +18,7 @@ __karma__.loaded = function() {};
 
 System.config({
     map: {
-        "angular2/testing_internal": "base/node_modules/angular2/testing_internal.js",
+        "@angular/testing/testing_internal": "base/node_modules/@angular/testing/testing_internal.js",
         "services": "base/build/js/node_modules/services.js",
     },
     packages: {
@@ -50,7 +50,7 @@ System.config({
 
 Promise.all([
         System.import("angular2/src/platform/browser_common"),
-        System.import("angular2/testing"),
+        System.import("@angular/core/testing"),
         System.import("angular2/platform/testing/browser")
     ])
     .then(function(modules) {

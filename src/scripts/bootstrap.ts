@@ -1,7 +1,8 @@
-import {provide, enableProdMode} from 'angular2/core';
+import {provide, enableProdMode} from '@angular/core';
+import {APP_BASE_HREF} from '@angular/common';
 import {bootstrap} from 'angular2/platform/browser';
-import {ROUTER_PROVIDERS, APP_BASE_HREF} from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {ROUTER_PROVIDERS} from '@angular/router';
+import {HTTP_PROVIDERS} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AppComponent} from './components/app/app.component';
 
@@ -27,8 +28,8 @@ bootstrap(AppComponent, [
 
 // Hot loading is temporary disabled
 //
-// import {provide} from 'angular2/core';
-// import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+// import {provide} from '@angular/core';
+// import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from '@angular/router';
 // import {AppCmp} from './app/components/app';
 
 // System.import('//localhost:<%= HOT_LOADER_PORT %>/ng2-hot-loader')

@@ -1,8 +1,8 @@
-import {it, describe, expect, inject, fakeAsync, beforeEachProviders, tick} from 'angular2/testing';
-import {MockBackend} from 'angular2/http/testing';
-import {provide} from 'angular2/core';
+import {it, describe, expect, inject, fakeAsync, beforeEachProviders, tick} from '@angular/core/testing';
+import {MockBackend} from '@angular/http/testing';
+import {provide} from '@angular/core';
 import 'rxjs/add/operator/map';
-import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from 'angular2/http';
+import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from '@angular/http';
 
 import {SearchService} from './search.service';
 
