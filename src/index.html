@@ -46,12 +46,12 @@
     <!-- @if isDev -->
     // The package name `js` matches the folder structure inside `/build`.
     // And the `main` property points to the app entry file - `bootstrap.js`.
-    System.import("js");
+    System.import("js").catch(console.error);
     <!-- @endif -->
     <!-- @if isProd -->
     // The bundle name `js/app.js` matches the file under the `/build` folder.
     // It also maps the entry dependecy module - `bootstrap`.
-    System.import("bootstrap");
+    System.import("bootstrap").catch(console.error);
     <!-- @endif -->
     </script>
 </body>

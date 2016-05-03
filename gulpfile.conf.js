@@ -11,14 +11,10 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    lib("systemjs/dist/system-polyfills.js"),
-    lib("systemjs/dist/system.src.js"),
     lib("es6-shim"),
-    lib("rxjs/bundles/Rx.js"),
-    lib("angular2/bundles/angular2-polyfills.js"),
-    lib("angular2/bundles/angular2.dev.js"),
-    lib("angular2/bundles/router.dev.js"),
-    lib("angular2/bundles/http.dev.js"),
+    lib("zone.js/dist/zone.js"),
+    lib("reflect-metadata/Reflect.js"),
+    lib("systemjs/dist/system.src.js"),
     lib("lodash")
 ];
 
@@ -46,7 +42,7 @@ const paths = {
     test: {
         jsLibs: [
             ...baseLibs,
-            lib("angular2/bundles/testing.dev.js")
+            lib("@angular/testing/testing.umd.js")
         ]
     }
 };
