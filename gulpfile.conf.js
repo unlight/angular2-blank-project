@@ -15,12 +15,12 @@ const baseLibs = [
     lib("zone.js/dist/zone.js"),
     lib("reflect-metadata/Reflect.js"),
     lib("systemjs/dist/system.src.js"),
-    lib("lodash")
+    lib("rxjs/bundles/Rx.js"),
+    lib("lodash"),
+    "systemjs.config.js"
 ];
 
-const tsLibs = [
-    // lib("lodash-es")
-];
+const tsLibs = [];
 
 const paths = {
     typings: [
@@ -42,7 +42,7 @@ const paths = {
     test: {
         jsLibs: [
             ...baseLibs,
-            lib("@angular/testing/testing.umd.js")
+            // lib("@angular/testing/testing.umd.js")
         ]
     }
 };
