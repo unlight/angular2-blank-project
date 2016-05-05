@@ -18,14 +18,17 @@ __karma__.loaded = function() {};
 
 System.config({
     map: {
-        "@angular/testing/testing_internal": "base/node_modules/@angular/testing/testing_internal.js",
+        "@angular": "base/node_modules/@angular",
+        "@angular/platform-browser": "base/node_modules/@angular/platform-browser/platform-browser.umd.js",
+        // "@angular/testing/testing_internal": "base/node_modules/@angular/testing/testing_internal.js",
         "services": "base/build/js/node_modules/services.js",
     },
     packages: {
-        "base/node_modules/angular2/src": {
-            format: "cjs",
-            defaultExtension: "js"
-        },
+        // "base/node_modules/angular@": {
+        //     format: "amd",
+        //     defaultExtension: "js"
+        // },
+        // "base/node_modules/angular@/platform-browser": {format: "amd", main: "platform-browser.umd.js", defaultExtension: "js"},
         "base/build": {
             defaultExtension: false,
             format: "register",
@@ -48,17 +51,9 @@ System.config({
     }
 });
 
-Promise.all([
-        System.import("angular2/src/platform/browser_common"),
-        System.import("@angular/core/testing"),
-        System.import("angular2/platform/testing/browser")
-    ])
-    .then(function(modules) {
-        var browser_common = modules[0];
-        browser_common.initDomAdapter();
-        var testing = modules[1];
-        var tb = modules[2];
-        testing.setBaseTestProviders(tb.TEST_BROWSER_PLATFORM_PROVIDERS, tb.TEST_BROWSER_APPLICATION_PROVIDERS);
+System.import("@angular/platform-browser")
+    .then(function(browser) {
+        console.log('browser ' , browser);
     })
     .then(function() {
         return Promise.all(

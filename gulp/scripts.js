@@ -1,10 +1,7 @@
 const combine = require("stream-combiner");
-const saveStream = require("save-stream");
 const merge2 = require("merge2");
 
-module.exports = (gulp, g, config, debug, _) => {
-
-    var typingsStream = _.once(() => gulp.src(config.typings).pipe(saveStream()));
+module.exports = (gulp, g, config, typingsStream, debug, _) => {
 
     gulp.task("scripts", function scripts() {
         var glob = [

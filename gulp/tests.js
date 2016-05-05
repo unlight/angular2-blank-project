@@ -1,6 +1,6 @@
 const merge2 = require("merge2");
 
-module.exports = (gulp, config, debug) => {
+module.exports = (gulp, g, config, debug, typingsStream) => {
 
     gulp.task("tests", () => {
         var glob = [

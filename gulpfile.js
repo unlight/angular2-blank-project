@@ -2,6 +2,8 @@ const gulp = require("gulp");
 const g = require("gulp-load-plugins")();
 const lastRun = require("last-run");
 const karma = require("karma");
+const saveStream = require("save-stream");
+const _ = require("lodash");
 const config = require("./gulpfile.conf");
 const debug = config.debug;
 
@@ -12,6 +14,7 @@ require("gulp-di")(gulp, {scope: []})
     .provide("debug", debug)
     .provide("karmaServer", karmaServer)
     .provide("clearLastRun", clearLastRun)
+    .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .resolve();
 
 function karmaServer(options, done) {

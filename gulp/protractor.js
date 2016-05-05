@@ -1,6 +1,6 @@
 const merge2 = require("merge2");
 
-module.exports = (gulp, config) => {
+module.exports = (gulp, config, typingsStream) => {
 
 	gulp.task("protractor", function protractor() {
 	    var glob = [
