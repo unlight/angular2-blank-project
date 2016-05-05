@@ -5,7 +5,7 @@ import {ToolbarComponent} from './toolbar/toolbar.component';
 import {HomeComponent} from '../../components/home/home.component';
 import {AboutComponent} from '../../components/about/about.component';
 import {SearchComponent} from '../../components/search/search.component';
-import {EditComponent} from '../../components/search/edit.component';
+import {EditComponent} from '../../components/edit/edit.component';
 import {NameListService} from '../../services/name-list.service';
 import {SearchService} from '../../services/search.service';
 
@@ -16,9 +16,10 @@ import {SearchService} from '../../services/search.service';
     directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })
 @RouteConfig([
-    { path: '/', component: HomeComponent },
-    { path: '/about', component: AboutComponent },
-    { path: '/search', component: SearchComponent },
-    { path: '/edit/:id', component: EditComponent }
+    { path: '/', name: 'Home', component: HomeComponent },
+    { path: '/about', name: 'About', component: AboutComponent },
+    { path: '/search', name: 'Search', component: SearchComponent },
+    { path: '/edit/:id', name: 'Edit', component: EditComponent }
 ])
 export class AppComponent { }
+

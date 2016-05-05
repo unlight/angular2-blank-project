@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Person, Address, SearchService} from '../../services/search.service';
-// import {RouteParams, Router} from '@angular/router'; // Replaced by RouteSegment
-import {URLSearchParams} from '@angular/http';
-import {ComponentInstruction} from '@angular/router-deprecated';
-import {Router, CanDeactivate} from '@angular/router';
+import {RouteParams, Router} from '@angular/router-deprecated';
+import {CanDeactivate} from '@angular/router-deprecated';
 
 @Component({
     selector: 'sd-edit',
@@ -19,11 +17,8 @@ export class EditComponent implements OnInit, CanDeactivate {
     constructor(
         private _service: SearchService,
         private _router: Router,
-        // private _routeParams: RouteParams
-        private _routeParams: URLSearchParams
-    ) { 
-        debugger;
-    }
+        private _routeParams: RouteParams
+    ) {}
 
     ngOnInit() {
         let id = +this._routeParams.get('id');

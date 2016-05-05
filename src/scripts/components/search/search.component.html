@@ -14,7 +14,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="#person of searchResults; #i=index">
+  <tr *ngFor="let person of searchResults; let i = index">
     <td><a [routerLink]="['Edit', { id: person.id }]">{{person.name}}</a></td>
     <td>{{person.phone}}</td>
     <td>{{person.address.street}}<br/>
