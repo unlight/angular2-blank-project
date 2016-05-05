@@ -6,8 +6,6 @@ module.exports = (gulp, g, config, debug) => {
     gulp.task("assets", function assets() {
         var images = gulp.src("src/images/**/*.{png,jpg,gif,svg}")
             .pipe(gulp.dest("build/design/images"));
-        var data = gulp.src("data/**", {base: "."})
-            .pipe(gulp.dest("build"));
         var jsLibs = gulp.src(config.jsLibs, {base: "node_modules"});
         var libs = merge2(jsLibs)
             .pipe(g.if(config.isProd, combine(

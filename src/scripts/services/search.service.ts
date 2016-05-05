@@ -1,13 +1,57 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class SearchService {
+
     constructor(private http: Http) { }
 
+    // getAll() {
+    //     return this.http.get('http://api.randomuser.me/?results=5')
+    //         .map((res: Response) => res.json().results);
+    // }
+
     getAll() {
-        return this.http.get('data/people.json').map((res: Response) => res.json());
+        return Observable.create(function(observer: any) {
+            observer.next([
+                {
+                    'id': 1,
+                    'name': 'Peyton Manning',
+                    'phone': '(303) 567-8910',
+                    'address': {
+                        'street': '1234 Main Street',
+                        'city': 'Greenwood Village',
+                        'state': 'CO',
+                        'zip': '80111'
+                    }
+                },
+                {
+                    'id': 2,
+                    'name': 'Demaryius Thomas',
+                    'phone': '(720) 213-9876',
+                    'address': {
+                        'street': '5555 Marion Street',
+                        'city': 'Denver',
+                        'state': 'CO',
+                        'zip': '80202'
+                    }
+                },
+                {
+                    'id': 3,
+                    'name': 'Von Miller',
+                    'phone': '(917) 323-2333',
+                    'address': {
+                        'street': '14 Mountain Way',
+                        'city': 'Vail',
+                        'state': 'CO',
+                        'zip': '81657'
+                    }
+                }
+            ]);
+            observer.complete();
+        });
     }
 
     search(q: string) {
