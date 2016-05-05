@@ -16,8 +16,7 @@ const baseLibs = [
     lib("reflect-metadata/Reflect.js"),
     lib("systemjs/dist/system.src.js"),
     lib("rxjs/bundles/Rx.js"),
-    lib("lodash"),
-    "systemjs.config.js"
+    lib("lodash")
 ];
 
 const tsLibs = [];
@@ -30,7 +29,8 @@ const paths = {
     dev: {
         // Add dev only libs here.
         jsLibs: [
-            ...baseLibs
+            ...baseLibs,
+            "systemjs.config.js"
         ]
     },
     prod: {
@@ -41,7 +41,7 @@ const paths = {
     },
     test: {
         jsLibs: [
-            ...baseLibs,
+            ...baseLibs
             // lib("@angular/testing/testing.umd.js")
         ]
     }

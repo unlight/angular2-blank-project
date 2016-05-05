@@ -9,6 +9,8 @@
     <title>Angular 2 Project</title>
     <!-- inject:js -->
     <!-- endinject -->
+    <!-- config:js -->
+    <!-- endinject -->
     <!-- inject:css -->
     <!-- endinject -->
 </head>
@@ -23,6 +25,11 @@
     <!-- @if isProd -->
     // The bundle name `js/app.js` matches the file under the `/build` folder.
     // It also maps the entry dependecy module - `bootstrap`.
+    System.config({
+        bundles: {
+            "js/app.js": ["bootstrap"]
+        }
+    });
     System.import("bootstrap").catch(console.error);
     <!-- @endif -->
     </script>
