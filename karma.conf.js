@@ -1,4 +1,4 @@
-var config = require("./gulpfile.conf");
+var config = require("./env.conf");
 
 function karmaFiles() {
     var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false, included: true}));

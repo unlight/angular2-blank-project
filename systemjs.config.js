@@ -1,25 +1,14 @@
 (function() {
     // map tells the System loader where to look for things
     var map = {
-        "services": "js/node_modules/services.js",
-        // 'app': 'app', // 'dist',
-        // 'rxjs':                       'node_modules/rxjs',
-        // 'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+        'services': 'js/node_modules/services.js',
         '@angular': 'node_modules/@angular'
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {
-            main: "bootstrap.js"
-        },
-        'app': {
-            main: 'main.js',
-            defaultExtension: 'js'
-        },
-        // 'rxjs':                       { defaultExtension: 'js' },
-        'angular2-in-memory-web-api': {
-            defaultExtension: 'js'
+        'js': {
+            main: 'bootstrap.js'
         },
     };
 
@@ -32,8 +21,7 @@
         '@angular/platform-browser-dynamic',
         '@angular/router',
         '@angular/router-deprecated',
-        '@angular/testing',
-        '@angular/upgrade',
+        '@angular/testing'
     ];
 
     // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
@@ -48,10 +36,7 @@
 
     System.config({
         map: map,
-        packages: packages,
-        bundles: {
-            "js/app.js": ["bootstrap"]
-        }
+        packages: packages
     });
 
 })();

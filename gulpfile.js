@@ -1,11 +1,13 @@
+"use strict";
+
 const gulp = require("gulp");
 const g = require("gulp-load-plugins")();
 const lastRun = require("last-run");
 const karma = require("karma");
 const saveStream = require("save-stream");
 const _ = require("lodash");
-const config = require("./gulpfile.conf");
-const debug = config.debug;
+const config = require("./env.conf");
+const args = g.util.env;
 
 require("gulp-di")(gulp, {scope: []})
     .tasks("gulp")
@@ -16,6 +18,21 @@ require("gulp-di")(gulp, {scope: []})
     .provide("clearLastRun", clearLastRun)
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .resolve();
+
+function debug(title, namespace) {
+    var arg = args.debug;
+    var debugStream = g.debug({title: title});
+    if (arg === true || arg === "*") {
+        return debugStream;
+    } else if (typeof arg === "string") {
+        title = title.toLowerCase();
+        arg = arg.toLowerCase();
+        if (title.indexOf(arg) !== -1 || (namespace && namespace.indexOf(arg) !== -1)) {
+            return debugStream;
+        }
+    }
+    return g.util.noop();
+}
 
 function karmaServer(options, done) {
     const server = new karma.Server(options, error => {
