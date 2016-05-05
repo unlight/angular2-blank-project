@@ -1,6 +1,6 @@
 import {provide} from '@angular/core';
 import {ComponentInstruction, Router, RouteParams} from '@angular/router-deprecated';
-import {ResolvedInstruction} from 'angular2/src/router/instruction';
+import {ResolvedInstruction} from '@angular/router-deprecated/src/instruction';
 import {SpyObject} from '@angular/testing/testing_internal';
 
 export class MockRouteParams extends SpyObject {
@@ -21,18 +21,7 @@ export class MockRouter extends SpyObject {
     constructor() { super(Router); }
     isRouteActive(s: any) { return true; }
     generate(s: any) {
-        // TODO: Definition file has not such signature.
-        // var componentInstruction = new ComponentInstruction('detail', [], null, null, true, '0');
-        var componentInstruction: ComponentInstruction = {
-            urlPath: 'detail',
-            urlParams: new Array<string>(),
-            routeData: null,
-            componentType: null,
-            terminal: true,
-            specificity: '0',
-            params: null,
-            reuse: false
-        };
+        var componentInstruction = new ComponentInstruction('detail', [], null, null, true, '0', null, null);
         return new ResolvedInstruction(componentInstruction, null, {});
     }
 }

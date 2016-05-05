@@ -10,7 +10,7 @@ enableProdMode();
 // @endif
 
 bootstrap(AppComponent, [
-    HTTP_PROVIDERS, 
+    HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
     provide(APP_BASE_HREF, { useValue: '/* @echo APP_BASE */' })
 ]);
