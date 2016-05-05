@@ -1,9 +1,5 @@
 import {provide} from '@angular/core';
-import {
-    ComponentInstruction,
-    Router,
-    RouteParams
-} from '@angular/router';
+import {ComponentInstruction, Router, RouteParams} from '@angular/router-deprecated';
 import {ResolvedInstruction} from 'angular2/src/router/instruction';
 import {SpyObject} from '@angular/testing/testing_internal';
 

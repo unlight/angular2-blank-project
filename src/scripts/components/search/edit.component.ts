@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Person, Address, SearchService} from '../../services/search.service';
-// import {RouteParams, Router} from '@angular/router';
-import {Router} from '@angular/router';
+// import {RouteParams, Router} from '@angular/router'; // Replaced by RouteSegment
 import {URLSearchParams} from '@angular/http';
-// import {CanDeactivate, ComponentInstruction} from '@angular/router';
-import {CanDeactivate} from '@angular/router';
+import {ComponentInstruction} from '@angular/router-deprecated';
+import {Router, CanDeactivate} from '@angular/router';
 
 @Component({
     selector: 'sd-edit',

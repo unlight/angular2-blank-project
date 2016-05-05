@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
-import {NavbarComponent} from './navbar.component';
-import {ToolbarComponent} from './toolbar.component';
+import {ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
+import {NavbarComponent} from './navbar/navbar.component';
+import {ToolbarComponent} from './toolbar/toolbar.component';
 import {HomeComponent} from '../../components/home/home.component';
 import {AboutComponent} from '../../components/about/about.component';
 import {SearchComponent} from '../../components/search/search.component';
@@ -15,7 +15,7 @@ import {SearchService} from '../../services/search.service';
     templateUrl: './app.component.html',
     directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })
-@Routes([
+@RouteConfig([
     { path: '/', component: HomeComponent },
     { path: '/about', component: AboutComponent },
     { path: '/search', component: SearchComponent },

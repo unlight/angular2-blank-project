@@ -24,8 +24,8 @@ const tsLibs = [];
 
 const paths = {
     typings: [
-        lib("angular2/typings/browser.d.ts"),
-        "typings/browser.d.ts"
+        "typings/browser.d.ts",
+        "node_modules/typescript/lib/lib.es6.d.ts"
     ],
     dev: {
         // Add dev only libs here.
