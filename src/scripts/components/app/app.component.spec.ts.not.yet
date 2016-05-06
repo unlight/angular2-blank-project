@@ -8,8 +8,8 @@ import {
 } from '@angular/core/testing';
 import {Component, provide, DirectiveResolver} from '@angular/core';
 
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router';
-import {SpyLocation} from 'angular2/src/mock/location_mock';
+import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
+import {SpyLocation} from '@angular/common/testing';
 import {RootRouter} from 'angular2/src/router/router';
 
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';

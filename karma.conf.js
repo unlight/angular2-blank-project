@@ -1,46 +1,33 @@
 var config = require("./env.conf");
 
-function karmaFiles() {
-    var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false, included: true}));
-    var files = [
-        {pattern: "node_modules/@angular/testing/testing_internal.js", watched: false, included: false},
-        {pattern: "node_modules/@angular/testing/**/*.js", watched: false, included: false},
-        // Paths loaded via module imports.
-        {pattern: "build/js/**/*.js", included: false, watched: true},
-        "karma.shim.js"
-    ];
-    return [...jsLibs, ...files];
-}
-
 module.exports = function(karma) {
     karma.set({
         files: [
-          // Polyfills.
-          'node_modules/es6-shim/es6-shim.js',
-          'node_modules/reflect-metadata/Reflect.js',
-          // System.js for module loading
-          'node_modules/systemjs/dist/system-polyfills.js',
-          'node_modules/systemjs/dist/system.src.js',
-          // Zone.js dependencies
-          'node_modules/zone.js/dist/zone.js',
-          'node_modules/zone.js/dist/jasmine-patch.js',
-          'node_modules/zone.js/dist/async-test.js',
-          'node_modules/zone.js/dist/fake-async-test.js',
-          // RxJs.
-          { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
-          { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
-          // paths loaded via module imports
-          // Angular itself
-          {pattern: 'node_modules/@angular/**/*.js', included: false, watched: true},
-          // suppress annoying 404 warnings for resources, images, etc.
-          // { pattern: 'dist/dev/**/*.js', included: false, watched: true },
-          { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
-          // suppress annoying 404 warnings for resources, images, etc.
-          // { pattern: 'dist/dev/assets/**/*', watched: false, included: false, served: true },
-          {pattern: "build/js/**/*.js", included: false, watched: true},
-          'karma.shim.js'
+            ...config.test.jsLibs,
+            { pattern: "node_modules/reflect-metadata/**/*.map", included: false, watched: false },
+            // Zone.js dependencies
+            // 'node_modules/zone.js/dist/jasmine-patch.js',
+            // 'node_modules/zone.js/dist/async-test.js',
+            // 'node_modules/zone.js/dist/fake-async-test.js',
+            // RxJs.
+            { pattern: "node_modules/rxjs/**/*.js**", included: false, watched: false },
+            // Angular
+            { pattern: 'node_modules/@angular/core/**/*.js**', included: false, watched: false },
+            { pattern: 'node_modules/@angular/common/**/*.js**', included: false, watched: false },
+            { pattern: 'node_modules/@angular/compiler/**/*.js**', included: false, watched: false },
+            { pattern: 'node_modules/@angular/http/**/*.js**', included: false, watched: false },
+            { pattern: 'node_modules/@angular/platform-browser-dynamic/**/*.js**', included: false, watched: false },
+            { pattern: 'node_modules/@angular/platform-browser/**/*.js**', included: false, watched: false },
+            // { pattern: 'node_modules/@angular/**/*.js', included: false, watched: false },
+            // suppress annoying 404 warnings for resources, images, etc.
+            // { pattern: 'dist/dev/**/*.js', included: false, watched: true },
+            // { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
+            // suppress annoying 404 warnings for resources, images, etc.
+            // { pattern: 'dist/dev/assets/**/*', watched: false, included: false, served: true },
+            { pattern: "build/js/**/*.js", included: false, watched: true },
+            "karma.main.js"
         ],
-        browsers: ["PhantomJS"],
+        browsers: ["Chrome"],
         plugins: [
             "karma-jasmine",
             "karma-coverage",
@@ -59,8 +46,8 @@ module.exports = function(karma) {
         coverageReporter: {
             dir: ".coverage",
             reporters: [
-                { type: "json", file: "coverage.json" },
-                { type: "lcov", file: "coverage.lcov" },
+                {type: "json", file: "coverage.json"}, 
+                {type: "lcov", file: "coverage.lcov"}
             ]
         },
         // proxied base paths
