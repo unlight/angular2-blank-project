@@ -8,7 +8,6 @@ module.exports = (gulp, g, config, debug, _) => {
         if (config.isProd) {
            jsLibs = ["build/libs/*"];
         }
-        console.log('jsLibs ' , jsLibs);
         var scripts = gulp.src(jsLibs, { read: false });
         return gulp.src("src/index.html")
             .pipe(g.inject(styles, { addRootSlash: false, ignorePath: "build" }))
