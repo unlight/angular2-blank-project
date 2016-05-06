@@ -14,7 +14,32 @@ function karmaFiles() {
 
 module.exports = function(karma) {
     karma.set({
-        files: karmaFiles(),
+        files: [
+          // Polyfills.
+          'node_modules/es6-shim/es6-shim.js',
+          'node_modules/reflect-metadata/Reflect.js',
+          // System.js for module loading
+          'node_modules/systemjs/dist/system-polyfills.js',
+          'node_modules/systemjs/dist/system.src.js',
+          // Zone.js dependencies
+          'node_modules/zone.js/dist/zone.js',
+          'node_modules/zone.js/dist/jasmine-patch.js',
+          'node_modules/zone.js/dist/async-test.js',
+          'node_modules/zone.js/dist/fake-async-test.js',
+          // RxJs.
+          { pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false },
+          { pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false },
+          // paths loaded via module imports
+          // Angular itself
+          {pattern: 'node_modules/@angular/**/*.js', included: false, watched: true},
+          // suppress annoying 404 warnings for resources, images, etc.
+          // { pattern: 'dist/dev/**/*.js', included: false, watched: true },
+          { pattern: 'node_modules/systemjs/dist/system-polyfills.js', included: false, watched: false }, // PhantomJS2 (and possibly others) might require it
+          // suppress annoying 404 warnings for resources, images, etc.
+          // { pattern: 'dist/dev/assets/**/*', watched: false, included: false, served: true },
+          {pattern: "build/js/**/*.js", included: false, watched: true},
+          'karma.shim.js'
+        ],
         browsers: ["PhantomJS"],
         plugins: [
             "karma-jasmine",
