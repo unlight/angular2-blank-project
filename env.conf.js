@@ -50,7 +50,8 @@ const config = {
         ]
     },
     paths: {
-        dest: "build"
+        dest: "build",
+        destJs: "build/js",
     },
     typings: [
         "typings/browser.d.ts",
