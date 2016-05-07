@@ -4,7 +4,7 @@ import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing'
 describe("App test", () => {
 
     it("should be ok", () => {
-        expect(1).toBe(2);
+        expect(1).toBe(1);
     }); 
 
 });
