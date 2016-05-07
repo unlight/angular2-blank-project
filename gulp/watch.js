@@ -1,17 +1,17 @@
 const fs = require("fs");
 
-module.exports = (gulp, g, config, karmaServer, clearLastRun) => {
+module.exports = (gulp, g, config, paths, karmaServer, clearLastRun) => {
 
     gulp.task("watch", (done) => {
         const fs = require("fs");
         const w = [];
         const globScripts = [
-            "src/app/**/*.ts",
-            "!src/app/**/*.{spec,test,e2e}.ts"
+            paths.srcApp("**/*.ts"),
+            paths.srcApp.not("**/*.{spec,test,e2e}.ts")
         ];
         w[w.length] = gulp.watch(globScripts, gulp.series("scripts"));
         // If we changnig *.html we must recompile corresponsding component.
-        w[w.length] = gulp.watch("src/app/**/*.html").on("change", path => {
+        w[w.length] = gulp.watch(paths.srcApp("**/*.html")).on("change", path => {
             var tsfile = g.util.replaceExtension(path, ".ts");
             if (fs.existsSync(tsfile)) {
                 var fd = fs.openSync(tsfile, "r+");
@@ -26,7 +26,7 @@ module.exports = (gulp, g, config, karmaServer, clearLastRun) => {
         w[w.length] = gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles"));
         w[w.length] = gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
         if (g.util.env.tests) {
-            w[w.length] = gulp.watch("src/app/**/*.{spec,test}.ts", gulp.series("tests"));
+            w[w.length] = gulp.watch(paths.srcApp("**/*.{spec,test}.ts"), gulp.series("tests"));
             gulp.series("tests").call();
             // TODO: Fix memory leak here! If using gulp.series()
             setTimeout(() => {

@@ -77,9 +77,15 @@ function lib(path) {
 }
 
 function createGlob(pattern) {
-    return function() {
-        var args = [].concat(pattern, arguments);
+    var func = function() {
+        var params = Array.prototype.slice.call(arguments);
+        var args = [].concat(pattern, params);
         var result = path.join.apply(null, args);
         return unixify(result);
     };
+    func.not = function() {
+        var result = func.apply(null, arguments);
+        return "!" + result;
+    };
+    return func;
 }

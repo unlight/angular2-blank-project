@@ -1,6 +1,6 @@
 const path = require("path");
 
-module.exports = (gulp, g, config, debug, _) => {
+module.exports = (gulp, g, config, debug) => {
 
     gulp.task("htdocs", function htdocs() {
         var styles = gulp.src(["build/design/style.css", "build/design/*"], { read: false });

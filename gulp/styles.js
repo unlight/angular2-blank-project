@@ -1,7 +1,7 @@
 const merge2 = require("merge2");
 const combine = require("stream-combiner");
 
-module.exports = (gulp, g, config, debug, _) => {
+module.exports = (gulp, g, config, paths, debug, _) => {
 
     var postcssPlugins = _.constant([
         require("autoprefixer")({browsers: ["last 3 version"]})
@@ -11,13 +11,13 @@ module.exports = (gulp, g, config, debug, _) => {
         var lastRunStyles = gulp.lastRun("styles");
         var sassStream = merge2(
                 gulp.src(["src/styles/*.scss"], { base: "src/styles", since: lastRunStyles }),
-                gulp.src("src/app/**/*.scss", { since: lastRunStyles })
+                gulp.src(paths.srcApp("**/*.scss"), { since: lastRunStyles })
             )
             .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(config.isProd, g.sassLint.failOnError()));
-        var lessStream = gulp.src("src/app/**/*.less", { since: lastRunStyles });
-        var cssStream = gulp.src("src/app/**/*.css", { since: lastRunStyles });
+        var lessStream = gulp.src(paths.srcApp("**/*.less"), { since: lastRunStyles });
+        var cssStream = gulp.src(paths.srcApp("**/*.css"), { since: lastRunStyles });
         var sourceStream = merge2([
             sassStream,
             lessStream,
