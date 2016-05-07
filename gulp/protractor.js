@@ -4,9 +4,9 @@ module.exports = (gulp, config, typingsStream) => {
 
 	gulp.task("protractor", function protractor() {
 	    var glob = [
-	        "src/scripts/**/*.e2e.ts"
+	        "src/app/**/*.e2e.ts"
 	    ];
-	    var sourceRoot = "src/scripts";
+	    var sourceRoot = "src/app";
 	    var dest = "build/js";
 	    var sourceStream = merge2(
 	        typingsStream().load(),

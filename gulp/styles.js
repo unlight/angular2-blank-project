@@ -8,15 +8,16 @@ module.exports = (gulp, g, config, debug, _) => {
     ]);
     
     gulp.task("styles", function styles() {
+        var lastRunStyles = gulp.lastRun("styles");
         var sassStream = merge2(
-                gulp.src(["src/styles/*.scss"], { base: "src/styles", since: gulp.lastRun("styles") }),
-                gulp.src("src/scripts/**/*.scss", { since: gulp.lastRun("styles") })
+                gulp.src(["src/styles/*.scss"], { base: "src/styles", since: lastRunStyles }),
+                gulp.src("src/app/**/*.scss", { since: lastRunStyles })
             )
             .pipe(g.sassLint())
             .pipe(g.sassLint.format())
             .pipe(g.if(config.isProd, g.sassLint.failOnError()));
-        var lessStream = gulp.src("src/scripts/**/*.less", { since: gulp.lastRun("styles") });
-        var cssStream = gulp.src("src/scripts/**/*.css", { since: gulp.lastRun("styles") });
+        var lessStream = gulp.src("src/app/**/*.less", { since: lastRunStyles });
+        var cssStream = gulp.src("src/app/**/*.css", { since: lastRunStyles });
         var sourceStream = merge2([
             sassStream,
             lessStream,

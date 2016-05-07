@@ -5,11 +5,10 @@ module.exports = (gulp, g, config, typingsStream, debug) => {
 
     gulp.task("scripts", function scripts() {
         var glob = [
-            "src/scripts/**/*.ts",
-            "!src/scripts/**/*.{spec,test,e2e}.ts"
+            "src/app/**/*.ts",
+            "!src/app/**/*.{spec,test,e2e}.ts"
         ];
-        var sourceRoot = "src/scripts";
-        var dest = "build/js";
+        var sourceRoot = "src/app";
 
         var sourceStream = merge2(
             typingsStream().load(),
@@ -28,7 +27,7 @@ module.exports = (gulp, g, config, typingsStream, debug) => {
             .pipe(g.if(config.isProd, g.uglify({mangle: false})))
             .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
             .pipe(g.size({ title: "scripts" }))
-            .pipe(gulp.dest(dest))
+            .pipe(gulp.dest(config.paths.destJs))
             .pipe(debug("Written", "scripts"))
             .pipe(g.connect.reload());
     });

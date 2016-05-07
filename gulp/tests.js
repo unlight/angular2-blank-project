@@ -4,9 +4,9 @@ module.exports = (gulp, g, config, debug, typingsStream) => {
 
     gulp.task("tests", () => {
         var glob = [
-            "src/scripts/**/*.{spec,test}.ts"
+            "src/app/**/*.{spec,test}.ts"
         ];
-        var sourceRoot = "src/scripts";
+        var sourceRoot = "src/app";
         var sourceStream = merge2(
             typingsStream().load(),
             gulp.src(glob, { since: gulp.lastRun("tests") })

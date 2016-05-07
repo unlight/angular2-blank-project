@@ -3,6 +3,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 process.env.PORT = process.env.PORT || "8080";
 
+const path = require("path");
 const unixify = require("unixify");
 const pkgDir = require("pkg-dir");
 const _ = require("lodash");
@@ -50,8 +51,9 @@ const config = {
         ]
     },
     paths: {
+        srcApp: createGlob("src/app"),
         dest: "build",
-        destJs: "build/js",
+        destJs: "build/js"
     },
     typings: [
         "typings/browser.d.ts",
@@ -72,4 +74,12 @@ module.exports = config;
 function lib(path) {
     path = require.resolve(path).slice(projectRoot.length + 1);
     return unixify(path);
+}
+
+function createGlob(pattern) {
+    return function() {
+        var args = [].concat(pattern, arguments);
+        var result = path.join.apply(null, args);
+        return unixify(result);
+    };
 }
