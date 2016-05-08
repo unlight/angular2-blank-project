@@ -1,9 +1,7 @@
 (function(global) {
-    // wildcard paths
     var paths = {
         "n:*": "node_modules/*"
     };
-
     // map tells the System loader where to look for things
     var map = {
         "services": "js/node_modules/services.js",
@@ -14,7 +12,7 @@
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {main: "bootstrap.js"},
+        "js": {main: "bootstrap.js", format: "register", defaultExtension: "js"},
         "rxjs": {defaultExtension: "js"}
     };
 
@@ -26,13 +24,14 @@
         "@angular/platform-browser",
         "@angular/platform-browser-dynamic",
         "@angular/router",
-        "@angular/router-deprecated",
+        "@angular/router-deprecated", // TODO: Remove.
         "@angular/testing"
     ];
 
     umdPackages.forEach(function(name) {
         var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
-        packages[name] = { main: main, format: "amd", defaultExtension: "js" };
+        // packages[name] = { main: main, format: "amd", defaultExtension: "js"};
+        packages[name] = { main: main, defaultExtension: "js"};
     });
 
     var config = {

@@ -1,111 +1,70 @@
-// Turn on full stack traces in errors to help debugging
+// Turn on full stack traces in errors to help debugging.
 Error.stackTraceLimit = Infinity;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
-
-// Cancel Karma's synchronous start,
-// we will call `__karma__.start()` later, once all the specs are loaded.
+// Cancel Karma's synchronous start.
+// We will call `__karma__.start()` later, once all the specs are loaded.
 __karma__.loaded = function() {};
+// Inject configuration to SystemJS config.
+function filterSystemConfig(config) {
+    config.baseURL = "/base/";
+    config.paths["js/node_modules/*"] = "build/js/node_modules/*";
+    Object.assign(config.packages,  {
+        "@angular/core": {main: "index", defaultExtension: "js"},
+        "@angular/compiler": {main: "index", defaultExtension: "js"},
+        "@angular/common": {main: "index", defaultExtension: "js"},
+        "@angular/platform-browser": {main: "index", defaultExtension: "js"},
+        "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
+        "@angular/router-deprecated": {main: "index", defaultExtension: "js"}
+    });
+    config.packages["build/js"] = {
+        defaultExtension: "js",
+        format: "register"
+    };
+}
 
 // Load our SystemJS configuration.
-System.config({
-  baseURL: '/base/'
-});
-
-System.config({
-  defaultJSExtensions: true,
-  map: {
-    'rxjs': 'node_modules/rxjs',
-    '@angular': 'node_modules/@angular'
-  },
-  packages: {
-    '@angular/core': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/compiler': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/common': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/platform-browser-dynamic': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    '@angular/router-deprecated': {
-      main: 'index.js',
-      defaultExtension: 'js'
-    },
-    'rxjs': {
-      defaultExtension: 'js'
-    },
-    "base/build": {
-        // defaultExtension: false,
-        // format: "register",
-        map: Object.keys(window.__karma__.files)
-            .filter(onlyAppFiles)
-            .reduce(function createPathRecords(pathsMapping, appPath) {
-                var moduleName = appPath
-                    .replace(/^\/base\/build\//, "./")
-                    .replace(/\.js$/, "");
-                pathsMapping[moduleName] = appPath + "?" + window.__karma__.files[appPath]
-                return pathsMapping;
-            }, {})
-    }
-  }
-  
-});
-
-Promise.all([
-  System.import('@angular/core/testing'),
-  System.import('@angular/platform-browser-dynamic/testing')
-]).then(function (providers) {
-  var testing = providers[0];
-  var testingBrowser = providers[1];
-  testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
-    testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
-
-}).then(function() {
-  return Promise.all(
-    Object.keys(window.__karma__.files) // All files served by Karma.
-    .filter(onlySpecFiles)
-    .map(file2moduleName)
-    .map(function(path) {
-      return System.import(path).then(function(module) {
-        if (module.hasOwnProperty('main')) {
-          module.main();
-        }
-      });
-    }));
+System.import("base/systemjs.config.js")
+.then(function() {
+    return Promise.all([
+        System.import("@angular/core/testing"),
+        System.import("@angular/platform-browser-dynamic/testing"),
+        System.import("@angular/testing/src/utils")
+    ]);
+})
+.then(function(providers) {
+    var testing = providers[0];
+    var testingBrowser = providers[1];
+    testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS, testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
+    var utils = providers[2];
+    if (!utils.browserDetection) utils.browserDetection = new utils.BrowserDetection();
 })
 .then(function() {
-  __karma__.start();
-}, function(error) {
-  console.error(error.stack || error);
-  __karma__.start();
+    // Load spec files.
+    var imports = Object.keys(__karma__.files)
+        .filter(function(file) {
+            return /\.(spec|test)\.js$/.test(file);
+        })
+        // .filter(function(filepath) {
+        //     return filepath === "/base/build/js/components/app/app.spec.js";
+        // })
+        .map(function(file) {
+            file = file.replace(/^\/base\//, "");
+            return System.import(file);
+        });
+    return Promise.all(imports);
+})
+.then(function() {
+    __karma__.start();
+})
+.catch(function(err) {
+    console.error(err);
 });
-
-function onlySpecFiles(path) {
-  // check for individual files, if not given, always matches to all
-  var patternMatched = __karma__.config.files ?
-    path.match(new RegExp(__karma__.config.files)) : true;
-
-  return patternMatched && /(spec|test)\.js$/.test(path);
-}
-
-// Normalize paths to module names.
-function file2moduleName(filePath) {
-  return filePath.replace(/\\/g, '/')
-    .replace(/^\/base\//, '')
-    .replace(/\.js$/, '');
-}
-
-function onlyAppFiles(filePath) {
-    return /^\/base\/build\/.*\.js$/.test(filePath);
-}
+// var resultFn = __karma__.result;
+// __karma__.result = function() {
+//     var log = arguments[0].log[0];
+//     var newLog = log.split("\n").slice(0, 3).join("\n");
+//     // newLog = newLog.replace(/http:\/\/localhost:9876\/base/g, "absolute");
+//     arguments[0].log[0] = newLog;
+//     // console.log('__karma__.result', arguments);
+//     return resultFn.apply(__karma__, arguments);
+// }

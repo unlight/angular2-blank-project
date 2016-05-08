@@ -1,7 +1,7 @@
 import {provide} from '@angular/core';
 import {ComponentInstruction, Router, RouteParams} from '@angular/router-deprecated';
 import {ResolvedInstruction} from '@angular/router-deprecated/src/instruction';
-import {SpyObject} from '@angular/testing/testing_internal';
+import {SpyObject} from '@angular/testing/src/testing_internal';
 
 export class MockRouteParams extends SpyObject {
     private ROUTE_PARAMS = {};
