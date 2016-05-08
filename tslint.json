@@ -62,7 +62,7 @@
 			["catchClause", "noSpace"],
 			["indexSignature", "space"]
 		],
-		"use-strict": [true,
+		"use-strict": [false,
 			"check-module",
 			"check-function"
 		],

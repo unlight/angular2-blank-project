@@ -1,20 +1,17 @@
-import {
-  describe,
-  expect,
-  injectAsync,
-  it,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {describe, expect, injectAsync, beforeEachProviders} from '@angular/core/testing';
+import {it} from '@angular/core/testing';
+// import {xit} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component, provide} from '@angular/core';
-import {TestComponentBuilder} from '@angular/compiler';
-
-import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
+import {Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
+import {Location} from '@angular/common';
 import {SpyLocation} from '@angular/common/testing';
-import {RootRouter} from '@angular/router-deprecated';
-
-import {getDOM} from '@angular/platform-browser';
+import {RootRouter} from '@angular/router-deprecated/src/router';
+// import {getDOM} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
+import {DirectiveResolver} from '@angular/compiler';
+
+declare var getDOM: any;
 
 export function main() {
 

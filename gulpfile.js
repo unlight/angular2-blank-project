@@ -60,4 +60,5 @@ gulp.task("build", gulp.series(
 gulp.task("test", gulp.series("build", "karma", "coverage"));
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 gulp.task("develop", gulp.series("build", "serve"));
+gulp.task("dev", gulp.series("build", "serve"));
 gulp.task("default", gulp.series("build", "test"));

@@ -1,4 +1,5 @@
 import {provide} from '@angular/core';
+import {SpyObject} from '@angular/testing/testing_internal';
 import {SearchService} from '../search.service';
 import Spy = jasmine.Spy;
 

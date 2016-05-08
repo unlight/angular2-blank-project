@@ -1,13 +1,7 @@
-import {
-    describe,
-    xdescribe,
-    expect,
-    injectAsync,
-    it
-} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler';
+import {describe, expect, injectAsync, it} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+// import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {HomeComponent} from './home.component';
 import {NameListService} from '../../services/name-list.service';
 

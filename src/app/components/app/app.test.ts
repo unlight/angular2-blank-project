@@ -1,8 +1,12 @@
 import {SearchService} from 'services';
 import {NameListService} from '../../services/name-list.service';
-import {fdescribe, describe, fit, it, expect, beforeEach, injectAsync} from '@angular/core/testing';
+import {describe, it, expect, beforeEach} from '@angular/core/testing';
 
 describe('App test', () => {
+
+    beforeEach(() => {
+        //
+    });
 
     it('should be ok', () => {
         expect(1).toBe(1);

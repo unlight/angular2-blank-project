@@ -1,12 +1,5 @@
-import {
-    it,
-    xdescribe,
-    describe,
-    expect,
-    injectAsync,
-    beforeEachProviders
-} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler';
+import {it,describe, expect, injectAsync, beforeEachProviders} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 import {MockRouterProvider} from '../../services/mocks/routes';
 import {MockSearchService} from '../../services/mocks/search.service';
 import {SearchComponent} from './search.component';

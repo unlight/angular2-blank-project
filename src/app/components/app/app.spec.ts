@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, injectAsync} from '@angular/core/testing';
+import {describe, it, expect} from '@angular/core/testing';
 
 describe('Fail test', () => {
 
