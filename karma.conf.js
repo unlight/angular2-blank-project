@@ -12,10 +12,10 @@ module.exports = function(karma) {
             {pattern: "node_modules/zone.js/dist/fake-async-test.js", included: true, watched: false},
             {pattern: "node_modules/reflect-metadata/Reflect.js", included: true, watched: false},
             {pattern: "node_modules/reflect-metadata/Reflect.js.map", included: false, watched: false},
-            {pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false},
-            {pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false},
-            {pattern: 'node_modules/@angular/**/*.js', included: false, watched: false},
-            {pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false},
+            {pattern: "node_modules/rxjs/**/*.js", included: false, watched: false},
+            {pattern: "node_modules/rxjs/**/*.js.map", included: false, watched: false},
+            {pattern: "node_modules/@angular/**/*.js", included: false, watched: false},
+            {pattern: "node_modules/@angular/**/*.js.map", included: false, watched: false},
             {pattern: "systemjs.config.js", included: false, watched: false},
             {pattern: "build/js/**/*.js", included: false, watched: true},
             "karma.main.js"
@@ -45,7 +45,7 @@ module.exports = function(karma) {
             ]
         },
         autoWatch: true,
-        autoWatchBatchDelay: 200,
+        autoWatchBatchDelay: 100,
         singleRun: false,
         port: 9876,
         logLevel: karma.LOG_INFO

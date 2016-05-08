@@ -20,11 +20,6 @@ module.exports = (gulp, g, config, paths, karmaServer, clearLastRun) => {
         w[w.length] = gulp.watch("src/index.html", gulp.series("htdocs"));
         w[w.length] = gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles"));
         w[w.length] = gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles"));
-        if (g.util.env.tests) {
-            setTimeout(() => {
-                karmaServer(config.karma, done);
-            }, 5000);
-        }
         process.on("SIGINT", () => {
             w.forEach(watcher => watcher.close());
             done();

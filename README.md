@@ -2,7 +2,7 @@
 Light-weight and easy to use seed project for Angular 2 apps.  
 Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-project) and [mraible/angular2-tutorial](https://github.com/mraible/angular2-tutorial)
 
-### Stack
+### STACK
 - [Gulp 4](http://gulpjs.com/)
 - [Angular 2](https://angular.io/)
 - [TypeScript](http://www.typescriptlang.org/)
@@ -11,12 +11,12 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 - [Karma](http://karma-runner.github.io/)
 - [Protractor](http://www.protractortest.org/)
 
-### Features
+### FEATURES
 - Gulp 4 incremental builds (since, lastRun)
 - Unit tests coverage (with remap to TypeScript source)
 - Merged pipeline of SASS, LESS and CSS + PostCSS
 
-### Global Dependencies
+### GLOBAL DEPENDENCIES
 
 | Dependency | Install                               |
 | ---------- | ------------------------------------- |
@@ -25,7 +25,7 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 | Typings    | `npm install typings -g`              |
 | Protractor | `npm install -g protractor`           |
 
-### Install
+### INSTALL
 ```
 git clone https://github.com/unlight/angular2-blank-project.git && cd angular2-blank-project
 npm install && typings install
@@ -33,20 +33,20 @@ npm install && typings install
 choco install chromium
 ```
 
-### Usage
+### USAGE
 ```
-gulp develop
+gulp serve
 ```
 Note: the `serve` task won't automatically launch the browser for you.
 To view the app please open a new tab and go to `http://localhost:8080/`.
 
-### Tasks
+### TASKS
 - `build` Create distribution package
 - `test`  Build and run unit tests
 - `serve` Start web-server and live-reload
-- `clean` Remove generated folders
 - `karma` Run unit tests
 - `protractor` Run end-to-end tests
+- `clean` Remove generated folders
 
 **Additional arguments:**
 
@@ -54,19 +54,12 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
   Tasks will be more versbosed informiong about processing files, etc. You can specify namespace of debug messages.  
   For example, show debug messages from typescript task only:
   ```
-  gulp develop --debug=typescript
+  gulp serve --debug=typescript
   ```
   Debug all:
   ```
-  gulp develop --debug
-  gulp develop --debug=*
-  ```
-
-* ##### tests
-  Run additional task unit tests. On every change of source or test, unit test will re-run.
-  ```
-  gulp develop --tests
-  gulp develop --tests --debug 
+  gulp serve --debug
+  gulp serve --debug=*
   ```
 
 * ##### production
@@ -74,6 +67,12 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
   ```
   gulp build --production
   ```
+
+### TESTS
+To run unit tests in watch mode:
+```
+gulp test watch
+```
 
 ### RESOURCES
 * TypeScript Compiler Options - http://www.typescriptlang.org/docs/handbook/compiler-options.html

@@ -1,6 +1,7 @@
 import {SearchService} from 'services';
 import {NameListService} from '../../services/name-list.service';
 import {describe, it, expect, beforeEach} from '@angular/core/testing';
+// import {fit} from '@angular/core/testing';
 
 describe('App test', () => {
 
