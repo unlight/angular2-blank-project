@@ -6,7 +6,7 @@ import {
     injectAsync,
     beforeEachProviders
 } from '@angular/core/testing';
-import TestComponentBuilder from '@angular/compiler/testing';
+import {TestComponentBuilder} from '@angular/compiler';
 import {MockRouterProvider} from '../../services/mocks/routes';
 import {MockSearchService} from '../../services/mocks/search.service';
 import {SearchComponent} from './search.component';

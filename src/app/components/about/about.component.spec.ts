@@ -1,10 +1,10 @@
 import {describe, xdescribe, expect, injectAsync, fit, it} from '@angular/core/testing';
-import TestComponentBuilder from '@angular/compiler/testing';
+import {TestComponentBuilder} from '@angular/compiler';
 import {Component} from '@angular/core';
 import {AboutComponent} from './about.component';
 
 describe('About component', () => {
-    
+
     it('should work',
         injectAsync([TestComponentBuilder], (tcb: TestComponentBuilder) => {
             return tcb.createAsync(TestComponent)

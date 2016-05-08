@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, injectAsync} from "@angular/core/testing";
+import { describe, it, expect, beforeEach, injectAsync} from '@angular/core/testing';
 
-describe("Fail test", () => {
+describe('Fail test', () => {
 
-    it("should fail", () => {
+    it('should fail', () => {
         expect(false).toBe(true);
-    }); 
+    });
 
 });

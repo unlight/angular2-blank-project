@@ -15,7 +15,7 @@ describe('Search', () => {
     searchBox.sendKeys('M');
     searchButton.click().then(() => {
       // doesn't work as expected - results in 0
-      //expect(element.all(by.repeater('person of searchResults')).count()).toEqual(3);
+      // expect(element.all(by.repeater('person of searchResults')).count()).toEqual(3);
       var list = element.all(by.css('sd-search table tbody tr'));
       expect(list.count()).toBe(3);
     });

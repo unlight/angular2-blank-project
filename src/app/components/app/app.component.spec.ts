@@ -1,18 +1,19 @@
 import {
-  TestComponentBuilder,
   describe,
   expect,
   injectAsync,
   it,
   beforeEachProviders
 } from '@angular/core/testing';
-import {Component, provide, DirectiveResolver} from '@angular/core';
+import {TestComponentBuilder} from '@angular/compiler/testing';
+import {Component, provide} from '@angular/core';
+import {TestComponentBuilder} from '@angular/compiler';
 
 import {Location, Router, RouteRegistry, ROUTER_PRIMARY_COMPONENT} from '@angular/router-deprecated';
 import {SpyLocation} from '@angular/common/testing';
-import {RootRouter} from 'angular2/src/router/router';
+import {RootRouter} from '@angular/router-deprecated';
 
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
+import {getDOM} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 
 export function main() {
@@ -34,7 +35,7 @@ export function main() {
           .then(rootTC => {
             rootTC.detectChanges();
             let appDOMEl = rootTC.debugElement.children[0].nativeElement;
-            expect(DOM.querySelectorAll(appDOMEl, 'sd-app > sd-navbar > nav > a')[1].href).toMatch(/http:\/\/localhost:\d+\/about/);
+            expect(getDOM().querySelectorAll(appDOMEl, 'sd-app > sd-navbar > nav > a')[1].href).toMatch(/http:\/\/localhost:\d+\/about/);
           });
       }));
   });
