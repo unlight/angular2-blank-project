@@ -1,21 +1,23 @@
-var config = require("./gulpfile.conf");
-
-function karmaFiles() {
-    var jsLibs = config.test.jsLibs.map(lib => ({pattern: lib, watched: false, included: true}));
-    var files = [
-        {pattern: "node_modules/angular2/testing_internal.js", watched: false, included: false},
-        {pattern: "node_modules/angular2/src/testing/**/*.js", watched: false, included: false},
-        // Paths loaded via module imports.
-        {pattern: "build/js/**/*.js", included: false, watched: true},
-        "karma.shim.js"
-    ];
-    return [...jsLibs, ...files];
-}
+var config = require("./env.conf");
 
 module.exports = function(karma) {
     karma.set({
-        files: karmaFiles(),
-        browsers: ["PhantomJS"],
+        files: [
+            {pattern: "node_modules/systemjs/dist/system.src.js", included: true, watched: false},
+            {pattern: "node_modules/systemjs/dist/system-polyfills.js", included: true, watched: false},
+            {pattern: "node_modules/zone.js/dist/zone.js", included: true, watched: false},
+            {pattern: "node_modules/reflect-metadata/Reflect.js", included: true, watched: false},
+            {pattern: "node_modules/reflect-metadata/Reflect.js.map", included: false, watched: false},
+            {pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false},
+            {pattern: 'node_modules/rxjs/**/*.js.map', included: false, watched: false},
+            {pattern: 'node_modules/@angular/**/*.js', included: false, watched: false},
+            {pattern: 'node_modules/@angular/**/*.js.map', included: false, watched: false},
+            {pattern: "systemjs.config.js", included: false, watched: false},
+            {pattern: "build/js/**/*.js", included: false, watched: true},
+            "karma.main.js"
+        ],
+        // browsers: ["PhantomJS"],
+        browsers: ["Chrome"],
         plugins: [
             "karma-jasmine",
             "karma-coverage",
@@ -34,19 +36,15 @@ module.exports = function(karma) {
         coverageReporter: {
             dir: ".coverage",
             reporters: [
-                { type: "json", file: "coverage.json" },
-                { type: "lcov", file: "coverage.lcov" },
+                {type: "json", file: "coverage.json"}, 
+                {type: "lcov", file: "coverage.lcov"}
             ]
         },
-        // proxied base paths
-        // proxies: {
-        //     // required for component assests fetched by Angular's compiler
-        //     "/src/": "/base/src/"
-        // },
         autoWatch: true,
         autoWatchBatchDelay: 200,
-        singleRun: false,
+        singleRun: true,
         port: 9876,
+        // browserNoActivityTimeout: 1000000,
         logLevel: karma.LOG_INFO
     });
 };
