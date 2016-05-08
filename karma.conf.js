@@ -3,6 +3,7 @@ var config = require("./env.conf");
 module.exports = function(karma) {
     karma.set({
         files: [
+            {pattern: "node_modules/es6-shim/es6-shim.js", included: true, watched: false},
             {pattern: "node_modules/systemjs/dist/system.src.js", included: true, watched: false},
             {pattern: "node_modules/systemjs/dist/system-polyfills.js", included: true, watched: false},
             {pattern: "node_modules/zone.js/dist/zone.js", included: true, watched: false},
@@ -42,9 +43,8 @@ module.exports = function(karma) {
         },
         autoWatch: true,
         autoWatchBatchDelay: 200,
-        singleRun: true,
+        singleRun: false,
         port: 9876,
-        // browserNoActivityTimeout: 1000000,
         logLevel: karma.LOG_INFO
     });
 };

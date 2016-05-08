@@ -36,9 +36,8 @@ function debug(title, namespace) {
 }
 
 function karmaServer(options, done) {
-    const server = new karma.Server(options, error => {
-        if (error) process.exit(error);
-        done();
+    const server = new karma.Server(options, (err) => {
+        done(err ? new Error("Karma error " + err) : null);
     });
     server.start();
     return server;
@@ -57,7 +56,8 @@ gulp.task("build", gulp.series(
     gulp.parallel("assets", "scripts", "styles"),
     "htdocs"
 ));
-gulp.task("test", gulp.series("tests", "karma", "coverage"));
+
+gulp.task("test", gulp.series("build", "karma", "coverage"));
 gulp.task("serve", gulp.parallel("watch", "livereload"));
 gulp.task("develop", gulp.series("build", "serve"));
 gulp.task("default", gulp.series("build", "test"));

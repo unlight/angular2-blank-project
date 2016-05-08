@@ -45,7 +45,7 @@ System.import("base/systemjs.config.js")
             return /\.(spec|test)\.js$/.test(file);
         })
         // .filter(function(filepath) {
-        //     return filepath === "/base/build/js/components/app/app.spec.js";
+        //     return filepath === "/base/build/js/components/app/app.test.js";
         // })
         .map(function(file) {
             file = file.replace(/^\/base\//, "");
@@ -57,8 +57,10 @@ System.import("base/systemjs.config.js")
     __karma__.start();
 })
 .catch(function(err) {
-    console.error(err);
+    // console.error(err); // TODO: Handle.
+    __karma__.start();
 });
+// TODO: Show only source trace.
 // var resultFn = __karma__.result;
 // __karma__.result = function() {
 //     var log = arguments[0].log[0];
