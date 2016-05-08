@@ -16,8 +16,8 @@ module.exports = function(karma) {
             {pattern: "build/js/**/*.js", included: false, watched: true},
             "karma.main.js"
         ],
-        // browsers: ["PhantomJS"],
-        browsers: ["Chrome"],
+        browsers: ["PhantomJS"],
+        // browsers: ["Chrome"],
         plugins: [
             "karma-jasmine",
             "karma-coverage",
