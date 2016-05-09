@@ -16,12 +16,12 @@ module.exports = function(karma) {
             {pattern: "node_modules/rxjs/**/*.js.map", included: false, watched: false},
             {pattern: "node_modules/@angular/**/*.js", included: false, watched: false},
             {pattern: "node_modules/@angular/**/*.js.map", included: false, watched: false},
+            {pattern: "node_modules/karma-custom-log/**", included: false, watched: false},
             {pattern: "systemjs.config.js", included: false, watched: false},
             {pattern: "build/js/**/*.js", included: false, watched: true},
             "karma.main.js"
         ],
         browsers: ["PhantomJS"],
-        // browsers: ["Chrome"],
         plugins: [
             "karma-jasmine",
             "karma-coverage",

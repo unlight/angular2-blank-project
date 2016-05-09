@@ -14,7 +14,8 @@ function filterSystemConfig(config) {
         "@angular/common": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
-        "@angular/router-deprecated": {main: "index", defaultExtension: "js"}
+        "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
+        "n:karma-custom-log": {main: "lib/index.js", format: "cjs"}
     });
     config.packages["build/js"] = {
         defaultExtension: "js",
@@ -28,7 +29,8 @@ System.import("base/systemjs.config.js")
     return Promise.all([
         System.import("@angular/core/testing"),
         System.import("@angular/platform-browser-dynamic/testing"),
-        System.import("@angular/testing/src/utils")
+        System.import("@angular/testing/src/utils"),
+        System.import("n:karma-custom-log")
     ]);
 })
 .then(function(providers) {
@@ -37,6 +39,8 @@ System.import("base/systemjs.config.js")
     testing.setBaseTestProviders(testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS, testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
     var utils = providers[2];
     if (!utils.browserDetection) utils.browserDetection = new utils.BrowserDetection();
+    var k = providers[3];
+    __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
 })
 .then(function() {
     // Load spec files.
@@ -60,13 +64,3 @@ System.import("base/systemjs.config.js")
     // console.error(err); // TODO: Handle.
     __karma__.start();
 });
-// TODO: Show only source trace.
-// var resultFn = __karma__.result;
-// __karma__.result = function() {
-//     var log = arguments[0].log[0];
-//     var newLog = log.split("\n").slice(0, 3).join("\n");
-//     // newLog = newLog.replace(/http:\/\/localhost:9876\/base/g, "absolute");
-//     arguments[0].log[0] = newLog;
-//     // console.log('__karma__.result', arguments);
-//     return resultFn.apply(__karma__, arguments);
-// }
