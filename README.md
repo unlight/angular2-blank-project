@@ -84,8 +84,6 @@ gulp test watch
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
 * Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
-* When Node6 be ready rewrite gulpfile
-* Karma reporter plugin (remove absolute path)
 * Check gulp-typescript for reading d.ts files
 * Beep on error
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
