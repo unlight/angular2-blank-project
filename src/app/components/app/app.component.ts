@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Routes} from '@angular/router';
 import {NavbarComponent} from './navbar/navbar.component';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 import {HomeComponent} from '../../components/home/home.component';
@@ -14,10 +14,10 @@ import {SearchService} from '../../services/search.service';
     templateUrl: './app.component.html',
     directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })
-@RouteConfig([
-    { path: '/', name: 'Home', component: HomeComponent },
-    { path: '/about', name: 'About', component: AboutComponent },
-    { path: '/search', name: 'Search', component: SearchComponent }
+@Routes([
+    { path: '/', component: HomeComponent },
+    { path: '/about', component: AboutComponent },
+    { path: '/search', component: SearchComponent }
 ])
 export class AppComponent { }
 

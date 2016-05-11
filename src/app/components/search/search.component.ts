@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
-import {ROUTER_DIRECTIVES, RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, RouteSegment} from '@angular/router';
 import {Person} from '../../services/search.service';
 import {SearchService} from 'services';
 
@@ -15,9 +15,10 @@ export class SearchComponent {
     query: string;
     searchResults: Array<Person>;
 
-    constructor(public searchService: SearchService, params: RouteParams) {
-        if (params.get('term')) {
-            this.query = decodeURIComponent(params.get('term'));
+    constructor(public searchService: SearchService, routeSegment: RouteSegment) {
+        // TODO: term
+        if (routeSegment.getParam('term')) {
+            this.query = decodeURIComponent(routeSegment.getParam('term'));
             this.search();
         }
     }
