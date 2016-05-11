@@ -28,9 +28,9 @@
     ];
 
     umdPackages.forEach(function(name) {
-        // var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
-        // packages[name] = { main: main, format: "amd", defaultExtension: "js"};
-        packages[name] = { main: "index", defaultExtension: "js"};
+        var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
+        packages[name] = { main: main, format: "amd", defaultExtension: "js"};
+        // packages[name] = { main: "index", defaultExtension: "js"};
     });
 
     var config = {

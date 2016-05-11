@@ -16,7 +16,7 @@ const baseLibs = [
     lib("zone.js/dist/zone.js"),
     lib("reflect-metadata/Reflect.js"),
     lib("systemjs/dist/system.src.js"),
-    lib("rxjs/bundles/Rx.js"),
+    // lib("rxjs/bundles/Rx.js"),
     lib("lodash")
 ];
 
