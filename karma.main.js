@@ -9,17 +9,18 @@ function filterSystemConfig(config) {
     config.baseURL = "/base/";
     config.paths["js/node_modules/*"] = "build/js/node_modules/*";
     Object.assign(config.packages,  {
-        "@angular/core": {main: "index", defaultExtension: "js"},
-        "@angular/compiler": {main: "index", defaultExtension: "js"},
         "@angular/common": {main: "index", defaultExtension: "js"},
+        "@angular/compiler": {main: "index", defaultExtension: "js"},
+        "@angular/core": {main: "index", defaultExtension: "js"},
+        "@angular/http": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
-        "n:karma-custom-log": {main: "lib/index.js", format: "cjs"}
+        "@angular/router": {main: "index", defaultExtension: "js"},
+        "@angular/testing": {main: "index", defaultExtension: "js"},
+        "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
+        "n:karma-custom-log": {main: "lib/index.js", format: "cjs"},
+        "build/js": {defaultExtension: "js", format: "register"}
     });
-    config.packages["build/js"] = {
-        defaultExtension: "js",
-        format: "register"
-    };
 }
 
 // Load our SystemJS configuration.

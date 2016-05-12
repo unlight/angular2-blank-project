@@ -2,6 +2,7 @@ import {provide} from '@angular/core';
 import {ComponentInstruction, Router, RouteParams} from '@angular/router-deprecated';
 import {ResolvedInstruction} from '@angular/router-deprecated/src/instruction';
 import {SpyObject} from '@angular/testing/src/testing_internal';
+import {RouteSegment} from '@angular/router';
 
 export class MockRouteParams extends SpyObject {
     private ROUTE_PARAMS = {};
@@ -38,6 +39,11 @@ export class MockRouterProvider {
         return [
             provide(Router, { useValue: this.mockRouter }),
             provide(RouteParams, { useValue: this.mockRouteParams }),
+            // provide(RouteSegment, { useClass: MockRouteSegment }),
         ];
     }
+}
+
+export class MockRouteSegment extends SpyObject {
+    constructor() { super(RouteSegment); }
 }

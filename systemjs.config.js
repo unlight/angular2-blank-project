@@ -24,7 +24,8 @@
         "@angular/platform-browser",
         "@angular/platform-browser-dynamic",
         "@angular/router",
-        "@angular/testing"
+        "@angular/testing",
+        "@angular/router-deprecated"
     ];
 
     umdPackages.forEach(function(name) {
