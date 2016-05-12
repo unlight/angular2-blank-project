@@ -14,7 +14,6 @@ function filterSystemConfig(config) {
         "@angular/common": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
-        "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
         "n:karma-custom-log": {main: "lib/index.js", format: "cjs"}
     });
     config.packages["build/js"] = {
@@ -46,11 +45,8 @@ System.import("base/systemjs.config.js")
     // Load spec files.
     var imports = Object.keys(__karma__.files)
         .filter(function(file) {
-            return /\.(spec|test)\.js$/.test(file);
+            return /\.spec\.js$/.test(file);
         })
-        // .filter(function(filepath) {
-        //     return filepath === "/base/build/js/components/app/app.test.js";
-        // })
         .map(function(file) {
             file = file.replace(/^\/base\//, "");
             return System.import(file);

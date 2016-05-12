@@ -33,7 +33,7 @@ module.exports = function(karma) {
         ],
         preprocessors: {
             // Source files, that you want to generate coverage for, do not include tests or libraries.
-            "build/js/**/!(*.spec|*.test|*.e2e).js": ["coverage"],
+            "build/js/**/!(*.spec|*.e2e-spec).js": ["coverage"],
             "build/js/**/*.js": ["sourcemap"]
         },
         reporters: ["progress", "coverage"],
