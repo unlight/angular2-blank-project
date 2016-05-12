@@ -1,13 +1,13 @@
 const merge2 = require("merge2");
 
-module.exports = (gulp, config, paths, typingsStream) => {
+module.exports = (gulp, g, config, paths, debug, typingsStream) => {
 
     gulp.task("protractor", function protractor() {
         var sourceRoot = "src/app";
         var dest = "build/js";
         var sourceStream = merge2(
             typingsStream().load(),
-            gulp.src(paths.srcApp("**/*.e2e.ts"), { since: gulp.lastRun("protractor") })
+            gulp.src(paths.srcApp("**/*.e2e-spec.ts"), { since: gulp.lastRun("protractor") })
         );
         return sourceStream
             .pipe(debug("Test file", "protractor"))

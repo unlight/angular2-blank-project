@@ -9,18 +9,18 @@ function filterSystemConfig(config) {
     config.baseURL = "/base/";
     config.paths["js/node_modules/*"] = "build/js/node_modules/*";
     Object.assign(config.packages,  {
-        "@angular/core": {main: "index", defaultExtension: "js"},
-        "@angular/compiler": {main: "index", defaultExtension: "js"},
         "@angular/common": {main: "index", defaultExtension: "js"},
+        "@angular/compiler": {main: "index", defaultExtension: "js"},
+        "@angular/core": {main: "index", defaultExtension: "js"},
+        "@angular/http": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
+        "@angular/router": {main: "index", defaultExtension: "js"},
+        "@angular/testing": {main: "index", defaultExtension: "js"},
         "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
-        "n:karma-custom-log": {main: "lib/index.js", format: "cjs"}
+        "n:karma-custom-log": {main: "lib/index.js", format: "cjs"},
+        "build/js": {defaultExtension: "js", format: "register"}
     });
-    config.packages["build/js"] = {
-        defaultExtension: "js",
-        format: "register"
-    };
 }
 
 // Load our SystemJS configuration.
@@ -46,11 +46,8 @@ System.import("base/systemjs.config.js")
     // Load spec files.
     var imports = Object.keys(__karma__.files)
         .filter(function(file) {
-            return /\.(spec|test)\.js$/.test(file);
+            return /\.spec\.js$/.test(file);
         })
-        // .filter(function(filepath) {
-        //     return filepath === "/base/build/js/components/app/app.test.js";
-        // })
         .map(function(file) {
             file = file.replace(/^\/base\//, "");
             return System.import(file);
