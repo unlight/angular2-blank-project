@@ -1,4 +1,4 @@
-import {Pipe} from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 /**
  * Truncate a string to the given length and append suffix.
@@ -11,7 +11,7 @@ import {Pipe} from '@angular/core';
  * ```
  */
 @Pipe({ name: 'truncate' })
-export class TruncatePipe {
+export class TruncatePipe implements PipeTransform {
     transform(value: string, args: string[]): any {
         let length = parseInt(args[0] || '20', 10),
             suffix = args[1] || '';

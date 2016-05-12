@@ -1,7 +1,8 @@
 const combine = require("stream-combiner");
 const merge2 = require("merge2");
+var path = require("path");
 
-module.exports = (gulp, g, config, paths, typingsStream, debug) => {
+module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
     gulp.task("scripts", function scripts() {
         var sourceRoot = "src/app";
@@ -11,7 +12,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug) => {
         );
         return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
-            .pipe(g.if("!*.d.ts", combine(
+            .pipe(g.if(tsLintCondition, combine(
                 g.tslint(),
                 g.tslint.report("verbose", {emitError: false})
             )))
@@ -26,5 +27,14 @@ module.exports = (gulp, g, config, paths, typingsStream, debug) => {
             .pipe(debug("Written", "scripts"))
             .pipe(g.connect.reload());
     });
+
+    var excludeExtList = [".e2e-spec", ".spec", ".d"];
+
+    function tsLintCondition(file) {
+        var basename = path.basename(file.path, ".ts");
+        var extname = path.extname(basename);
+        return !_.includes(excludeExtList, extname);
+
+    }
 
 };

@@ -6,10 +6,10 @@ import {Directive, ElementRef} from '@angular/core';
  * https://angular.io/docs/ts/latest/api/core/Directive-var.html
  */
 @Directive({
-    selector: '[logElement]' // using [ ] means selecting attributes
+    selector: '[sdLoglement]' // using [ ] means selecting attributes
 })
-export class LogElement {
+export class LogElementDirective {
     constructor(element: ElementRef) {
-        console.log('directive [logElement]', element);
+        console.log('directive [sd-logElement]', element);
     }
 }
