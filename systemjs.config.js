@@ -4,7 +4,6 @@
     };
     // map tells the System loader where to look for things
     var map = {
-        "services": "js/node_modules/services.js",
         "rxjs": "n:rxjs",
         "@angular": "n:@angular",
         "lodash": "n:lodash"

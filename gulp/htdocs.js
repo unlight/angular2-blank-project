@@ -6,7 +6,7 @@ module.exports = (gulp, g, config, debug) => {
         var styles = gulp.src(["build/design/style.css", "build/design/*"], { read: false });
         var jsLibs = config.jsLibs;
         if (config.isProd) {
-           jsLibs = ["build/libs/*"];
+           jsLibs = "build/js/*";
         }
         var scripts = gulp.src(jsLibs, { read: false });
         return gulp.src("src/index.html")
