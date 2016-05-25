@@ -29,5 +29,3 @@ export class SearchComponent {
         );
     }
 }
-
-export {SearchService} from './../services/search.service';
