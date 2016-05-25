@@ -11,6 +11,23 @@ const g = require("gulp-load-plugins")();
 const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
+const polyfills = [
+    {name: "es6-shim"},
+    {name: "zone.js"},
+    {name: "reflect-metadata"}
+];
+
+const vendors = [
+    {name: "@angular/common"},
+    {name: "@angular/compiler"},
+    {name: "@angular/core"},
+    {name: "@angular/http"},
+    {name: "@angular/platform-browser"},
+    {name: "@angular/platform-browser-dynamic"},
+    {name: "@angular/router"},
+    {name: "rxjs"},
+];
+
 const baseLibs = [
     lib("es6-shim"),
     lib("zone.js/dist/zone.js"),
@@ -21,11 +38,16 @@ const baseLibs = [
 ];
 
 var tsProject = _.once(() => {
-    return g.typescript.createProject("tsconfig.json", {
+    var options = {
         typescript: require("typescript"),
-        isolatedModules: config.isDev && (args.isolatedModules || args.im),
-        outFile: config.isProd ? "app.js" : undefined
-    });
+        isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
+    };
+    if (config.isProd) {
+        Object.assign(options, {
+            outFile: "app.js"
+        });
+    };
+    return g.typescript.createProject("tsconfig.json", options);
 });
 
 const config = {
@@ -66,7 +88,9 @@ const config = {
     tscOptions: require("./tsconfig").compilerOptions,
     karma: {
         configFile: projectRoot + "/karma.conf.js"
-    }
+    },
+    polyfills: polyfills,
+    vendors: vendors
 };
 
 module.exports = config;

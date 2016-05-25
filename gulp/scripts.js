@@ -12,6 +12,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         );
         return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
+            .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition)))
             .pipe(g.if(tsLintCondition, combine(
                 g.tslint(),
                 g.tslint.report("verbose", {emitError: false})
@@ -28,13 +29,18 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.connect.reload());
     });
 
-    var excludeExtList = [".e2e-spec", ".spec", ".d"];
-
     function tsLintCondition(file) {
+        var excludeExtList = [".e2e-spec", ".spec", ".d"];
         var basename = path.basename(file.path, ".ts");
         var extname = path.extname(basename);
         return !_.includes(excludeExtList, extname);
+    }
 
+    function tsSourceCondition(file) {
+        var excludeExtList = [".e2e-spec", ".spec"];
+        var basename = path.basename(file.path, ".ts");
+        var extname = path.extname(basename);
+        return !_.includes(excludeExtList, extname);
     }
 
 };
