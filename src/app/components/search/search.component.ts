@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
 import {ROUTER_DIRECTIVES, RouteSegment} from '@angular/router';
-import {Person} from '../../services/search.service';
-import {SearchService} from 'services';
+import {Person, SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'sd-search',
@@ -30,3 +29,5 @@ export class SearchComponent {
         );
     }
 }
+
+export {SearchService} from './../services/search.service';
