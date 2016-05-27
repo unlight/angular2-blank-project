@@ -29,12 +29,10 @@ const vendors = [
 ];
 
 const baseLibs = [
-    lib("es6-shim"),
-    lib("zone.js/dist/zone.js"),
-    lib("reflect-metadata/Reflect.js"),
+    ...polyfills.map(x => lib(x.name)),
     lib("systemjs/dist/system.src.js"),
     // lib("rxjs/bundles/Rx.js"),
-    lib("lodash")
+    // lib("lodash")
 ];
 
 var tsProject = _.once(() => {

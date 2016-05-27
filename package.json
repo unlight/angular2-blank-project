@@ -33,6 +33,7 @@
     "codelyzer": "0.0.19",
     "connect-history-api-fallback": "1.2.0",
     "del": "2.2.0",
+    "fs-symlink": "^1.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-concat": "2.6.0",
     "gulp-connect": "4.0.0",
