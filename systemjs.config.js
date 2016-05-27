@@ -11,7 +11,7 @@
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {main: "bootstrap.js", format: "register", defaultExtension: "js"},
+        "js": {main: "bootstrap.js", format: "cjs", defaultExtension: "js"},
         "rxjs": {defaultExtension: "js"}
     };
 

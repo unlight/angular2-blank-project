@@ -19,7 +19,7 @@ function filterSystemConfig(config) {
         "@angular/testing": {main: "index", defaultExtension: "js"},
         "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
         "n:karma-custom-log": {main: "lib/index.js", format: "cjs"},
-        "build/js": {defaultExtension: "js", format: "register"}
+        "build/js": {defaultExtension: "js", format: "cjs"}
     });
 }
 
