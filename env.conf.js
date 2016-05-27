@@ -12,9 +12,9 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const polyfills = [
-    {name: "es6-shim"},
-    {name: "zone.js"},
-    {name: "reflect-metadata"}
+    {name: "es6-shim", main: lib("es6-shim")},
+    {name: "zone.js", main: lib("zone.js")},
+    {name: "reflect-metadata", main: lib("reflect-metadata")}
 ];
 
 const vendors = [
@@ -22,9 +22,9 @@ const vendors = [
     {name: "@angular/compiler"},
     {name: "@angular/core"},
     {name: "@angular/http"},
+    {name: "@angular/router"},
     {name: "@angular/platform-browser"},
     {name: "@angular/platform-browser-dynamic"},
-    {name: "@angular/router"},
     {name: "rxjs"},
 ];
 
@@ -40,11 +40,12 @@ var tsProject = _.once(() => {
         typescript: require("typescript"),
         isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
     };
-    if (config.isProd) {
-        Object.assign(options, {
-            outFile: "app.js"
-        });
-    };
+    // if (config.isProd) {
+    //     Object.assign(options, {
+    //         outFile: "app.js",
+    //         module: "amd"
+    //     });
+    // };
     return g.typescript.createProject("tsconfig.json", options);
 });
 
