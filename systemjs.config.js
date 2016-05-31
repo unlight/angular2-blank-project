@@ -11,7 +11,7 @@
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {main: "bootstrap.js", format: "cjs", defaultExtension: "js"},
+        "js": {main: "main.js", format: "amd", defaultExtension: "js"},
         "rxjs": {defaultExtension: "js"}
     };
 
@@ -24,7 +24,7 @@
         "@angular/platform-browser-dynamic",
         "@angular/router",
         "@angular/testing",
-        "@angular/router-deprecated"
+        "@angular/router-deprecated" // TODO: Remove
     ];
 
     umdPackages.forEach(function(name) {
