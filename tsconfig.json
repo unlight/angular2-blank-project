@@ -4,7 +4,7 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"target": "es5",
-		"module": "commonjs",
+		"module": "amd",
 		"moduleResolution": "node",
 		"removeComments": false,
 		"declaration": false,
