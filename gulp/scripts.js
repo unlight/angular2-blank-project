@@ -5,6 +5,8 @@ var streamify = require("stream-array");
 var escodegen = require("escodegen");
 var cjsify = require("commonjs-everywhere").cjsify;
 const del = require("del");
+var through = require("through2");
+var cjs2amd = require("cjs2amd");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -21,11 +23,12 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
                 g.tslint(),
                 g.tslint.report("verbose", {emitError: false})
             )))
-            .pipe(g.if("bootstrap.ts", g.preprocess({ context: config })))
+            .pipe(g.if("main.ts", g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
             .pipe(g.if(config.isDev, g.sourcemaps.init()))
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
+            .pipe(g.if(config.isProd, g.uglify()))
             .pipe(g.size({ title: "scripts" }))
             .pipe(gulp.dest(paths.destJs))
             .pipe(debug("Written", "scripts"))
@@ -35,23 +38,22 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
     gulp.task("cleanup", function() {
         return del([
-            "build/node_modules",
-            "build/js/**",
-            "!build/js",
-            "!build/js/polyfills.js",
-            "!build/js/app.js"
+            "build/node_modules"
         ]);
     });
 
-    gulp.task("bundle", () => {
-        return createStream("app.js", "js/bootstrap.js", process.cwd() + "/build")
-            .pipe(g.uglify())
-            .pipe(gulp.dest(paths.destJs));
-    });
-
+    gulp.task("shims", shims);
+    
     gulp.task("polyfills", polyfills);
     
-    // gulp.task("vendors", vendors);
+    gulp.task("vendors", vendors);
+
+    function shims() {
+        return gulp.src(config.shims.map(x => x.main))
+            .pipe(g.concat("shims.js"))
+            .pipe(g.uglify())
+            .pipe(gulp.dest("build/js"))        
+    }
 
     function polyfills () {
         return gulp.src(config.polyfills.map(x => x.main))
@@ -60,21 +62,26 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(gulp.dest("build/js"))
     }
 
-    // function vendors() {
-    //     var libsContent = config.vendors.map(lib => `require('${lib.name}')`).join("\n");
-    //     return g.file("vendors.js", libsContent, {src: true})
-    //         .pipe(g.bro())
-    //         // .pipe(g.uglify())
-    //         .pipe(gulp.dest("build/js"))
-    // }
-
-    function createStream(outFile, entry, root) {
-        var ast = cjsify(entry, root);
-        var result = escodegen.generate(ast);
-        return streamify([new g.util.File({
-            path: outFile,
-            contents: new Buffer(result)
-        })]);
+    function vendors() {
+        var libsContent = config.vendors.map(lib => `require('${lib.name}')`).join("\n");
+        return g.file("vendors.js", libsContent, {src: true})
+            .pipe(through.obj(function(chunk, enc, callback) {
+                var result = cjs2amd.convert({
+                    name: "vendors",
+                    input: "vendors.js",
+                    inputData: chunk.contents.toString(),
+                    root: "./node_modules",
+                    recursive: true,
+                    bundle: true,
+                    noRequireShim: true,
+                    noDefineSelf: true,
+                    cutNodePath: true
+                });
+                chunk.contents = Buffer.from(result, "utf8");
+                callback(null, chunk);
+            }))
+            .pipe(g.uglify())
+            .pipe(gulp.dest("build/js"))
     }
 
     function tsLintCondition(file) {

@@ -53,7 +53,11 @@ function clearLastRun(name) {
 
 var scriptsTasks = ["scripts"];
 if (config.isProd) {
-    scriptsTasks.push("symlinks", "polyfills", "bundle", "cleanup");
+    scriptsTasks.push(
+        "symlinks",
+        gulp.parallel("shims", "polyfills", "vendors"),
+        "cleanup"
+    );
 }
 
 gulp.task("build", gulp.series(

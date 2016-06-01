@@ -30,6 +30,7 @@
   "devDependencies": {
     "@angular/testing": "0.0.0-0",
     "autoprefixer": "6.3.6",
+    "cjs2amd": "github:unlight/cjs2amd",
     "codelyzer": "0.0.19",
     "commonjs-everywhere": "^0.9.7",
     "connect-history-api-fallback": "1.2.0",
@@ -41,6 +42,7 @@
     "gulp-csso": "2.0.0",
     "gulp-debug": "2.1.2",
     "gulp-di": "0.0.33",
+    "gulp-file": "^0.3.0",
     "gulp-if": "2.0.1",
     "gulp-ignore": "2.0.1",
     "gulp-inject": "4.1.0",
@@ -75,6 +77,7 @@
     "save-stream": "0.2.1",
     "stream-array": "^1.1.2",
     "stream-combiner": "0.2.2",
+    "through2": "^2.0.1",
     "tslint": "3.10.2",
     "typescript": "1.8.10",
     "unixify": "0.2.1"
