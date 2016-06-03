@@ -55,6 +55,11 @@ const config = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     APP_BASE: "/",
+    get concatToApp() {
+        if (!this.isProd) return false;
+        // Concat to 1 file, if false release build will be splitted to app.js and vendors.js
+        return false;
+    },
     get isDev() {
         return !this.isProd;
     },
