@@ -83,7 +83,6 @@ gulp test watch
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
-* Production is broken - https://github.com/ghpabs/angular2-seed-project/issues/56
 * Check gulp-typescript for reading d.ts files
 * Beep on error
 * HTTP/2 - https://github.com/systemjs/systemjs/blob/master/docs/production-workflows.md#depcache
