@@ -51,14 +51,9 @@ function clearLastRun(name) {
     };
 }
 
-var scriptsTasks = ["scripts"];
-if (config.isProd) {
-    scriptsTasks.push("symlinks", "polyfills", "bundle", "cleanup");
-}
-
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel("assets", gulp.series(scriptsTasks), "styles"),
+    gulp.parallel("scripts", "styles", "assets"),
     "htdocs"
 ));
 
