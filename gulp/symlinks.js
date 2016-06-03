@@ -1,4 +1,4 @@
-module.exports = (gulp, g, config, debug) => {
+module.exports = (gulp) => {
 
     gulp.task("symlinks", function symlinks() {
         var link = require("fs-symlink");

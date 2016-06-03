@@ -1,12 +1,10 @@
-const path = require("path");
-
-module.exports = (gulp, g, config, debug) => {
+module.exports = (gulp, g, config) => {
 
     gulp.task("htdocs", function htdocs() {
         var styles = gulp.src(["build/design/style.css", "build/design/*"], { read: false });
         var jsLibs = config.jsLibs;
         if (config.isProd) {
-           jsLibs = "build/js/*.js";
+            jsLibs = "build/js/*.js";
         }
         var scripts = gulp.src(jsLibs, { read: false })
             .pipe(g.order(["shims.js", "polyfills.js", "vendors.js", "main.js", "*.js"]));

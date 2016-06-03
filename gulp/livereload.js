@@ -9,7 +9,7 @@ module.exports = (gulp, g, config) => {
             root: folders,
             livereload: config.isDev,
             port: config.PORT,
-            middleware: (connect, opt) => [
+            middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
                 history()
             ]
         });

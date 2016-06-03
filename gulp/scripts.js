@@ -1,16 +1,13 @@
 const combine = require("stream-combiner");
 const merge2 = require("merge2");
 const path = require("path");
-const streamify = require("stream-array");
-const escodegen = require("escodegen");
-const cjsify = require("commonjs-everywhere").cjsify;
 const del = require("del");
 const through = require("through2");
 const cjs2amd = require("cjs2amd");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
-    gulp.task("scripts", function scripts(done) {
+    gulp.task("scripts", function scripts() {
         var stream = merge2();
         if (config.isProd) {
             stream.add(shimsStream());

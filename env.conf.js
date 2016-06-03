@@ -47,7 +47,7 @@ var tsProject = _.once(() => {
             outFile: "main.js",
             module: "amd"
         });
-    };
+    }
     return g.typescript.createProject("tsconfig.json", options);
 });
 
@@ -69,7 +69,7 @@ const config = {
     get jsLibs() {
         var result = baseLibs.slice();
         if (this.isDev) {
-            result.push("systemjs.config.js")
+            result.push("systemjs.config.js");
         }
         return result;
     },

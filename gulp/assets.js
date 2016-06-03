@@ -1,6 +1,6 @@
 const merge2 = require("merge2");
 
-module.exports = (gulp, g, config, debug) => {
+module.exports = (gulp) => {
 
     gulp.task("assets", function assets() {
         var images = gulp.src("src/images/**/*.{png,jpg,gif,svg}")
