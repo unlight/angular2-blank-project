@@ -24,12 +24,6 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.connect.reload());
     });
 
-    gulp.task("cleanup", function() {
-        return del([
-            "build/node_modules"
-        ]);
-    });
-
     function appStream() {
         var sourceRoot = "src/app";
         var sourceStream = merge2(

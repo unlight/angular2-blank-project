@@ -29,7 +29,7 @@ const vendors = [
 ];
 
 const shims = [
-    new Lib("cjs2amd/require-shim.js", {default: false, shim: true})
+    new Lib("amdainty", {default: false, shim: true})
 ];
 
 const baseLibs = [

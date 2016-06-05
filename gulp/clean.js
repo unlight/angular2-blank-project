@@ -6,4 +6,9 @@ module.exports = (gulp) => {
         return del(["build", ".coverage"]);
     });
 
+    gulp.task("cleanup", function() {
+        return del([
+            "build/node_modules"
+        ]);
+    });
 };
