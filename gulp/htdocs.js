@@ -7,7 +7,7 @@ module.exports = (gulp, g, config) => {
             jsLibs = "build/js/*.js";
         }
         var scripts = gulp.src(jsLibs, { read: false })
-            .pipe(g.order(["shims.js", "polyfills.js", "vendors.js", "main.js", "*.js"]));
+            .pipe(g.if(config.isProd, g.order(["polyfills.js", "vendors.js", "main.js", "*.js"])));
         return gulp.src("src/index.html")
             .pipe(g.inject(styles, { addRootSlash: false, ignorePath: "build" }))
             .pipe(g.inject(scripts, { addRootSlash: false, ignorePath: "build" }))

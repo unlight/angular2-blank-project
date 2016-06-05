@@ -1,7 +1,6 @@
 const combine = require("stream-combiner");
 const merge2 = require("merge2");
 const path = require("path");
-const del = require("del");
 const through = require("through2");
 const cjs2amd = require("cjs2amd");
 
@@ -10,14 +9,13 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     gulp.task("scripts", function scripts() {
         var stream = merge2();
         if (config.isProd) {
-            stream.add(shimsStream());
             stream.add(polyfillsStream());
             stream.add(vendorsStream());
         }
         stream.add(appStream());
         return stream
             .pipe(g.if(config.isProd, combine(
-                g.if(config.concatToApp, g.concat("app.js")),
+                g.if(config.singleFile, g.concat("app.js")),
                 g.uglify()
             )))
             .pipe(gulp.dest(paths.destJs))
@@ -45,13 +43,10 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.size({ title: "scripts" }));
     }
 
-    function shimsStream() {
-        return gulp.src(config.shims.map(x => x.main))
-            .pipe(g.concat("shims.js"));        
-    }
-
     function polyfillsStream() {
-        return gulp.src(config.polyfills.map(x => x.main))
+        var sources = config.shims.map(x => x.main)
+            .concat(config.polyfills.map(x => x.main));
+        return gulp.src(sources)
             .pipe(g.concat("polyfills.js"));
     }
 

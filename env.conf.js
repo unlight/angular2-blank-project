@@ -11,30 +11,21 @@ const g = require("gulp-load-plugins")();
 const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
-const polyfills = [
-    new Lib("es6-shim"),
-    new Lib("zone.js"),
-    new Lib("reflect-metadata"),
-];
-
-const vendors = [
-    new Lib("rxjs"),
-    new Lib("@angular/common"),
-    new Lib("@angular/compiler"),
-    new Lib("@angular/core"),
-    new Lib("@angular/http"),
-    new Lib("@angular/router"),
-    new Lib("@angular/platform-browser"),
-    new Lib("@angular/platform-browser-dynamic"),
-];
-
-const shims = [
-    new Lib("amdainty", {default: false, shim: true})
-];
-
 const baseLibs = [
-    ...polyfills.map(x => x.main),
-    new Lib("systemjs/dist/system.js").main,
+    new Lib("amdainty", {shim: true}),
+    new Lib("es6-shim", {polyfill: true, dev: true}),
+    new Lib("zone.js", {polyfill: true, dev: true}),
+    new Lib("reflect-metadata", {polyfill: true, dev: true}),
+    new Lib("systemjs/dist/system.js", {dev: true}),
+    new Lib("./systemjs.config.js", {dev: true}),
+    new Lib("rxjs", {vendor: true}),
+    new Lib("@angular/common", {vendor: true}),
+    new Lib("@angular/compiler", {vendor: true}),
+    new Lib("@angular/core", {vendor: true}),
+    new Lib("@angular/http", {vendor: true}),
+    new Lib("@angular/router", {vendor: true}),
+    new Lib("@angular/platform-browser", {vendor: true}),
+    new Lib("@angular/platform-browser-dynamic", {vendor: true}),
 ];
 
 var tsProject = _.once(() => {
@@ -55,9 +46,8 @@ const config = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     APP_BASE: "/",
-    get concatToApp() {
-        if (!this.isProd) return false;
-        // Concat to 1 file, if false release build will be splitted to app.js and vendors.js
+    // Concat to single file, if false release build will be splitted to app.js and vendors.js
+    get singleFile() {
         return false;
     },
     get isDev() {
@@ -67,16 +57,13 @@ const config = {
         return this.NODE_ENV === "production" || args.production === true;
     },
     get jsLibs() {
-        var result = baseLibs.slice();
+        var result = [];
         if (this.isDev) {
-            result.push("systemjs.config.js");
+            result = baseLibs.filter(x => x.dev).map(x => x.main);
+        } else if (this.isProd) {
+            result = baseLibs.filter(x => x.prod).map(x => x.main);
         }
         return result;
-    },
-    test: {
-        jsLibs: [
-            ...baseLibs
-        ]
     },
     paths: {
         srcApp: createGlob("src/app"),
@@ -95,9 +82,16 @@ const config = {
     karma: {
         configFile: projectRoot + "/karma.conf.js"
     },
-    polyfills: polyfills,
-    vendors: vendors,
-    shims: shims
+    get polyfills() {
+        return baseLibs.filter(x => x.polyfill);
+    },
+    get vendors() {
+        var result = baseLibs.filter(x => x.vendor);
+        return result;
+    },
+    get shims() {
+        return baseLibs.filter(x => x.shim);
+    }
 };
 
 module.exports = config;
@@ -134,12 +128,12 @@ function Lib(name, visibility) {
             return lib(this.name);
         }
     });
-    ["shim", "polyfill", "dev", "prod", "test"].forEach(name => {
+    ["shim", "polyfill", "dev", "prod", "test", "vendor"].forEach(name => {
         Object.defineProperty(this, name, {
             get: function() {
                 var result = this.defaultVisibility;
                 if (visibility[name] !== undefined) {
-                    result = Boolean(visibility.isPolyfill);
+                    result = Boolean(visibility[name]);
                 }
                 return result;
             }
