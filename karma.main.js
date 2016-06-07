@@ -17,7 +17,6 @@ function filterSystemConfig(config) {
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
         "@angular/router": {main: "index", defaultExtension: "js"},
         "@angular/testing": {main: "index", defaultExtension: "js"},
-        "@angular/router-deprecated": {main: "index", defaultExtension: "js"},
         "n:karma-custom-log": {main: "lib/index.js"},
         "build/js": {defaultExtension: "js"}
     });
