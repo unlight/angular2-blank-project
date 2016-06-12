@@ -10,6 +10,7 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 - [Typings](https://github.com/typings/typings)
 - [Karma](http://karma-runner.github.io/)
 - [Protractor](http://www.protractortest.org/)
+- [Codelyzer](mgechev/codelyzer)
 
 ### FEATURES
 - Gulp 4 incremental builds (since, lastRun)
