@@ -10,7 +10,7 @@ module.exports = (gulp, g, config, paths, debug, _) => {
     gulp.task("styles", function styles() {
         var lastRunStyles = gulp.lastRun("styles");
         var sassStream = merge2(
-                gulp.src(["src/styles/*.scss"], { base: "src/styles", since: lastRunStyles }),
+                gulp.src(["src/design/*.scss"], { base: "src/design", since: lastRunStyles }),
                 gulp.src(paths.srcApp("**/*.scss"), { since: lastRunStyles })
             )
             .pipe(g.sassLint())
