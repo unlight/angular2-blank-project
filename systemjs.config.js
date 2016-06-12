@@ -4,15 +4,13 @@
     };
     // map tells the System loader where to look for things
     var map = {
-        "rxjs": "n:rxjs",
         "@angular": "n:@angular",
         "lodash": "n:lodash"
     };
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {main: "main.js", format: "amd", defaultExtension: "js"},
-        "rxjs": {defaultExtension: "js"}
+        "js": {main: "main.js", defaultExtension: "js"}
     };
 
     var umdPackages = [
@@ -28,7 +26,7 @@
 
     umdPackages.forEach(function(name) {
         var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
-        packages[name] = { main: main, format: "amd", defaultExtension: "js"};
+        packages[name] = { main: main, defaultExtension: "js"};
         // packages[name] = { main: "index", defaultExtension: "js"};
     });
 

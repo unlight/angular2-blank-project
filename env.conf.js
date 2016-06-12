@@ -17,6 +17,7 @@ const baseLibs = [
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
     new Lib("systemjs/dist/system.js", {dev: true}),
+    new Lib("rxjs/bundles/Rx.js", {dev: true}),
     new Lib("./systemjs.config.js", {dev: true}),
     new Lib("rxjs", {vendor: true}),
     new Lib("@angular/common", {vendor: true}),
