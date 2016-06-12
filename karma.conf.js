@@ -3,19 +3,9 @@ var config = require("./env.conf");
 module.exports = function(karma) {
     karma.set({
         files: [
-            {pattern: "node_modules/es6-shim/es6-shim.js", included: true, watched: false},
-            {pattern: "node_modules/systemjs/dist/system.src.js", included: true, watched: false},
-            {pattern: "node_modules/systemjs/dist/system-polyfills.js", included: true, watched: false},
-            {pattern: "node_modules/zone.js/dist/zone.js", included: true, watched: false},
-            {pattern: "node_modules/zone.js/dist/jasmine-patch.js", included: true, watched: false},
-            {pattern: "node_modules/zone.js/dist/async-test.js", included: true, watched: false},
-            {pattern: "node_modules/zone.js/dist/fake-async-test.js", included: true, watched: false},
-            {pattern: "node_modules/reflect-metadata/Reflect.js", included: true, watched: false},
-            {pattern: "node_modules/reflect-metadata/Reflect.js.map", included: false, watched: false},
-            {pattern: "node_modules/rxjs/**/*.js", included: false, watched: false},
-            {pattern: "node_modules/rxjs/**/*.js.map", included: false, watched: false},
-            {pattern: "node_modules/@angular/**/*.js", included: false, watched: false},
-            {pattern: "node_modules/@angular/**/*.js.map", included: false, watched: false},
+            ...config.testJsLibs.map(p => ({pattern: p, included: true, watched: false})),
+            {pattern: "node_modules/rxjs/**", included: false, watched: false},
+            {pattern: "node_modules/@angular/**", included: false, watched: false},
             {pattern: "node_modules/karma-custom-log/**", included: false, watched: false},
             {pattern: "systemjs.config.js", included: false, watched: false},
             {pattern: "build/js/**/*.js", included: false, watched: true},

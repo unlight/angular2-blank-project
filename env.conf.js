@@ -16,8 +16,12 @@ const baseLibs = [
     new Lib("es6-shim", {polyfill: true, dev: true}),
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
-    new Lib("systemjs/dist/system.js", {dev: true}),
-    new Lib("rxjs/bundles/Rx.js", {dev: true}),
+    new Lib("systemjs/dist/system.js", {dev: true, test: true}),
+    new Lib("systemjs/dist/system-polyfills.js", {test: true}),
+    new Lib("zone.js/dist/jasmine-patch.js", {test: true}),
+    new Lib("zone.js/dist/async-test.js", {test: true}),
+    new Lib("zone.js/dist/fake-async-test.js", {test: true}),
+    new Lib("rxjs/bundles/Rx.js", {dev: true, test: true}),
     new Lib("./systemjs.config.js", {dev: true}),
     new Lib("rxjs", {vendor: true}),
     new Lib("@angular/common", {vendor: true}),
@@ -65,6 +69,9 @@ const config = {
             result = baseLibs.filter(x => x.prod).map(x => x.main);
         }
         return result;
+    },
+    get testJsLibs() {
+        return baseLibs.filter(x => x.polyfill || x.test).map(x => x.main);
     },
     paths: {
         srcApp: createGlob("src/app"),

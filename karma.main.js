@@ -7,8 +7,9 @@ __karma__.loaded = function() {};
 // Inject configuration to SystemJS config.
 function filterSystemConfig(config) {
     config.baseURL = "/base/";
-    config.paths["js/node_modules/*"] = "build/js/node_modules/*";
+    config.map["rxjs"] = "n:rxjs";
     Object.assign(config.packages,  {
+        "rxjs": {defaultExtension: "js"},
         "@angular/common": {main: "index", defaultExtension: "js"},
         "@angular/compiler": {main: "index", defaultExtension: "js"},
         "@angular/core": {main: "index", defaultExtension: "js"},
