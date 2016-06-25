@@ -13,7 +13,7 @@
         "js": {main: "main.js", defaultExtension: "js"}
     };
 
-    var umdPackages = [
+    [
         "@angular/common",
         "@angular/compiler",
         "@angular/core",
@@ -22,9 +22,7 @@
         "@angular/platform-browser-dynamic",
         "@angular/router",
         "@angular/testing"
-    ];
-
-    umdPackages.forEach(function(name) {
+    ].forEach(function(name) {
         var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
         packages[name] = { main: main, defaultExtension: "js"};
         // packages[name] = { main: "index", defaultExtension: "js"};
