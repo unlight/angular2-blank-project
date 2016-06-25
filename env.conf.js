@@ -79,7 +79,7 @@ const config = {
         destJs: "build/js"
     },
     typings: [
-        "typings/browser.d.ts",
+        "typings/index.d.ts",
         "node_modules/typescript/lib/lib.es6.d.ts"
     ],
     projectRoot: projectRoot,

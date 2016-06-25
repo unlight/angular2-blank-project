@@ -1,7 +1,7 @@
 {
   "dependencies": {},
   "devDependencies": {},
-  "ambientDependencies": {
+  "globalDependencies": {
     "angular-protractor": "registry:dt/angular-protractor#1.5.0+20160317120654",
     "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#dd638012d63e069f2c99d06ef4dcc9616a943ee4",
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#1469ae2d0c260c082517bfb971be8c14e2389fe5",

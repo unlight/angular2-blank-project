@@ -36,8 +36,8 @@ function debug(title, namespace) {
 }
 
 function karmaServer(options, done) {
-    const server = new karma.Server(options, (err) => {
-        done(err ? new Error("Karma error " + err) : null);
+    const server = new karma.Server(options, (code) => {
+        done(code ? new Error("Karma error code " + code) : null);
     });
     server.start();
     return server;
