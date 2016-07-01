@@ -23,7 +23,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     });
 
     function appStream() {
-        var sourceRoot = "src/app";
+        var sourceRoot = "";
         var sourceStream = merge2(
             typingsStream().load(),
             gulp.src(paths.srcApp("**/*.ts"), {since: gulp.lastRun("scripts")})
@@ -39,7 +39,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
             .pipe(g.if(config.isDev, g.sourcemaps.init()))
             .pipe(g.typescript(config.tsProject)).js
-            .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
+            .pipe(g.if(config.isDev, g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot})))
             .pipe(g.size({ title: "scripts" }));
     }
 

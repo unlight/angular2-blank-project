@@ -8,9 +8,14 @@
         "lodash": "n:lodash"
     };
 
+    var meta = {
+        "js/*": {defaultExtension: "js"},
+        "n:*": {defaultExtension: "js"}
+    };
+
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": {main: "main.js", defaultExtension: "js"}
+        "js": {main: "main.js"}
     };
 
     [
@@ -24,14 +29,14 @@
         "@angular/testing"
     ].forEach(function(name) {
         var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
-        packages[name] = { main: main, defaultExtension: "js"};
-        // packages[name] = { main: "index", defaultExtension: "js"};
+        packages[name] = { main: main};
     });
 
     var config = {
         paths: paths,
         map: map,
-        packages: packages
+        packages: packages,
+        meta: meta
     };
 
     // filterSystemConfig - index.html's chance to modify config before we register it.

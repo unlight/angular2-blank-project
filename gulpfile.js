@@ -54,7 +54,8 @@ function clearLastRun(name) {
 gulp.task("build", gulp.series(
     "clean",
     gulp.parallel("scripts", "styles", "assets"),
-    "htdocs"
+    "htdocs",
+    "symlinks"
 ));
 
 gulp.task("test", gulp.series(

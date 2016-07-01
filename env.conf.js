@@ -16,7 +16,7 @@ const baseLibs = [
     new Lib("es6-shim", {polyfill: true, dev: true}),
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
-    new Lib("systemjs/dist/system.js", {dev: true, test: true}),
+    new Lib("systemjs/dist/system.src.js", {dev: true, test: true}),
     new Lib("systemjs/dist/system-polyfills.js", {test: true}),
     new Lib("zone.js/dist/jasmine-patch.js", {test: true}),
     new Lib("zone.js/dist/async-test.js", {test: true}),
@@ -29,7 +29,6 @@ const baseLibs = [
     new Lib("@angular/core", {vendor: true}),
     new Lib("@angular/http", {vendor: true}),
     new Lib("@angular/router", {vendor: true}),
-    new Lib("@angular/platform-browser", {vendor: true}),
     new Lib("@angular/platform-browser-dynamic", {vendor: true}),
 ];
 

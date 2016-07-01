@@ -6,7 +6,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 __karma__.loaded = function() {};
 // Inject configuration to SystemJS config.
 function filterSystemConfig(config) {
-    config.baseURL = "/base/";
+    config.baseURL = "/base/build";
     config.map["rxjs"] = "n:rxjs";
     Object.assign(config.packages,  {
         "rxjs": {defaultExtension: "js"},
@@ -19,7 +19,6 @@ function filterSystemConfig(config) {
         "@angular/router": {main: "index", defaultExtension: "js"},
         "@angular/testing": {main: "index", defaultExtension: "js"},
         "n:karma-custom-log": {main: "lib/index.js"},
-        "build/js": {defaultExtension: "js"}
     });
 }
 
@@ -49,7 +48,9 @@ System.import("base/systemjs.config.js")
             return /\.spec\.js$/.test(file);
         })
         .map(function(file) {
-            file = file.replace(/^\/base\//, "");
+            if (file.slice(0, 12) === '/base/build/') {
+                file = file.slice(12);
+            }
             return System.import(file);
         });
     return Promise.all(imports);
