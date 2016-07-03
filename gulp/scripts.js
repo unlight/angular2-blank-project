@@ -1,6 +1,8 @@
 const combine = require("stream-combiner");
 const merge2 = require("merge2");
 const path = require("path");
+const del = require("del");
+const deleteEmpty = require('delete-empty');
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -13,21 +15,36 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         stream.add(appStream());
         return stream
             .pipe(gulp.dest(paths.destJs))
-            .pipe(g.if(config.isProd, combine(
-                g.order(["polyfills.js", "vendors.js", "main.js"]),
-                g.if("main.js", combine(
-                    g.bro({bundleExternal: false}),
-                    gulp.dest(paths.destJs)
-                )),
-                g.if(config.singleFile, combine(
-                    g.debug(),
-                    g.concat("app.js"),
-                    gulp.dest(paths.destJs)
-                ))
-                // g.uglify()
-            )))
+            .pipe(g.if(config.isProd, productionStream()))
+            .pipe(gulp.dest(paths.destJs))
             .pipe(g.connect.reload());
     });
+
+    function productionStream() {
+        var stream = combine(
+            g.ignore.include(["polyfills.js", "vendors.js", "main.js"]),
+            g.if("main.js", g.bro({bundleExternal: false})),
+            g.if(config.singleFile, combine(
+                g.order(["polyfills.js", "vendors.js", "main.js"]),
+                g.concat("app.js")
+            )),
+            g.uglify()
+        );
+        stream.on('end', cleanup);
+        return stream;
+    }
+
+    function cleanup() {
+        var rmpaths = [paths.destJs + '/**/*.*'];
+        // TODO: Move to config.
+        if (config.singleFile) {
+            rmpaths.push("!build/js/app.js");
+        } else {
+            rmpaths.push("!build/js/polyfills.js", "!build/js/vendors.js", "!build/js/main.js");
+        }
+        del.sync(rmpaths);
+        deleteEmpty.sync(paths.destJs);
+    }
 
     function appStream() {
         var sourceRoot = "";
@@ -35,7 +52,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             typingsStream().load(),
             gulp.src(paths.srcApp("**/*.ts"), {since: gulp.lastRun("scripts")})
         );
-        var s = sourceStream
+        return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
             .pipe(g.if(tsLintCondition(), combine(
@@ -48,7 +65,6 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(config.isDev, g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot})))
             .pipe(g.size({ title: "scripts" }));
-        return s;
     }
 
     function polyfillsStream() {

@@ -38,12 +38,6 @@ var tsProject = _.once(() => {
         typescript: require("typescript"),
         isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
     };
-    // if (config.isProd) {
-    //     Object.assign(options, {
-    //         outFile: "main.js"
-    //         module: "amd"
-    //     });
-    // }
     return g.typescript.createProject("tsconfig.json", options);
 });
 

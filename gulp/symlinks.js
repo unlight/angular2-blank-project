@@ -1,8 +1,11 @@
-module.exports = (gulp) => {
+module.exports = (gulp, config) => {
 
-    gulp.task("symlinks", function symlinks() {
-        var link = require("fs-symlink");
-        return link("node_modules", "build/node_modules", "junction");
+    gulp.task("symlinks", function symlinks(done) {
+        if (!config.isProd) {
+            var link = require("fs-symlink");
+            link("node_modules", "build/node_modules", "junction");
+        }
+        done();
     });
 
 };
