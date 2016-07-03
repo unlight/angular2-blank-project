@@ -51,6 +51,23 @@ function clearLastRun(name) {
     };
 }
 
+// gulp.task('build2', () =>
+//   gulp.src('build/js/main.js')
+//     .pipe(g.bro({
+//         bundleExternal: false
+//     }))
+//     .pipe(gulp.dest('build/js2'))
+// );
+
+// gulp.task('build3', () =>
+//     g.file("vendors.js", `
+//         require('@angular/core');
+//         `, {src: true})
+//     .pipe(g.bro({
+//     }))
+//     .pipe(gulp.dest('build/js2'))
+// )
+
 gulp.task("build", gulp.series(
     "clean",
     gulp.parallel("scripts", "styles", "assets"),

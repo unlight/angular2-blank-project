@@ -12,7 +12,7 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    new Lib("amdainty", {shim: true}),
+    new Lib("typescript-helpers", {polyfill: true, dev: true}),
     new Lib("es6-shim", {polyfill: true, dev: true}),
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
@@ -23,7 +23,8 @@ const baseLibs = [
     new Lib("zone.js/dist/fake-async-test.js", {test: true}),
     new Lib("rxjs/bundles/Rx.js", {dev: true, test: true}),
     new Lib("./systemjs.config.js", {dev: true}),
-    new Lib("rxjs", {vendor: true}),
+    new Lib("rxjs/add/operator/map", {vendor: true}),
+    new Lib("rxjs/Observable", {vendor: true}),
     new Lib("@angular/common", {vendor: true}),
     new Lib("@angular/compiler", {vendor: true}),
     new Lib("@angular/core", {vendor: true}),
@@ -37,12 +38,12 @@ var tsProject = _.once(() => {
         typescript: require("typescript"),
         isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
     };
-    if (config.isProd) {
-        Object.assign(options, {
-            outFile: "main.js",
-            module: "amd"
-        });
-    }
+    // if (config.isProd) {
+    //     Object.assign(options, {
+    //         outFile: "main.js"
+    //         module: "amd"
+    //     });
+    // }
     return g.typescript.createProject("tsconfig.json", options);
 });
 
@@ -52,7 +53,7 @@ const config = {
     APP_BASE: "/",
     // Concat to single file, if false release build will be splitted to app.js and vendors.js
     get singleFile() {
-        return false;
+        return true;
     },
     get isDev() {
         return !this.isProd;

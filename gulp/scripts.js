@@ -1,8 +1,6 @@
 const combine = require("stream-combiner");
 const merge2 = require("merge2");
 const path = require("path");
-const through = require("through2");
-const cjs2amd = require("cjs2amd");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -14,11 +12,20 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         }
         stream.add(appStream());
         return stream
-            .pipe(g.if(config.isProd, combine(
-                g.if(config.singleFile, g.concat("app.js")),
-                g.uglify()
-            )))
             .pipe(gulp.dest(paths.destJs))
+            .pipe(g.if(config.isProd, combine(
+                g.order(["polyfills.js", "vendors.js", "main.js"]),
+                g.if("main.js", combine(
+                    g.bro({bundleExternal: false}),
+                    gulp.dest(paths.destJs)
+                )),
+                g.if(config.singleFile, combine(
+                    g.debug(),
+                    g.concat("app.js"),
+                    gulp.dest(paths.destJs)
+                ))
+                // g.uglify()
+            )))
             .pipe(g.connect.reload());
     });
 
@@ -28,7 +35,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             typingsStream().load(),
             gulp.src(paths.srcApp("**/*.ts"), {since: gulp.lastRun("scripts")})
         );
-        return sourceStream
+        var s = sourceStream
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
             .pipe(g.if(tsLintCondition(), combine(
@@ -41,6 +48,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(config.isDev, g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot})))
             .pipe(g.size({ title: "scripts" }));
+        return s;
     }
 
     function polyfillsStream() {
@@ -51,22 +59,10 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     }
 
     function vendorsStream() {
-        var libsContent = config.vendors.map(lib => `require('${lib.name}')`).join("\n");
-        return g.file("vendors.js", libsContent, {src: true})
-            .pipe(through.obj(function(chunk, enc, callback) {
-                var result = cjs2amd.convert({
-                    name: "vendors",
-                    input: "vendors.js",
-                    inputData: chunk.contents.toString(),
-                    root: "./node_modules",
-                    recursive: true,
-                    bundle: true,
-                    noRequireShim: true,
-                    noDefineSelf: true,
-                    cutNodePath: true
-                });
-                chunk.contents = Buffer.from(result, "utf8");
-                callback(null, chunk);
+        var entries = config.vendors.map(lib => lib.name);
+        return g.file('vendors.js', ";", {src: true})
+            .pipe(g.bro({
+                require: entries
             }));
     }
 

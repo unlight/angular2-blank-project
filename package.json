@@ -27,14 +27,14 @@
   },
   "devDependencies": {
     "@angular/testing": "0.0.0-0",
-    "amdainty": "1.0.0",
     "autoprefixer": "6.3.6",
-    "cjs2amd": "github:unlight/cjs2amd",
+    "browserify": "^13.0.1",
     "codelyzer": "0.0.24",
     "connect-history-api-fallback": "1.2.0",
     "del": "2.2.1",
     "fs-symlink": "1.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-bro": "^0.2.2",
     "gulp-concat": "2.6.0",
     "gulp-connect": "4.1.0",
     "gulp-csso": "2.0.0",
@@ -78,6 +78,7 @@
     "through2": "2.0.1",
     "tslint": "^3.13.0",
     "typescript": "1.8.10",
+    "typescript-helpers": "^1.0.0",
     "unixify": "0.2.1"
   }
 }
