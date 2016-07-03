@@ -12,7 +12,7 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    new Lib("typescript-helpers", {polyfill: true, dev: true}),
+    new Lib("typescript-helpers", {polyfill: true, dev: true, test: true}),
     new Lib("es6-shim", {polyfill: true, dev: true}),
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
