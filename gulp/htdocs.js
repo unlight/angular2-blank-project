@@ -1,7 +1,7 @@
 module.exports = (gulp, g, config) => {
 
     gulp.task("htdocs", function htdocs() {
-        var styles = gulp.src(["build/design/style.css", "build/design/*"], { read: false });
+        var styles = gulp.src(["build/design/main.css", "build/design/*"], { read: false });
         var jsLibs = config.jsLibs;
         if (config.isProd) {
             jsLibs = "build/js/*.js";

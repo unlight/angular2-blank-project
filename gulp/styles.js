@@ -32,8 +32,8 @@ module.exports = (gulp, g, config, paths, debug, _) => {
             .pipe(g.postcss(postcssPlugins()))
             .pipe(g.if(config.isDev, g.sourcemaps.write()))
             .pipe(g.if(config.isProd, combine(
-                g.order(["style.css"]),
-                g.concat("style.css"),
+                g.order(["main.css"]),
+                g.concat("main.css"),
                 g.csso()
             )))
             .pipe(g.size({ title: "styles" }))
