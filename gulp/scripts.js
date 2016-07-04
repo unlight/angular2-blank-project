@@ -2,7 +2,7 @@ const combine = require("stream-combiner");
 const merge2 = require("merge2");
 const path = require("path");
 const del = require("del");
-const deleteEmpty = require('delete-empty');
+const deleteEmpty = require("delete-empty");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -16,21 +16,21 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         return stream
             .pipe(gulp.dest(paths.destJs))
             .pipe(g.if(config.isProd, productionStream()))
-            .pipe(gulp.dest(paths.destJs))
             .pipe(g.connect.reload());
     });
 
     function productionStream() {
         var stream = combine(
             g.ignore.include(["polyfills.js", "vendors.js", "main.js"]),
-            g.if("main.js", g.bro({bundleExternal: false})),
-            g.if(config.singleFile, combine(
-                g.order(["polyfills.js", "vendors.js", "main.js"]),
-                g.concat("app.js")
-            )),
-            g.uglify()
+            g.order(["polyfills.js", "vendors.js", "main.js"]),
+            // g.sourcemaps.init({loadMaps:true}),
+            g.if("main.js", g.bro({bundleExternal: config.singleFile})),
+            g.if(config.singleFile, g.concat("app.js")),
+            g.uglify(),
+            // g.sourcemaps.write(".", {includeContent: true}),
+            gulp.dest(paths.destJs)
         );
-        stream.on('end', cleanup);
+        stream.on("end", cleanup);
         return stream;
     }
 
@@ -68,29 +68,30 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     }
 
     function polyfillsStream() {
-        var sources = config.shims.map(x => x.main)
-            .concat(config.polyfills.map(x => x.main));
+        var sources = config.polyfills.map(x => x.main);
         return gulp.src(sources)
             .pipe(g.concat("polyfills.js"));
     }
 
     function vendorsStream() {
-        var entries = config.vendors.map(lib => lib.name);
-        return g.file('vendors.js', ";", {src: true})
+        if (config.singleFile) {
+            return g.file("vendors.js", "", {src: true});
+        }
+        return g.file("vendors.js", ";", {src: true})
             .pipe(g.bro({
-                require: entries
+                require: config.vendors.map(lib => lib.name)
             }));
     }
 
     function tsLintCondition() {
-        return tsCondition([".e2e-spec", ".spec", ".d"]);
+        return tsExcludeCondition([".e2e-spec", ".spec", ".d"]);
     }
 
     function tsSourceCondition() {
-        return tsCondition([".e2e-spec", ".spec"]);
+        return tsExcludeCondition([".e2e-spec", ".spec"]);
     }
 
-    function tsCondition(excludeExtList) {
+    function tsExcludeCondition(excludeExtList) {
         return function(file) {
             var basename = path.basename(file.path, ".ts");
             var extname = path.extname(basename);

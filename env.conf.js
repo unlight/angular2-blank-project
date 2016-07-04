@@ -90,9 +90,6 @@ const config = {
     get vendors() {
         var result = baseLibs.filter(x => x.vendor);
         return result;
-    },
-    get shims() {
-        return baseLibs.filter(x => x.shim);
     }
 };
 
@@ -130,7 +127,7 @@ function Lib(name, visibility) {
             return lib(this.name);
         }
     });
-    ["shim", "polyfill", "dev", "prod", "test", "vendor"].forEach(name => {
+    ["polyfill", "dev", "prod", "test", "vendor"].forEach(name => {
         Object.defineProperty(this, name, {
             get: function() {
                 var result = this.defaultVisibility;
