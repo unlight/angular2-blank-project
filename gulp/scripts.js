@@ -10,7 +10,9 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         var stream = merge2();
         if (config.isProd) {
             stream.add(polyfillsStream());
-            stream.add(vendorsStream());
+            if (!config.singleFile) {
+                stream.add(vendorsStream());    
+            }
         }
         stream.add(appStream());
         return stream
@@ -74,9 +76,6 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     }
 
     function vendorsStream() {
-        if (config.singleFile) {
-            return g.file("vendors.js", "", {src: true});
-        }
         return g.file("vendors.js", ";", {src: true})
             .pipe(g.bro({
                 require: config.vendors.map(lib => lib.name)
