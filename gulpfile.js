@@ -15,7 +15,6 @@ require("gulp-di")(gulp, {scope: []})
     .provide("config", config)
     .provide("paths", config.paths)
     .provide("debug", debug)
-    .provide("karmaServer", karmaServer)
     .provide("clearLastRun", clearLastRun)
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .resolve();
@@ -35,14 +34,6 @@ function debug(title, namespace) {
     return g.util.noop();
 }
 
-function karmaServer(options, done) {
-    const server = new karma.Server(options, (code) => {
-        done(code ? new Error("Karma error code " + code) : null);
-    });
-    server.start();
-    return server;
-}
-
 function clearLastRun(name) {
     var task = gulp._getTask(name);
     return function reset(done) {
@@ -50,23 +41,6 @@ function clearLastRun(name) {
         done();
     };
 }
-
-// gulp.task('build2', () =>
-//   gulp.src('build/js/main.js')
-//     .pipe(g.bro({
-//         bundleExternal: false
-//     }))
-//     .pipe(gulp.dest('build/js2'))
-// );
-
-// gulp.task('build3', () =>
-//     g.file("vendors.js", `
-//         require('@angular/core');
-//         `, {src: true})
-//     .pipe(g.bro({
-//     }))
-//     .pipe(gulp.dest('build/js2'))
-// )
 
 gulp.task("build", gulp.series(
     "clean",

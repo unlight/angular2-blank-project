@@ -81,6 +81,7 @@ gulp test watch
 
 ### TODO
 
+* Remove tslint and use https://github.com/eslint/typescript-eslint-parser
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS

@@ -1,9 +1,10 @@
 import {provide, enableProdMode} from '@angular/core';
 import {APP_BASE_HREF} from '@angular/common';
 import {bootstrap} from '@angular/platform-browser-dynamic';
-import {ROUTER_PROVIDERS} from '@angular/router';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {AppComponent} from './components/app/app.component';
+import {disableDeprecatedForms, provideForms} from '@angular/forms';
+import {CORE_DIRECTIVES} from '@angular/common';
 
 // @if isProd
 enableProdMode();
@@ -11,7 +12,9 @@ enableProdMode();
 
 bootstrap(AppComponent, [
     HTTP_PROVIDERS,
-    ROUTER_PROVIDERS,
+    CORE_DIRECTIVES,
+    disableDeprecatedForms(),
+    provideForms(),
     provide(APP_BASE_HREF, { useValue: '/* @echo APP_BASE */' })
 ]);
 
@@ -24,7 +27,7 @@ bootstrap(AppComponent, [
 //   }).catch(function(err) {
 //     console.log('ServiceWorker registration failed: ', err);
 //   });
-// } 
+// }
 
 // Hot loading is temporary disabled
 //

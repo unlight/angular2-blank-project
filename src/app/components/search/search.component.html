@@ -1,6 +1,6 @@
 <h2>Search</h2>
 <form>
-  <input type="search" [(ngModel)]="query" (keyup.enter)="search()">
+  <input type="search" [(ngModel)]="query" name="q" (keyup.enter)="search()">
   <button type="button" (click)="search()">Search</button>
 </form>
 <div *ngIf="loading">loading...</div>

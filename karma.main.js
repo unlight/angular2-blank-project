@@ -12,7 +12,9 @@ function filterSystemConfig(config) {
         "rxjs": {defaultExtension: "js"},
         "@angular/common": {main: "index", defaultExtension: "js"},
         "@angular/compiler": {main: "index", defaultExtension: "js"},
+        "@angular/forms": {main: "index", defaultExtension: "js"},
         "@angular/core": {main: "index", defaultExtension: "js"},
+        "@angular/forms": {main: "index", defaultExtension: "js"},
         "@angular/http": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser": {main: "index", defaultExtension: "js"},
         "@angular/platform-browser-dynamic": {main: "index", defaultExtension: "js"},
@@ -39,7 +41,7 @@ System.import("base/systemjs.config.js")
     var utils = providers[2];
     if (!utils.browserDetection) utils.browserDetection = new utils.BrowserDetection();
     var k = providers[3];
-    __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
+    // __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
 })
 .then(function() {
     // Load spec files.
@@ -55,10 +57,4 @@ System.import("base/systemjs.config.js")
         });
     return Promise.all(imports);
 })
-.then(function() {
-    __karma__.start();
-})
-.catch(function(err) {
-    // console.error(err); // TODO: Handle.
-    __karma__.start();
-});
+.then(__karma__.start, __karma__.error);

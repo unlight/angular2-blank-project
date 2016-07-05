@@ -1,12 +1,9 @@
 import {Component} from '@angular/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
-
 import {NameListService} from '../../services/name-list.service';
 
 @Component({
   selector: 'sd-home',
-  templateUrl: './home.component.html',
-  directives: [FORM_DIRECTIVES, CORE_DIRECTIVES]
+  templateUrl: './home.component.html'
 })
 export class HomeComponent {
   newName: string;

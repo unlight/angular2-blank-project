@@ -1,12 +1,13 @@
 import {Component} from '@angular/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
-import {ROUTER_DIRECTIVES, RouteSegment} from '@angular/router';
+import {Observable} from 'rxjs/Observable';
+import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Person, SearchService} from '../../services/search.service';
+import 'rxjs/operator/do';
 
 @Component({
     selector: 'sd-search',
     templateUrl: './search.component.html',
-    directives: [FORM_DIRECTIVES, CORE_DIRECTIVES, ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES]
 })
 export class SearchComponent {
 
@@ -14,12 +15,14 @@ export class SearchComponent {
     query: string;
     searchResults: Array<Person>;
 
-    constructor(public searchService: SearchService, routeSegment: RouteSegment) {
-        // TODO: term
-        if (routeSegment.getParam('term')) {
-            this.query = decodeURIComponent(routeSegment.getParam('term'));
+    constructor(public searchService: SearchService, r: ActivatedRoute ) {
+        const term: Observable<string> = r.params.map(p => p['term'])
+            .map(p => decodeURIComponent(p));
+        // TODO: Can be merged with search()
+        term.subscribe(t => {
+            this.query = t;
             this.search();
-        }
+        });
     }
 
     search(): void {

@@ -23,12 +23,13 @@
         "@angular/compiler",
         "@angular/core",
         "@angular/http",
+        "@angular/forms",
         "@angular/platform-browser",
         "@angular/platform-browser-dynamic",
         "@angular/router",
         "@angular/testing"
     ].forEach(function(name) {
-        var main = name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
+        var main = "bundles/" + name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
         packages[name] = { main: main};
     });
 
