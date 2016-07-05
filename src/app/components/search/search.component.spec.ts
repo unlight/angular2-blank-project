@@ -1,8 +1,8 @@
 import { provide } from '@angular/core';
 import { TestComponentBuilder } from '@angular/compiler/testing';
-import {it, describe, expect, injectAsync, beforeEachProviders, inject} from '@angular/core/testing';
-import { RouteSegment } from '@angular/router';
-import { MockRouteSegment } from '../../services/mocks/routes';
+import {it, describe, expect, beforeEachProviders, inject} from '@angular/core/testing';
+// import { RouteSegment } from '@angular/router';
+// import { MockRouteSegment } from '../../services/mocks/routes';
 import {MockSearchService} from '../../services/mocks/search.service';
 import { SearchComponent } from './search.component';
 
@@ -14,7 +14,7 @@ describe('Search component', () => {
 
         return [
             mockSearchService.getProviders(),
-            provide(RouteSegment, { useValue: new MockRouteSegment({ 'term': 'peyton' }) })
+            // provide(RouteSegment, { useValue: new MockRouteSegment({ 'term': 'peyton' }) })
         ];
     });
 

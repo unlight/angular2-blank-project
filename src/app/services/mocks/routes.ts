@@ -1,8 +1,8 @@
 import {provide} from '@angular/core';
 import {SpyObject} from '@angular/testing/src/testing_internal';
-import {RouteSegment, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
-export class MockRouteSegment implements RouteSegment {
+class MockRouteSegment {
     urlSegments: any;
     parameters: any;
     outlet: string;

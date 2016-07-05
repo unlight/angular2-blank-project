@@ -11,7 +11,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         if (config.isProd) {
             stream.add(polyfillsStream());
             if (!config.singleFile) {
-                stream.add(vendorsStream());    
+                stream.add(vendorsStream());
             }
         }
         stream.add(appStream());
@@ -58,8 +58,8 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
             .pipe(g.if(tsLintCondition(), combine(
-                g.tslint(),
-                g.tslint.report("verbose", {emitError: false})
+                g.eslint(),
+                g.eslint.format()
             )))
             .pipe(g.if("main.ts", g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))

@@ -1,3 +1,5 @@
+const karma = require("karma");
+
 module.exports = (gulp, g, config) => {
 
     gulp.task("karma", done => {

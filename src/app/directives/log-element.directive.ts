@@ -10,6 +10,6 @@ import {Directive, ElementRef} from '@angular/core';
 })
 export class LogElementDirective {
     constructor(element: ElementRef) {
-        console.log('directive [sd-logElement]', element);
+        console.log('directive [sd-logElement]', element); // eslint-disable-line
     }
 }

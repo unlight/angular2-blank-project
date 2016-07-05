@@ -12,7 +12,6 @@ function filterSystemConfig(config) {
         "rxjs": {defaultExtension: "js"},
         "@angular/common": {main: "index", defaultExtension: "js"},
         "@angular/compiler": {main: "index", defaultExtension: "js"},
-        "@angular/forms": {main: "index", defaultExtension: "js"},
         "@angular/core": {main: "index", defaultExtension: "js"},
         "@angular/forms": {main: "index", defaultExtension: "js"},
         "@angular/http": {main: "index", defaultExtension: "js"},

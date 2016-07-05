@@ -28,7 +28,7 @@ export class SearchComponent {
     search(): void {
         this.searchService.search(this.query).subscribe(
             data => { this.searchResults = data; },
-            error => console.log(error)
+            error => console.log(error)  // eslint-disable-line
         );
     }
 }

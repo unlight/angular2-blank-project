@@ -3,13 +3,12 @@
 const gulp = require("gulp");
 const g = require("gulp-load-plugins")();
 const lastRun = require("last-run");
-const karma = require("karma");
 const saveStream = require("save-stream");
 const _ = require("lodash");
 const config = require("./env.conf");
 const args = g.util.env;
 
-require("gulp-di")(gulp, {scope: []})
+require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
     .provide("g", g)
     .provide("config", config)
@@ -21,7 +20,7 @@ require("gulp-di")(gulp, {scope: []})
 
 function debug(title, namespace) {
     var arg = args.debug;
-    var debugStream = g.debug({title: title});
+    var debugStream = g.debug({ title: title });
     if (arg === true || arg === "*") {
         return debugStream;
     } else if (typeof arg === "string") {
@@ -34,10 +33,18 @@ function debug(title, namespace) {
     return g.util.noop();
 }
 
-function clearLastRun(name) {
-    var task = gulp._getTask(name);
+function clearLastRun(task) {
+    var fn = task;
+    if (typeof task === "string") {
+        fn = gulp._getTask(task);
+    }
+    var metadata = require("undertaker/lib/helpers/metadata");
+    var meta = metadata.get(fn);
+    if (meta) {
+        fn = meta.orig || fn;
+    }
     return function reset(done) {
-        lastRun.release(task);
+        lastRun.release(fn);
         done();
     };
 }
