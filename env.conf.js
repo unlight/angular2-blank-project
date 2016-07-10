@@ -28,6 +28,7 @@ const baseLibs = [
     new Lib("@angular/common", {vendor: true}),
     new Lib("@angular/compiler", {vendor: true}),
     new Lib("@angular/core", {vendor: true}),
+    new Lib("@angular/forms", {vendor: true}),
     new Lib("@angular/http", {vendor: true}),
     new Lib("@angular/router", {vendor: true}),
     new Lib("@angular/platform-browser-dynamic", {vendor: true}),
