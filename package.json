@@ -29,7 +29,6 @@
     "autoprefixer": "6.3.7",
     "bootstrap": "4.0.0-alpha.2",
     "browserify": "^13.0.1",
-    "codelyzer": "0.0.25",
     "connect-history-api-fallback": "1.2.0",
     "del": "2.2.1",
     "delete-empty": "^0.1.3",
