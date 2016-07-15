@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
 import {Person, SearchService} from '../../services/search.service';
-import 'rxjs/operator/do';
 
 @Component({
     selector: 'sd-search',
