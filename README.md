@@ -80,7 +80,6 @@ gulp test watch
 
 ### TODO
 
-* try karma-commonjs
 * remove bootstrap4/sass use post css only
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun

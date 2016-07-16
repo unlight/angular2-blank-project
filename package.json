@@ -36,7 +36,6 @@
     "flex-layout-attribute": "1.0.3",
     "fs-symlink": "1.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-bro": "^0.2.2",
     "gulp-concat": "2.6.0",
     "gulp-connect": "4.1.0",
     "gulp-csso": "2.0.0",
