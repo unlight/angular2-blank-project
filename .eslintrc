@@ -1,4 +1,4 @@
-module.exports = {
+{
     "env": {
         "browser": true,
         "es6": true,
@@ -23,4 +23,4 @@ module.exports = {
         "linebreak-style": ["warn", "unix"],
         "semi": ["warn", "always"]
     }
-};
+}
