@@ -7,5 +7,8 @@
     "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#1469ae2d0c260c082517bfb971be8c14e2389fe5",
     "node": "registry:dt/node#4.0.0+20160319033040",
     "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654"
+  },
+  "globalDevDependencies": {
+    "gulp-tslint": "registry:dt/gulp-tslint#3.6.0+20160316155526"
   }
 }
