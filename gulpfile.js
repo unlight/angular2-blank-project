@@ -1,7 +1,7 @@
 "use strict";
 
 const gulp = require("gulp");
-const g = require("gulp-load-plugins")();
+const g = require("gulp-load-plugins")({ scope: ['devDependencies', 'optionalDependencies'] });
 const lastRun = require("last-run");
 const saveStream = require("save-stream");
 const _ = require("lodash");
