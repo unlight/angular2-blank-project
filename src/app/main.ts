@@ -1,10 +1,12 @@
 import {provide, enableProdMode} from '@angular/core';
-import {APP_BASE_HREF} from '@angular/common';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {HTTP_PROVIDERS} from '@angular/http';
 import {AppComponent} from './components/app/app.component';
+import {APP_BASE_HREF} from '@angular/common';
+import {LocationStrategy, PathLocationStrategy, HashLocationStrategy} from '@angular/common';
 import {disableDeprecatedForms, provideForms} from '@angular/forms';
-import {CORE_DIRECTIVES} from '@angular/common';
+// import {FormsModule} from '@angular/forms'; // RC5
+import { routeProviders } from './routes';
 
 // @if isProd
 enableProdMode();
@@ -12,10 +14,12 @@ enableProdMode();
 
 bootstrap(AppComponent, [
     HTTP_PROVIDERS,
-    CORE_DIRECTIVES,
+    // {modules: [FormsModule] }, // RC5
     disableDeprecatedForms(),
     provideForms(),
-    provide(APP_BASE_HREF, { useValue: '/* @echo APP_BASE */' })
+    { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
+    routeProviders,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
 ]);
 
 // In order to start the Service Worker located at "./sw.js"
