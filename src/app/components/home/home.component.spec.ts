@@ -1,11 +1,19 @@
-import {describe, expect, inject, async, it} from '@angular/core/testing';
+import { describe, expect, inject, async, beforeEachProviders } from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
-// import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {HomeComponent} from './home.component';
 import {NameListService} from '../../services/name-list.service';
+import { getDOM } from '@angular/platform-browser/src/dom/dom_adapter';
+// import {disableDeprecatedForms, provideForms} from '@angular/forms';
 
 describe('Home component', () => {
+
+    // beforeEachProviders(() => [
+    //     disableDeprecatedForms(),
+    //     provideForms(),
+    // ]);
+
+    // TODO: It looks like you're using the old forms module
     it('should work', async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
         return tcb.createAsync(TestComponent).then(rootTC => {
             rootTC.detectChanges();
@@ -15,11 +23,9 @@ describe('Home component', () => {
             let nameListLen = function () {
                 return homeInstance.nameListService.names.length;
             };
-
             expect(homeInstance.nameListService).toEqual(jasmine.any(NameListService));
             expect(nameListLen()).toEqual(4);
-            // BUG: DOM is null https://github.com/angular/angular/issues/6904
-            // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
+            expect(getDOM().querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
             // But we do not need it.
             expect(homeDOMEl.querySelectorAll('li').length).toEqual(nameListLen());
 
@@ -28,9 +34,8 @@ describe('Home component', () => {
             rootTC.detectChanges();
 
             expect(nameListLen()).toEqual(5);
-            // BUG: DOM is null https://github.com/angular/angular/issues/6904
-            // expect(DOM.querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
-            // expect(DOM.querySelectorAll(homeDOMEl, 'li')[4].textContent).toEqual('Minko');
+            expect(getDOM().querySelectorAll(homeDOMEl, 'li').length).toEqual(nameListLen());
+            expect(getDOM().querySelectorAll(homeDOMEl, 'li')[4].textContent).toEqual('Minko');
         });
     })));
 });

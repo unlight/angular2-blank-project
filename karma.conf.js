@@ -8,7 +8,7 @@ module.exports = function(karma) {
             {pattern: "build/node_modules/@angular/**", included: false, watched: false},
             {pattern: "build/node_modules/karma-custom-log/**", included: false, watched: false},
             {pattern: "systemjs.config.js", included: false, watched: false},
-            {pattern: "build/js/**", included: false, watched: true},
+            {pattern: "build/js/**/*.js", included: false, watched: true},
             "karma.main.js"
         ],
         browsers: ["PhantomJS"],
@@ -30,7 +30,7 @@ module.exports = function(karma) {
         coverageReporter: {
             dir: ".coverage",
             reporters: [
-                {type: "json", file: "coverage.json"}, 
+                {type: "json", file: "coverage.json"},
                 {type: "lcov", file: "coverage.lcov"}
             ]
         },

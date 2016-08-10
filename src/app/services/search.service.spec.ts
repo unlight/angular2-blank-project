@@ -1,12 +1,11 @@
-import {it, expect, inject, fakeAsync, beforeEachProviders, tick} from '@angular/core/testing';
-import {xdescribe} from '@angular/core/testing';
-import {MockBackend} from '@angular/http/testing';
+import {xit, expect, inject, fakeAsync, beforeEachProviders, tick} from '@angular/core/testing';
+import {MockBackend, MockConnection} from '@angular/http/testing';
 import {provide} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from '@angular/http';
 import {SearchService} from './search.service';
 
-xdescribe('Search Service', () => {
+describe('Search Service', () => {
     beforeEachProviders(() => {
         return [BaseRequestOptions, MockBackend, SearchService,
             provide(Http, {
@@ -17,11 +16,12 @@ xdescribe('Search Service', () => {
         ];
     });
 
-    it('should retrieve all search results',
-        inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
+    // Should be skipped really, because we do not use http request.
+    xit('should retrieve all search results',
+        inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, backend: MockBackend) => {
             var res: Response;
-            mockBackend.connections.subscribe(c => {
-                expect(c.request.url).toBe('data/people.json');
+            backend.connections.subscribe(c => {
+                expect(c.request.url).toBe('http://example.com/people.json');
                 let response = new ResponseOptions({ body: '[{"name": "John Elway"}, {"name": "Gary Kubiak"}]' });
                 c.mockRespond(new Response(response));
             });
@@ -33,7 +33,8 @@ xdescribe('Search Service', () => {
         }))
     );
 
-    it('should filter by search term',
+    // Should be skipped really, because we do not use http request.
+    xit('should filter by search term',
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {
@@ -49,7 +50,8 @@ xdescribe('Search Service', () => {
         }))
     );
 
-    it('should fetch by id',
+    // Should be skipped really, because we do not use http request.
+    xit('should fetch by id',
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {

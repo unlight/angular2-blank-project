@@ -1,4 +1,4 @@
-import {describe, expect, async, inject, it} from '@angular/core/testing';
+import {describe, expect, async, inject} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 import {AboutComponent} from './about.component';
