@@ -1,5 +1,6 @@
 "use strict";
 
+process.env.BLUEBIRD_WARNINGS = 0;
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 process.env.PORT = process.env.PORT || "8080";
 
@@ -12,7 +13,7 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    new Lib("typescript-helpers", {polyfill: true, dev: true, test: true}),
+    new Lib("tslib", { polyfill: true, dev: true, test: true}),
     new Lib("es6-shim", {polyfill: true, dev: true}),
     new Lib("zone.js", {polyfill: true, dev: true}),
     new Lib("reflect-metadata", {polyfill: true, dev: true}),
@@ -23,15 +24,6 @@ const baseLibs = [
     new Lib("zone.js/dist/fake-async-test.js", {test: true}),
     new Lib("rxjs/bundles/Rx.js", {dev: true, test: true}),
     new Lib("./systemjs.config.js", {dev: true}),
-    new Lib("rxjs/add/operator/map", {vendor: true}),
-    new Lib("rxjs/Observable", {vendor: true}),
-    new Lib("@angular/common", {vendor: true}),
-    new Lib("@angular/compiler", {vendor: true}),
-    new Lib("@angular/core", {vendor: true}),
-    new Lib("@angular/forms", {vendor: true}),
-    new Lib("@angular/http", {vendor: true}),
-    new Lib("@angular/router", {vendor: true}),
-    new Lib("@angular/platform-browser-dynamic", {vendor: true}),
 ];
 
 var tsProject = _.once(() => {
@@ -48,7 +40,7 @@ const config = {
     APP_BASE: "/",
     // Concat to single file, if false release build will be splitted to app.js and vendors.js
     get singleFile() {
-        return true;
+        return false;
     },
     get isDev() {
         return !this.isProd;
@@ -87,10 +79,6 @@ const config = {
     },
     get polyfills() {
         return baseLibs.filter(x => x.polyfill);
-    },
-    get vendors() {
-        var result = baseLibs.filter(x => x.vendor);
-        return result;
     }
 };
 
@@ -128,7 +116,7 @@ function Lib(name, visibility) {
             return lib(this.name);
         }
     });
-    ["polyfill", "dev", "prod", "test", "vendor"].forEach(name => {
+    ["polyfill", "dev", "prod", "test"].forEach(name => {
         Object.defineProperty(this, name, {
             get: function() {
                 var result = this.defaultVisibility;

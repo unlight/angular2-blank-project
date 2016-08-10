@@ -1,7 +1,7 @@
 "use strict";
 
 const gulp = require("gulp");
-const g = require("gulp-load-plugins")();
+const g = require("gulp-load-plugins")({ scope: ['devDependencies', 'optionalDependencies'] });
 const lastRun = require("last-run");
 const saveStream = require("save-stream");
 const _ = require("lodash");
@@ -18,7 +18,7 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .resolve();
 
-function debug(title, namespace) {
+function debug(title, ns) {
     var arg = args.debug;
     var debugStream = g.debug({ title: title });
     if (arg === true || arg === "*") {
@@ -26,7 +26,7 @@ function debug(title, namespace) {
     } else if (typeof arg === "string") {
         title = title.toLowerCase();
         arg = arg.toLowerCase();
-        if (title.indexOf(arg) !== -1 || (namespace && namespace.indexOf(arg) !== -1)) {
+        if (title.indexOf(arg) !== -1 || (ns && ns.indexOf(arg) !== -1)) {
             return debugStream;
         }
     }
@@ -64,5 +64,5 @@ gulp.task("test", gulp.series(
 
 gulp.task("serve", gulp.series(
     "build",
-    gulp.parallel("watch", "livereload")
+    gulp.parallel("watch", "server")
 ));

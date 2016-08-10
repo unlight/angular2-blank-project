@@ -4,7 +4,7 @@ module.exports = (gulp, g, config, _) => {
     
     gulp.task("karma", done => {
         // Watch task is running, so run karma in watch mode.
-        if (_.includes(g.util.env._, "watch")) {
+        if (!_.includes(g.util.env._, "watch")) {
             config.karma.singleRun = true;
         }
         karmaServer(config.karma, done);

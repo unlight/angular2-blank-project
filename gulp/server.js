@@ -1,5 +1,5 @@
 module.exports = (gulp, g, config) => {
-    gulp.task("livereload", function(done) {
+    gulp.task("server", function(done) {
         var history = require("connect-history-api-fallback");
         var folders = ["build"];
         if (config.isDev) {

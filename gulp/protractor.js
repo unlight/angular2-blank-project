@@ -4,7 +4,6 @@ module.exports = (gulp, g, config, paths, debug, typingsStream) => {
 
     gulp.task("protractor", function protractor() {
         var sourceRoot = "src/app";
-        var dest = "build/js";
         var sourceStream = merge2(
             typingsStream().load(),
             gulp.src(paths.srcApp("**/*.e2e-spec.ts"), { since: gulp.lastRun("protractor") })
@@ -14,8 +13,8 @@ module.exports = (gulp, g, config, paths, debug, typingsStream) => {
             .pipe(g.if(config.isDev, g.sourcemaps.init()))
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(config.isDev, g.sourcemaps.write({ sourceRoot: sourceRoot })))
-            .pipe(gulp.dest(dest))
-            .pipe(g.protractor.protractor({configFile: "protractor.conf.js"}));
+            .pipe(gulp.dest(paths.destJs))
+            .pipe(g.protractor.protractor({ configFile: "protractor.conf.js" }));
     });
 
 };
