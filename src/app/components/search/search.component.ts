@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Person, SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'sd-search',
-    templateUrl: './search.component.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: './search.component.html'
 })
 export class SearchComponent {
 

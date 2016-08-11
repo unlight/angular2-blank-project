@@ -1,5 +1,5 @@
-import { describe, expect, inject, async, beforeEachProviders } from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import { inject, async } from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HomeComponent} from './home.component';
 import {NameListService} from '../../services/name-list.service';
@@ -7,11 +7,6 @@ import { getDOM } from '@angular/platform-browser/src/dom/dom_adapter';
 // import {disableDeprecatedForms, provideForms} from '@angular/forms';
 
 describe('Home component', () => {
-
-    // beforeEachProviders(() => [
-    //     disableDeprecatedForms(),
-    //     provideForms(),
-    // ]);
 
     // TODO: It looks like you're using the old forms module
     it('should work', async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {

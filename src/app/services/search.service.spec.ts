@@ -1,4 +1,4 @@
-import {xit, expect, inject, fakeAsync, beforeEachProviders, tick} from '@angular/core/testing';
+import { inject, fakeAsync, tick, addProviders } from '@angular/core/testing';
 import {MockBackend, MockConnection} from '@angular/http/testing';
 import {provide} from '@angular/core';
 import 'rxjs/add/operator/map';
@@ -6,14 +6,14 @@ import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} 
 import {SearchService} from './search.service';
 
 describe('Search Service', () => {
-    beforeEachProviders(() => {
-        return [BaseRequestOptions, MockBackend, SearchService,
+    beforeEach(() => {
+        addProviders([BaseRequestOptions, MockBackend, SearchService,
             provide(Http, {
                 useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
                     return new Http(backend, defaultOptions);
                 }, deps: [MockBackend, BaseRequestOptions]
             }),
-        ];
+        ]);
     });
 
     // Should be skipped really, because we do not use http request.

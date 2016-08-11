@@ -31,11 +31,11 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
             .pipe(g.if(tsLintCondition(), combine(
-                g.tslint({formatter: "verbose"})
-                // g.eslint(),
-                // g.eslint.format()
+                g.tslint({ formatter: "verbose" }),
+                g.eslint(),
+                g.eslint.format()
             )))
-            .pipe(g.if("main.ts", g.preprocess({ context: config })))
+            .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
             .pipe(g.if(config.isDev, g.sourcemaps.init()))
             .pipe(g.typescript(config.tsProject)).js
@@ -101,6 +101,13 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         return b.bundle(function () {
             through.emit("end");
         });
+    }
+
+    function fileNameCondition(names) {
+        return function (file) {
+            var basename = path.basename(file.path);
+            return _.includes(names, basename);
+        };
     }
 
     function tsLintCondition() {
