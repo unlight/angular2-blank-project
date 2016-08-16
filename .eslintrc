@@ -1,26 +1,63 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-    },
-    "extends": "eslint:recommended",
-    "parser": "typescript-eslint-parser",
-    "parserOptions": {
-        "sourceType": "module"
-    },
-    "rules": {
-        "no-console": 1,
-        "no-debugger": 1,
-        "no-duplicate-case": 1,
-        "no-empty": 1,
-        "no-unreachable": 1,
-        "no-unsafe-finally": 1,
-        "no-this-before-super": 0,
-        "constructor-super": 0,
-        "no-unused-vars": 0,
-        "indent": ["warn", 4],
-        "linebreak-style": ["warn", "unix"],
-        "semi": ["warn", "always"]
-    }
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jasmine": true
+  },
+  "plugins": [
+    "lodash",
+    "lodash-smells",
+    "perf-standard",
+    "wix-editor",
+    "jasmine"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:lodash/recommended",
+    "plugin:jasmine/recommended"
+  ],
+  "parser": "typescript-eslint-parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "wix-editor/augmented-assignment": 1,
+    "wix-editor/no-instanceof-array": 1,
+    "wix-editor/no-not-not": 1,
+    "wix-editor/no-unneeded-match": 1,
+    "wix-editor/prefer-filter": 1,
+    "wix-editor/prefer-ternary": 1,
+    "wix-editor/return-boolean": 1,
+    "wix-editor/simplify-boolean-expression": 1,
+    "jasmine/no-focused-tests": 1,
+    "lodash-smells/no-big-ifs": 1,
+    "lodash-smells/no-each-push": 1,
+    "perf-standard/no-instanceof-guard": 2,
+    "perf-standard/no-self-in-constructor": 2,
+    "perf-standard/check-function-inline": 1,
+    "perf-standard/no-array-iterators": 1,
+    "lodash/prefer-lodash-method": 0,
+    "no-console": 1,
+    "no-debugger": 1,
+    "no-duplicate-case": 1,
+    "no-empty": 1,
+    "no-unreachable": 1,
+    "no-unsafe-finally": 1,
+    "no-this-before-super": 0,
+    "constructor-super": 0,
+    "no-unused-vars": 0,
+    "indent": [
+      "warn",
+      4
+    ],
+    "linebreak-style": [
+      "warn",
+      "unix"
+    ],
+    "semi": [
+      "warn",
+      "always"
+    ]
+  }
 }

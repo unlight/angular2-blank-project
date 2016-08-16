@@ -30,7 +30,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
-            .pipe(g.if(tsLintCondition(), combine(
+            .pipe(g.if(tsSourceAndSpecs(), combine(
                 g.tslint({ formatter: "verbose" }),
                 g.eslint(),
                 g.eslint.format()
@@ -108,6 +108,10 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             var basename = path.basename(file.path);
             return _.includes(names, basename);
         };
+    }
+
+    function tsSourceAndSpecs() {
+        return tsExcludeCondition([".d", ".e2e-spec"]);
     }
 
     function tsLintCondition() {

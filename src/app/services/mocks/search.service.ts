@@ -1,7 +1,7 @@
 import {provide} from '@angular/core';
 import {SpyObject} from '@angular/testing/testing_internal';
 import {SearchService} from '../search.service';
-import Spy = jasmine.Spy;
+import Spy = jasmine.Spy; // eslint-disable-line no-undef
 
 export class MockSearchService extends SpyObject {
     getAllSpy: Spy;

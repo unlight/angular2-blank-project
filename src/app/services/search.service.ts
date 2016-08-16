@@ -55,11 +55,7 @@ export class SearchService {
     }
 
     search(q: string) {
-        if (!q || q === '*') {
-            q = '';
-        } else {
-            q = q.toLowerCase();
-        }
+        q = (!q || q === '*') ? '' : q.toLowerCase();
         return this.getAll().map(data => {
             let results = [];
             data.map(item => {
@@ -97,6 +93,7 @@ export class Address {
     city: string;
     state: string;
     zip: string;
+
 
     constructor(obj?: any) {
         this.street = obj && obj.street || null;
