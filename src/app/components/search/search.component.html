@@ -11,6 +11,7 @@
     <th>Name</th>
     <th>Phone</th>
     <th>Address</th>
+    <th>Options</th>
   </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
     <td>{{person.address.street}}<br/>
       {{person.address.city}}, {{person.address.state}} {{person.address.zip}}
     </td>
+    <td><a [routerLink]="['/edit', {id: person.id}]">Edit</a></td>
   </tr>
   </tbody>
 </table>

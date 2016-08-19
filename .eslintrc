@@ -44,8 +44,8 @@
     "no-empty": 1,
     "no-unreachable": 1,
     "no-unsafe-finally": 1,
-    "no-this-before-super": 0,
-    "constructor-super": 0,
+    "no-this-before-super": 1,
+    "constructor-super": 1,
     "no-unused-vars": 0,
     "indent": [
       "warn",
