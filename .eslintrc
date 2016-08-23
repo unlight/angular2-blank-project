@@ -6,6 +6,7 @@
     "jasmine": true
   },
   "plugins": [
+    "flowtype",
     "lodash",
     "lodash-smells",
     "perf-standard",
@@ -22,6 +23,14 @@
     "sourceType": "module"
   },
   "rules": {
+    "flowtype/define-flow-type": 1,
+    "flowtype/generic-spacing": 1,
+    "flowtype/union-intersection-spacing": 1,
+    "flowtype/space-before-generic-bracket": 1,
+    "flowtype/space-before-type-colon": 1,
+    "flowtype/require-parameter-type": 0,
+    "flowtype/use-flow-type": 1,
+    "flowtype/valid-syntax": 1,
     "wix-editor/augmented-assignment": 1,
     "wix-editor/no-instanceof-array": 1,
     "wix-editor/no-not-not": 1,
