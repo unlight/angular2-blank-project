@@ -1,5 +1,4 @@
 import {provide} from '@angular/core';
-import {SpyObject} from '@angular/testing/src/testing_internal';
 import {Router} from '@angular/router';
 
 class MockRouteSegment {
@@ -20,7 +19,7 @@ class MockRouteSegment {
     }
 }
 
-class MockRouteParams extends SpyObject {
+class MockRouteParams {
     private ROUTE_PARAMS = {};
 
     set(key: string, value: string) {
@@ -32,8 +31,8 @@ class MockRouteParams extends SpyObject {
     }
 }
 
-class MockRouter extends SpyObject {
-    constructor() { super(Router); }
+class MockRouter {
+    constructor() { }
     isRouteActive(s: any) { return true; }
 }
 

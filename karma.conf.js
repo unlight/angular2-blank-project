@@ -4,18 +4,23 @@ module.exports = function(karma) {
     karma.set({
         files: [
             ...config.testJsLibs.map(p => ({pattern: p, included: true, watched: false})),
-            {pattern: "build/node_modules/rxjs/**", included: false, watched: false},
-            {pattern: "build/node_modules/@angular/**", included: false, watched: false},
-            {pattern: "build/node_modules/karma-custom-log/**", included: false, watched: false},
+            {pattern: "build/node_modules/rxjs/**/*.js", included: false, watched: false},
+            // {pattern: "build/node_modules/rxjs/**/*.map", included: false, watched: false},
+            {pattern: "build/node_modules/@angular/**/*.js", included: false, watched: false},
+            // {pattern: "build/node_modules/@angular/**/*.map", included: false, watched: false},
+            {pattern: "build/node_modules/karma-custom-log/**/*.js", included: false, watched: false},
+            // {pattern: "build/node_modules/karma-custom-log/**/*.map", included: false, watched: false},
             {pattern: "systemjs.config.js", included: false, watched: false},
             {pattern: "build/js/**/*.js", included: false, watched: true},
             "karma.main.js"
         ],
         browsers: ["PhantomJS"],
+        // browsers: ["Chrome"],
         plugins: [
             "karma-jasmine",
             "karma-coverage",
             "karma-phantomjs-launcher",
+            // "karma-chrome-launcher",
             "karma-sourcemap-loader",
         ],
         frameworks: [

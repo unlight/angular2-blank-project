@@ -1,3 +1,4 @@
+import {EditComponent} from './components/edit/edit.component';
 import {HttpModule} from '@angular/http';
 import {NavbarComponent} from './components/app/navbar/navbar.component';
 import {ToolbarComponent} from './components/app/toolbar/toolbar.component';
@@ -14,7 +15,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AppComponent} from './components/app/app.component';
-import {routing, routeProviders} from './app.routing';
+import {routeProviders, routing} from './app.routing';
 
 @NgModule({
     imports: [BrowserModule, FormsModule, RouterModule, HttpModule, routing],
@@ -24,7 +25,8 @@ import {routing, routeProviders} from './app.routing';
         HomeComponent,
         AboutComponent,
         ToolbarComponent,
-        SearchComponent
+        SearchComponent,
+        EditComponent
     ],
     providers: [
         NameListService,

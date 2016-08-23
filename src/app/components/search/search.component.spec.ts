@@ -1,5 +1,5 @@
 import {TestComponentBuilder} from '@angular/core/testing';
-import {MockLocationStrategy} from '@angular/testing/src/mock/mock_location_strategy';
+import {MockLocationStrategy} from '@angular/common/testing';
 import {LocationStrategy} from '@angular/common/src/location/location_strategy';
 import {RouterOutletMap} from '@angular/router/src/router_outlet_map';
 import {Mock} from '../../mocks/mocks.spec';

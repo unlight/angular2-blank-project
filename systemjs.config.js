@@ -26,8 +26,7 @@
         "@angular/forms",
         "@angular/platform-browser",
         "@angular/platform-browser-dynamic",
-        "@angular/router",
-        "@angular/testing"
+        "@angular/router"
     ].forEach(function(name) {
         var main = "bundles/" + name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
         packages[name] = { main: main};

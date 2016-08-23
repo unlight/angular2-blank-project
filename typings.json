@@ -1,14 +1,12 @@
 {
-  "dependencies": {},
-  "devDependencies": {},
-  "globalDependencies": {
-    "angular-protractor": "registry:dt/angular-protractor#1.5.0+20160317120654",
-    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#dd638012d63e069f2c99d06ef4dcc9616a943ee4",
-    "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#1469ae2d0c260c082517bfb971be8c14e2389fe5",
-    "node": "registry:dt/node#4.0.0+20160319033040",
-    "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654"
+  "dependencies": {
+    "vinyl": "registry:npm/vinyl#1.2.0+20160817093728"
   },
-  "globalDevDependencies": {
-    "gulp-tslint": "registry:dt/gulp-tslint#3.6.0+20160316155526"
+  "globalDependencies": {
+    "angular-protractor": "registry:dt/angular-protractor#1.5.0+20160425143459",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+    "lodash": "registry:dt/lodash#4.14.0+20160817155621",
+    "node": "registry:dt/node#6.0.0+20160818175514",
+    "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654"
   }
 }

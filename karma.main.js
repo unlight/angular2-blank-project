@@ -18,7 +18,6 @@ function filterSystemConfig(config) {
         "@angular/platform-browser": { main: "index", defaultExtension: "js" },
         "@angular/platform-browser-dynamic": { main: "index", defaultExtension: "js" },
         "@angular/router": { main: "index", defaultExtension: "js" },
-        "@angular/testing": { main: "index", defaultExtension: "js" },
         "n:karma-custom-log": { main: "lib/index.js" },
     });
 }
@@ -29,18 +28,15 @@ System.import("base/systemjs.config.js")
         return Promise.all([
             System.import("@angular/core/testing"),
             System.import("@angular/platform-browser-dynamic/testing"),
-            System.import("@angular/testing/src/utils"),
             System.import("n:karma-custom-log")
         ]);
     })
     .then(function (providers) {
         var testing = providers[0];
         var testingBrowser = providers[1];
-        testing.TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
-        var utils = providers[2];
-        if (!utils.browserDetection) utils.browserDetection = new utils.BrowserDetection();
-        var k = providers[3];
-        // __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
+        testing.TestBed.initTestEnvironment(testingBrowser.BrowserDynamicTestingModule, testingBrowser.platformBrowserDynamicTesting());
+        var k = providers[2];
+        __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
     })
     .then(function () {
         // Load spec files.

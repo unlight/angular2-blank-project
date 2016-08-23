@@ -1,12 +1,11 @@
-import {LocationStrategy, PathLocationStrategy, HashLocationStrategy} from '@angular/common';
-import { Router, ActivatedRoute, RouterOutletMap } from '@angular/router';
+import {LocationStrategy} from '@angular/common';
+import {ActivatedRoute, Router, RouterOutletMap} from '@angular/router';
 import {Mock} from '../../mocks/mocks.spec';
 import {TestComponentBuilder} from '@angular/core/testing';
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import { async, addProviders, inject } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import {MockLocationStrategy} from "@angular/testing";
-
+import {AppComponent} from './app.component';
+import {MockLocationStrategy} from '@angular/common/testing';
 
 describe('App component', () => {
 
