@@ -15,10 +15,15 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AppComponent} from './components/app/app.component';
-import {routeProviders, routing} from './app.routing';
+import {routes} from './app.routes';
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, RouterModule, HttpModule, routing],
+    imports: [BrowserModule,
+        FormsModule,
+        RouterModule,
+        HttpModule,
+        RouterModule.forRoot(routes)
+    ],
     declarations: [
         AppComponent,
         NavbarComponent,
@@ -31,7 +36,6 @@ import {routeProviders, routing} from './app.routing';
     providers: [
         NameListService,
         SearchService,
-        routeProviders,
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],

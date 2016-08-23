@@ -5,7 +5,7 @@ import {AboutComponent} from './components/about/about.component';
 import {SearchComponent} from './components/search/search.component';
 import { EditComponent } from './components/edit/edit.component';
 
-const routes: Routes = [
+export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent },
     { path: 'search', component: SearchComponent },
@@ -16,5 +16,3 @@ const routes: Routes = [
 export const routeProviders = [
     // provideRouter(routes)
 ];
-
-export const routing = RouterModule.forRoot(routes);

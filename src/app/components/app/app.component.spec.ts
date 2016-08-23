@@ -1,6 +1,6 @@
+import {Mock} from '../../mocks.spec';
 import {LocationStrategy} from '@angular/common';
 import {ActivatedRoute, Router, RouterOutletMap} from '@angular/router';
-import {Mock} from '../../mocks/mocks.spec';
 import {TestComponentBuilder} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import { async, addProviders, inject } from '@angular/core/testing';
