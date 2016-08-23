@@ -6,6 +6,8 @@ import {NameListService} from '../../services/name-list.service';
     templateUrl: './home.component.html'
 })
 export class HomeComponent {
+
+    title: string = "Welcome";
     newName: string;
     constructor(public nameListService: NameListService) { }
 
