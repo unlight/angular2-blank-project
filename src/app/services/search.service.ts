@@ -63,7 +63,7 @@ export class SearchService {
                 if (localStorage['person' + item.id]) {
                     item = JSON.parse(localStorage['person' + item.id]);
                 }
-                if (JSON.stringify(item).toLowerCase().indexOf(q) !== -1) {
+                if (JSON.stringify(item).toLowerCase().indexOf(q) !== -1) { // eslint-disable-line lodash/prefer-includes
                     results.push(item);
                 }
                 // if (JSON.stringify(item).toLowerCase().includes(q)) {

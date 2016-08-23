@@ -17,7 +17,7 @@ describe('Search Service', () => {
     });
 
     // Should be skipped really, because we do not use http request.
-    xit('should retrieve all search results',
+    xit('should retrieve all search results', // eslint-disable-line jasmine/no-disabled-tests
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, backend: MockBackend) => {
             var res: Response;
             backend.connections.subscribe(c => {
@@ -34,7 +34,7 @@ describe('Search Service', () => {
     );
 
     // Should be skipped really, because we do not use http request.
-    xit('should filter by search term',
+    xit('should filter by search term', // eslint-disable-line jasmine/no-disabled-tests
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {
@@ -51,7 +51,7 @@ describe('Search Service', () => {
     );
 
     // Should be skipped really, because we do not use http request.
-    xit('should fetch by id',
+    xit('should fetch by id', // eslint-disable-line jasmine/no-disabled-tests
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {

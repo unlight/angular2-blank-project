@@ -33,7 +33,7 @@ class MockRouteParams {
 
 class MockRouter {
     constructor() { }
-    isRouteActive(s: any) { return true; }
+    isRouteActive(s: any) { return true; } // eslint-disable-line lodash/prefer-constant
 }
 
 class MockRouterProvider {

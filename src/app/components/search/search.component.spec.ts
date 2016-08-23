@@ -30,23 +30,25 @@ describe('Search component', () => {
         ]);
     });
 
-    xit('should search when a term is set and search() is called', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        return tcb.createAsync(SearchComponent)
-            .then(fixture => {
-                let searchComponent = fixture.debugElement.componentInstance;
-                searchComponent.query = 'M';
-                searchComponent.search();
-                expect(mockSearchService.searchSpy).toHaveBeenCalledWith('M');
-            })
-            .catch(err => fail(err));
-    }));
+    xit('should search when a term is set and search() is called',  // eslint-disable-line jasmine/no-disabled-tests
+        inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+            return tcb.createAsync(SearchComponent)
+                .then(fixture => {
+                    let searchComponent = fixture.debugElement.componentInstance;
+                    searchComponent.query = 'M';
+                    searchComponent.search();
+                    expect(mockSearchService.searchSpy).toHaveBeenCalledWith('M');
+                })
+                .catch(err => fail(err));
+        }));
 
-    xit('should search automatically when a term is on the URL', inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-        return tcb.createAsync(SearchComponent)
-            .then(fixture => {
-                fixture.detectChanges();
-                expect(mockSearchService.searchSpy).toHaveBeenCalledWith('peyton');
-            })
-            .catch(err => fail(err));
-    }));
+    xit('should search automatically when a term is on the URL',  // eslint-disable-line jasmine/no-disabled-tests
+        inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+            return tcb.createAsync(SearchComponent)
+                .then(fixture => {
+                    fixture.detectChanges();
+                    expect(mockSearchService.searchSpy).toHaveBeenCalledWith('peyton');
+                })
+                .catch(err => fail(err));
+        }));
 });
