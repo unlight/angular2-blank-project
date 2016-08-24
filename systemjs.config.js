@@ -19,6 +19,7 @@
     var packages = {
         "js": { defaultExtension: "js" },
         "n:": { defaultExtension: "js" }
+    };
 
     [
         "@angular/common",
