@@ -14,7 +14,7 @@ export class SearchComponent {
     searchResults: Array<Person>;
 
     constructor(public searchService: SearchService, r: ActivatedRoute ) {
-        const term: Observable<string> = r.params.map(p => p['term'])
+        const term: Observable<string> = r.params.map(p => p['term']) // tslint:disable-line:no-string-literal
             .map(p => decodeURIComponent(p));
         // TODO: Can be merged with search()
         term.subscribe(t => {

@@ -1,5 +1,5 @@
 import {async, inject} from '@angular/core/testing';
-import {ComponentFixture, TestComponentBuilder} from '@angular/core/testing';
+import {TestComponentBuilder} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {AboutComponent} from './about.component';
 
@@ -15,7 +15,7 @@ describe('About component', () => {
 });
 
 @Component({
-    selector: 'test-cmp',
+    selector: 'sd-test-cmp',
     directives: [AboutComponent],
     template: '<sd-about></sd-about>'
 })

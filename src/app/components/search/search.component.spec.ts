@@ -3,7 +3,6 @@ import {MockLocationStrategy} from '@angular/common/testing';
 import {LocationStrategy} from '@angular/common/src/location/location_strategy';
 import {RouterOutletMap} from '@angular/router/src/router_outlet_map';
 import {ActivatedRoute} from '@angular/router/src/router_state';
-import { provide } from '@angular/core';
 import { inject, addProviders } from '@angular/core/testing';
 import { Router} from '@angular/router';
 // import { MockRouteSegment } from '../../services/mocks/routes';

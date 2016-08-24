@@ -3,7 +3,6 @@ import {TestComponentBuilder} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {HomeComponent} from './home.component';
 import {NameListService} from '../../services/name-list.service';
-import { getDOM } from '@angular/platform-browser/src/dom/dom_adapter';
 import {__platform_browser_private__ as platformBrowser} from '@angular/platform-browser';
 import {FORM_DIRECTIVES} from '@angular/forms';
 
@@ -39,7 +38,7 @@ describe('Home component', () => {
 
 @Component({
     providers: [NameListService],
-    selector: 'test-cmp',
+    selector: 'sd-test-cmp',
     template: '<sd-home></sd-home>',
     directives: [HomeComponent, FORM_DIRECTIVES]
 })

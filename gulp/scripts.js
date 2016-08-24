@@ -31,7 +31,8 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
             .pipe(g.if(tsSourceAndSpecs(), combine(
-                g.tslint({ formatter: "verbose" }),
+                g.tslint({ formatter: "stylish" }),
+                g.tslint.report({ emitError: false, summarizeFailureOutput: false }),
                 g.eslint(),
                 g.eslint.format()
             )))

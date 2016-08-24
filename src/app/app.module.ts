@@ -5,7 +5,7 @@ import {ToolbarComponent} from './components/app/toolbar/toolbar.component';
 import {SearchComponent} from './components/search/search.component';
 import {HomeComponent} from './components/home/home.component';
 import {AboutComponent} from './components/about/about.component';
-import {HashLocationStrategy, PathLocationStrategy} from '@angular/common';
+import {HashLocationStrategy} from '@angular/common';
 import {LocationStrategy} from '@angular/common';
 import {APP_BASE_HREF} from '@angular/common';
 import {SearchService} from './services/search.service';

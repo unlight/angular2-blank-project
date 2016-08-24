@@ -27,7 +27,7 @@ describe('App component', () => {
 });
 
 @Component({
-    selector: 'test-cmp',
+    selector: 'sd-test-cmp',
     template: '<sd-app></sd-app>',
     directives: [AppComponent]
 })
