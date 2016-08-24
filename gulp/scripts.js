@@ -55,9 +55,9 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             g.ignore.include(["polyfills.js", "vendors.js", "main.js"]),
             // g.sourcemaps.init({loadMaps:true}),
             g.if("main.js", combine(
-                through.obj((file, encoding, callback) => {
+                through.obj(function (file, encoding, callback) {
                     file.contents = browserifyContents(file.path, this);
-                    callback(null, file);
+                    this.push(file);
                 }),
                 buffer()
             )),
