@@ -39,7 +39,7 @@ const config = {
     PORT: process.env.PORT,
     APP_BASE: "/",
     // Concat to single file, if false release build will be splitted to app.js and vendors.js
-    get singleFile() {
+    get singleFile() { // eslint-disable-line
         return false;
     },
     get isDev() {
@@ -107,7 +107,7 @@ function createGlob(pattern) {
     return func;
 }
 
-function Lib(name, visibility) {
+function Lib(name, visibility) { // eslint-disable-line
     this.name = name;
     if (!visibility) visibility = {};
     this.defaultVisibility = Boolean(visibility.default);
