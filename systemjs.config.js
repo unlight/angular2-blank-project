@@ -9,17 +9,16 @@
     };
 
     var meta = {
-        // "js/*": { defaultExtension: "js" },
-        // "n:*": { defaultExtension: "js" }
+        // "js/*" : { defaultExtension:  "js" },
+        // "n:*" : { defaultExtension:  "js" }
     };
 
     var packageConfigPaths = [];
 
-    // packages tells the System loader how to load when no filename and/or no extension
+    // packages  tells the Syst em loader how to load when no filename and/or no extension
     var packages = {
         "js": { defaultExtension: "js" },
         "n:": { defaultExtension: "js" }
-    };
 
     [
         "@angular/common",
