@@ -45,7 +45,7 @@
     "perf-standard/no-instanceof-guard": 2,
     "perf-standard/no-self-in-constructor": 2,
     "perf-standard/check-function-inline": 1,
-    "perf-standard/no-array-iterators": 1,
+    "perf-standard/no-array-iterators": 0,
     "lodash/prefer-lodash-method": 0,
     "no-console": 1,
     "no-debugger": 1,
