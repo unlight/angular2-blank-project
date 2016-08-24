@@ -26,7 +26,7 @@ function debug(title, ns) {
     } else if (typeof arg === "string") {
         title = title.toLowerCase();
         arg = arg.toLowerCase();
-        if (title.indexOf(arg) !== -1 || (ns && ns.indexOf(arg) !== -1)) {
+        if (_.includes(title, arg) || (ns && _.includes(ns, arg))) {
             return debugStream;
         }
     }
