@@ -58,8 +58,7 @@ gulp.task("build", gulp.series(
 
 gulp.task("test", gulp.series(
     "build",
-    "karma",
-    "coverage"
+    "karma"
 ));
 
 gulp.task("serve", gulp.series(

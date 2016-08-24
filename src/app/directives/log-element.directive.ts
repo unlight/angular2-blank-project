@@ -9,7 +9,9 @@ import {Directive, ElementRef} from '@angular/core';
     selector: '[sdLoglement]' // using [ ] means selecting attributes
 })
 export class LogElementDirective {
+
     constructor(element: ElementRef) {
         console.log('directive [sd-logElement]', element); // eslint-disable-line
     }
+
 }
