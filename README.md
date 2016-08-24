@@ -81,8 +81,8 @@ gulp test watch
 
 ### TODO
 
+* Update to TypeScript 2
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
 * Import lodash-es from TS
 * Check gulp-typescript for reading d.ts files
-* Beep on error (parsing error)

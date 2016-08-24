@@ -34,7 +34,13 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
                 g.tslint({ formatter: "stylish" }),
                 g.tslint.report({ emitError: false, summarizeFailureOutput: false }),
                 g.eslint(),
-                g.eslint.format()
+                g.eslint.format(),
+                through.obj((file, encoding, callback) => {
+                    if (_.find(file.eslint.messages, ['fatal', true])) {
+                        g.util.beep();
+                    }
+                    callback(null, file);
+                })
             )))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
@@ -49,9 +55,9 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             g.ignore.include(["polyfills.js", "vendors.js", "main.js"]),
             // g.sourcemaps.init({loadMaps:true}),
             g.if("main.js", combine(
-                through.obj(function (file, encoding, callback) {
+                through.obj((file, encoding, callback) => {
                     file.contents = browserifyContents(file.path, this);
-                    this.push(file);
+                    callback(null, file);
                 }),
                 buffer()
             )),
