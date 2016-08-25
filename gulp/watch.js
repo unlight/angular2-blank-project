@@ -3,18 +3,19 @@ const fs = require("fs");
 module.exports = (gulp, g, config, paths, clearLastRun) => {
 
     gulp.task("watch", (done) => {
-        var style;
+        var watchOptions = {delay: 100};
         const watchers = [
-            gulp.watch(paths.srcApp("**/*.ts"), gulp.series("scripts")),
+            gulp.watch(paths.srcApp("**/*.ts"), watchOptions, gulp.series("scripts")),
             // If we changnig *.html we must recompile corresponsding component,
-            gulp.watch(paths.srcApp("**/*.html")).on("change", onHtmlChange),
-            gulp.watch("src/index.html", gulp.series("htdocs")),
-            style = gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less}"], gulp.series("styles")),
-            gulp.watch("src/**/_*.{scss,less}", gulp.series(clearLastRun("styles"), "styles")),
+            gulp.watch(paths.srcApp("**/*.html"), watchOptions)
+                .on("change", onHtmlChange),
+            gulp.watch("src/index.html", watchOptions, gulp.series("htdocs")),
+            gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less,css}"], watchOptions)
+                .on("change", gulp.series("styles"))
+                .on("add", rebuildHtdocs)
+                .on("unlink", rebuildHtdocs),
+            gulp.watch("src/**/_*.{scss,less}", watchOptions, gulp.series(clearLastRun("styles"), "styles")),
         ];
-
-        style.on("add", runHtdocs);
-        style.on("unlink", runHtdocs);
 
         process.on("SIGINT", () => {
             watchers.forEach(w => w.close());
@@ -34,8 +35,8 @@ module.exports = (gulp, g, config, paths, clearLastRun) => {
         }
     }
 
-    function runHtdocs(path) {
-        setTimeout(gulp.series("htdocs"), 800);
+    function rebuildHtdocs(path) {
+        gulp.series(clearLastRun("styles"), "styles", "htdocs").call();
     }
 
 };
