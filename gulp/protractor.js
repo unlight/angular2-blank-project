@@ -2,7 +2,7 @@ const merge2 = require("merge2");
 
 module.exports = (gulp, g, config, paths, debug, typingsStream) => {
 
-    gulp.task("protractor", function protractor() {
+    gulp.task("protractor", function protractor() { // eslint-disable-line perf-standard/check-function-inline
         var sourceRoot = "src/app";
         var sourceStream = merge2(
             typingsStream().load(),

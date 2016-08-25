@@ -11,5 +11,8 @@
   },
   "globalDevDependencies": {
     "browserify": "registry:dt/browserify#12.0.1+20160317120654"
+  },
+  "devDependencies": {
+    "gulp": "registry:npm/gulp#4.0.0-alpha.2+20160817105618"
   }
 }

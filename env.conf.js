@@ -66,8 +66,10 @@ const config = {
         destJs: "build/js"
     },
     typings: [
-        "typings/index.d.ts",
-        "node_modules/typescript/lib/lib.es6.d.ts"
+        "node_modules/typescript/lib/lib.es6.d.ts",
+        "typings/globals/jasmine/index.d.ts",
+        "typings/globals/angular-protractor/index.d.ts",
+        "typings/globals/selenium-webdriver/index.d.ts",
     ],
     projectRoot: projectRoot,
     get tsProject() {

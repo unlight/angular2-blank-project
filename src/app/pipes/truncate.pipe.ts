@@ -12,7 +12,9 @@ import {Pipe, PipeTransform} from '@angular/core';
  */
 @Pipe({ name: 'truncate' })
 export class TruncatePipe implements PipeTransform {
+
     transform(value: string, args: string[]): any {
+
         let length = parseInt(args[0] || '20', 10),
             suffix = args[1] || '';
 

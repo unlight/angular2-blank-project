@@ -81,6 +81,7 @@ gulp test watch
 
 ### TODO
 
+* HTTP/2
 * Update to TypeScript 2
 * https://github.com/ivogabe/gulp-typescript/issues/316
 * Use gulp-batch insteadof since-lastRun
