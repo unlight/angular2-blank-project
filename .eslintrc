@@ -11,7 +11,7 @@
     "lodash-smells",
     "perf-standard",
     "wix-editor",
-    "prefer-object-spread",
+    "prefer-spread",
     "jasmine"
   ],
   "extends": [
@@ -24,7 +24,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "prefer-object-spread/prefer-object-spread": 1,
     "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,
     "wix-editor/no-instanceof-array": 1,
@@ -52,6 +51,10 @@
     "no-unsafe-finally": 1,
     "no-this-before-super": 1,
     "constructor-super": 1,
+    "prefer-spread/prefer-object-spread": [
+      1,
+      "includeNearEquivalents"
+    ],
     "indent": [
       "warn",
       4
