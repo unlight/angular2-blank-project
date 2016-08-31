@@ -6,7 +6,7 @@
     "jasmine": true
   },
   "plugins": [
-    "flowtype",
+    "typescript",
     "lodash",
     "lodash-smells",
     "perf-standard",
@@ -23,14 +23,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "flowtype/define-flow-type": 1,
-    "flowtype/generic-spacing": 1,
-    "flowtype/union-intersection-spacing": 1,
-    "flowtype/space-before-generic-bracket": 1,
-    "flowtype/space-before-type-colon": 1,
-    "flowtype/require-parameter-type": 0,
-    "flowtype/use-flow-type": 1,
-    "flowtype/valid-syntax": 1,
+    "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,
     "wix-editor/no-instanceof-array": 1,
     "wix-editor/no-not-not": 1,
@@ -48,6 +41,7 @@
     "perf-standard/no-array-iterators": 0,
     "lodash/prefer-lodash-method": 0,
     "no-undef": 0,
+    "no-unused-vars": 0,
     "no-console": 1,
     "no-debugger": 1,
     "no-duplicate-case": 1,
@@ -56,7 +50,6 @@
     "no-unsafe-finally": 1,
     "no-this-before-super": 1,
     "constructor-super": 1,
-    "no-unused-vars": 0,
     "indent": [
       "warn",
       4
