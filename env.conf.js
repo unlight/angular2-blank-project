@@ -81,6 +81,11 @@ const config = {
     },
     get polyfills() {
         return baseLibs.filter(x => x.polyfill);
+    },
+    get minify() {
+        var result = true;
+        if (args.nomin) result = false;
+        return result;
     }
 };
 

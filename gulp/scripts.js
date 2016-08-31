@@ -63,7 +63,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             )),
             g.order(["polyfills.js", "vendors.js", "main.js"]),
             g.if(config.singleFile, g.concat("app.js")),
-            g.uglify(),
+            g.if(config.minify, g.uglify()),
             // g.sourcemaps.write(".", {includeContent: true}),
             gulp.dest(paths.destJs)
         );

@@ -47,6 +47,7 @@
     "perf-standard/check-function-inline": 1,
     "perf-standard/no-array-iterators": 0,
     "lodash/prefer-lodash-method": 0,
+    "no-undef": 0,
     "no-console": 1,
     "no-debugger": 1,
     "no-duplicate-case": 1,

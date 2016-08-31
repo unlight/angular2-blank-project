@@ -81,6 +81,11 @@ gulp test watch
 
 ### TODO
 
+* Made static offline compiler
+  import { platformBrowser } from '@angular/platform-browser';
+  The app module factory produced by the static offline compiler
+  import { AppModuleNgFactory } from './app.module.ngfactory';
+  platformBrowser().bootstrapModuleFactory(AppModuleNgFactory);
 * HTTP/2
 * Update to TypeScript 2
 * https://github.com/ivogabe/gulp-typescript/issues/316
