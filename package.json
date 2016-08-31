@@ -44,6 +44,7 @@
     "eslint-plugin-lodash": "1.10.1",
     "eslint-plugin-lodash-smells": "0.2.0",
     "eslint-plugin-perf-standard": "1.0.3",
+    "eslint-plugin-prefer-object-spread": "^1.1.0",
     "eslint-plugin-typescript": "0.0.1",
     "eslint-plugin-wix-editor": "1.1.1",
     "fs-symlink": "1.2.1",

@@ -11,6 +11,7 @@
     "lodash-smells",
     "perf-standard",
     "wix-editor",
+    "prefer-object-spread",
     "jasmine"
   ],
   "extends": [
@@ -23,6 +24,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "prefer-object-spread/prefer-object-spread": 1,
     "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,
     "wix-editor/no-instanceof-array": 1,
