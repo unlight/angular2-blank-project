@@ -59,10 +59,6 @@
       "warn",
       4
     ],
-    "linebreak-style": [
-      "warn",
-      "unix"
-    ],
     "semi": [
       "warn",
       "always"

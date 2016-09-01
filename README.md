@@ -22,8 +22,8 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 | Dependency | Install                               |
 | ---------- | ------------------------------------- |
 | NodeJS     | [nodejs.org](http://nodejs.org/)      |
-| Gulp CLI   | `npm install gulpjs/gulp-cli#4.0 -g`  |
-| Typings    | `npm install typings -g`              |
+| Gulp CLI   | `npm install -g gulpjs/gulp-cli`      |
+| Typings    | `npm install -g typings`              |
 | Protractor | `npm install -g protractor`           |
 
 ### INSTALL
