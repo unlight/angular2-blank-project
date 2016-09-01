@@ -89,6 +89,9 @@ const config = {
         var result = true;
         if (args.nomin) result = false;
         return result;
+    },
+    get package() {
+    	return require(projectRoot + "/package.json");
     }
 };
 
