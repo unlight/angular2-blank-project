@@ -18,7 +18,8 @@ import {AppComponent} from './components/app/app.component';
 import {routes} from './app.routes';
 
 @NgModule({
-    imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         FormsModule,
         RouterModule,
         HttpModule,
@@ -39,7 +40,6 @@ import {routes} from './app.routes';
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
-    bootstrap: [AppComponent],
-
+    bootstrap: [AppComponent, NavbarComponent, ToolbarComponent],
 })
 export class AppModule { }
