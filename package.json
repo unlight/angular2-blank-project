@@ -50,6 +50,7 @@
     "eslint-plugin-wix-editor": "1.1.1",
     "fs-symlink": "1.2.1",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-bump": "2.4.0",
     "gulp-concat": "2.6.0",
     "gulp-connect": "5.0.0",
     "gulp-csso": "2.0.0",

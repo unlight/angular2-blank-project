@@ -11,6 +11,7 @@ const args = g.util.env;
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
     .provide("g", g)
+    .provide("args", args)
     .provide("config", config)
     .provide("paths", config.paths)
     .provide("debug", debug)
