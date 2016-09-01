@@ -79,7 +79,7 @@ gulp test watch
 * TypeScript Compiler Options - http://www.typescriptlang.org/docs/handbook/compiler-options.html
 * Angular2 Changelog - https://github.com/angular/angular/blob/master/CHANGELOG.md
 
-## KNOWN ISSUES
+### KNOWN ISSUES
 * Incremental rebuild does not work in production
 
 ### TODO

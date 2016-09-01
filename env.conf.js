@@ -13,17 +13,20 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    new Lib("tslib", { polyfill: true, dev: true, test: true}),
-    new Lib("es6-shim", {polyfill: true, dev: true}),
-    new Lib("zone.js", {polyfill: true, dev: true}),
-    new Lib("reflect-metadata", {polyfill: true, dev: true}),
-    new Lib("systemjs/dist/system.src.js", {dev: true, test: true}),
-    new Lib("systemjs/dist/system-polyfills.js", {test: true}),
+    new Lib("tslib", { polyfill: true, dev: true, test: true }),
+    new Lib("es6-shim", { polyfill: true, dev: true }),
+    new Lib("zone.js", { polyfill: true, dev: true }),
+    new Lib("reflect-metadata", { polyfill: true, dev: true }),
+    new Lib("systemjs/dist/system.js", { dev: true, test: true }),
+    new Lib("systemjs/dist/system-polyfills.js", { test: true }),
+    new Lib("zone.js/dist/long-stack-trace-zone.js", {test: true}),
+    new Lib("zone.js/dist/proxy.js", {test: true}),
+    new Lib("zone.js/dist/sync-test.js", {test: true}),
     new Lib("zone.js/dist/jasmine-patch.js", {test: true}),
     new Lib("zone.js/dist/async-test.js", {test: true}),
     new Lib("zone.js/dist/fake-async-test.js", {test: true}),
-    new Lib("rxjs/bundles/Rx.js", {dev: true, test: true}),
-    new Lib("./systemjs.config.js", {dev: true}),
+    new Lib("rxjs/bundles/Rx.js", { dev: true, test: true }),
+    new Lib("./systemjs.config.js", { dev: true }),
 ];
 
 var tsProject = _.once(() => {
@@ -101,13 +104,13 @@ function lib(path) {
 }
 
 function createGlob(pattern) {
-    var func = function() {
+    var func = function () {
         var params = Array.prototype.slice.call(arguments);
         var args = [].concat(pattern, params);
         var result = path.join.apply(null, args);
         return unixify(result);
     };
-    func.not = function() {
+    func.not = function () {
         var result = func.apply(null, arguments);
         return "!" + result;
     };
@@ -119,13 +122,13 @@ function Lib(name, visibility) { // eslint-disable-line
     if (!visibility) visibility = {};
     this.defaultVisibility = Boolean(visibility.default);
     Object.defineProperty(this, "main", {
-        get: function() {
+        get: function () {
             return lib(this.name);
         }
     });
     ["polyfill", "dev", "prod", "test"].forEach(name => {
         Object.defineProperty(this, name, {
-            get: function() {
+            get: function () {
                 var result = this.defaultVisibility;
                 if (visibility[name] !== undefined) {
                     result = Boolean(visibility[name]);
