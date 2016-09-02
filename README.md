@@ -84,8 +84,6 @@ gulp test watch
 
 ### TODO
 
-* Add hashes to build files in prod mode
-* Add bump task
 * Made static offline compiler
   import { platformBrowser } from '@angular/platform-browser';
   The app module factory produced by the static offline compiler
