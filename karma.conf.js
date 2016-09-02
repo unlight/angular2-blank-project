@@ -5,11 +5,11 @@ module.exports = function (karma) {
         files: [
             ...config.testJsLibs.map(p => ({ pattern: p, included: true, watched: false })),
             { pattern: "build/node_modules/rxjs/**/*.js", included: false, watched: false },
-            {pattern: "build/node_modules/rxjs/**/*.map", included: false, watched: false},
+            { pattern: "build/node_modules/rxjs/**/*.map", included: false, watched: false },
             { pattern: "build/node_modules/@angular/**/*.js", included: false, watched: false },
-            {pattern: "build/node_modules/@angular/**/*.map", included: false, watched: false},
+            { pattern: "build/node_modules/@angular/**/*.map", included: false, watched: false },
             { pattern: "build/node_modules/karma-custom-log/**/*.js", included: false, watched: false },
-            {pattern: "build/node_modules/karma-custom-log/**/*.map", included: false, watched: false},
+            { pattern: "build/node_modules/karma-custom-log/**/*.map", included: false, watched: false },
             { pattern: "systemjs.config.js", included: false, watched: false },
             { pattern: "build/js/**/*.js", included: false, watched: true },
             { pattern: "build/js/**/*.js.map", included: false, watched: false },
@@ -25,7 +25,6 @@ module.exports = function (karma) {
             "karma-slimerjs-launcher",
             // "karma-chrome-launcher",
             "karma-sourcemap-loader",
-            'karma-remap-istanbul',
         ],
         frameworks: [
             "jasmine",
@@ -44,19 +43,13 @@ module.exports = function (karma) {
                 flags: {}
             }
         },
-        reporters: ["progress", "coverage", 'karma-remap-istanbul'],
+        reporters: ["progress", "coverage"],
         coverageReporter: {
             dir: ".coverage",
             reporters: [
                 { type: "json", file: "coverage.json" },
                 { type: "lcov", file: "coverage.lcov" }
             ]
-        },
-        remapIstanbulReporter: {
-            reports: {
-                lcovonly: '.coverage/lcov-report.info',
-                html: '.coverage/html-report'
-            }
         },
         autoWatch: true,
         autoWatchBatchDelay: 100,

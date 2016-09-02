@@ -88,6 +88,7 @@
     "merge2": "1.0.2",
     "phantomjs-prebuilt": "2.1.12",
     "pkg-dir": "1.0.0",
+    "remap-istanbul": "0.6.4",
     "save-stream": "0.2.1",
     "stream-combiner": "0.2.2",
     "systemjs": "0.19.37",
