@@ -36,7 +36,7 @@ System.import("base/systemjs.config.js")
         var testingBrowser = providers[1];
         testing.TestBed.initTestEnvironment(testingBrowser.BrowserDynamicTestingModule, testingBrowser.platformBrowserDynamicTesting());
         var k = providers[2];
-        __karma__.result = k.karmaResult(__karma__.result, __karma__, {projectRoot: "http://localhost:9876/base"});
+        __karma__.result = k.karmaResult(__karma__.result, __karma__, {exclude: /node_modules/});
     })
     .then(function () {
         // Load spec files.
