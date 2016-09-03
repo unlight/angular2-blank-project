@@ -1,3 +1,4 @@
+import {Mock} from '../../services/mocks/mocks.spec';
 import {TestComponentBuilder} from '@angular/core/testing';
 import {MockLocationStrategy} from '@angular/common/testing';
 import {LocationStrategy} from '@angular/common/src/location/location_strategy';
@@ -8,7 +9,7 @@ import { Router} from '@angular/router';
 // import { MockRouteSegment } from '../../services/mocks/routes';
 import {MockSearchService} from '../../services/mocks/search.service';
 import { SearchComponent } from './search.component';
-import {Mock} from '../../mocks.spec';
+
 
 describe('Search component', () => {
 

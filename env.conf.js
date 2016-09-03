@@ -17,7 +17,7 @@ const baseLibs = [
     new Lib("es6-shim", { polyfill: true, dev: true }),
     new Lib("zone.js", { polyfill: true, dev: true }),
     new Lib("reflect-metadata", { polyfill: true, dev: true }),
-    new Lib("systemjs/dist/system.js", { dev: true, test: true }),
+    new Lib("systemjs/dist/system.src.js", { dev: true, test: true }),
     // new Lib("systemjs/dist/system-polyfills.js", { test: true }),
     new Lib("zone.js/dist/long-stack-trace-zone.js", {test: true}),
     new Lib("zone.js/dist/proxy.js", {test: true}),
@@ -73,6 +73,9 @@ const config = {
         "typings/globals/jasmine/index.d.ts",
         "typings/globals/angular-protractor/index.d.ts",
         "typings/globals/selenium-webdriver/index.d.ts",
+        "node_modules/@types/power-assert-formatter/index.d.ts",
+        "typings/globals/empower/index.d.ts",
+        "typings/globals/power-assert/index.d.ts",
     ],
     projectRoot: projectRoot,
     get tsProject() {

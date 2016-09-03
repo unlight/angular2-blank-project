@@ -10,7 +10,9 @@
     "selenium-webdriver": "registry:dt/selenium-webdriver#2.44.0+20160317120654"
   },
   "globalDevDependencies": {
-    "browserify": "registry:dt/browserify#12.0.1+20160317120654"
+    "browserify": "registry:dt/browserify#12.0.1+20160317120654",
+    "empower": "registry:dt/empower#0.0.0+20160317120654",
+    "power-assert": "registry:dt/power-assert#0.0.0+20160316155526"
   },
   "devDependencies": {
     "gulp": "registry:npm/gulp#4.0.0-alpha.2+20160817105618"

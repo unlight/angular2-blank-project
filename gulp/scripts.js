@@ -6,6 +6,7 @@ const deleteEmpty = require("delete-empty");
 const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
+const _ = require("lodash");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -44,8 +45,9 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             )))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
-            .pipe(g.if(config.isDev, g.sourcemaps.init()))
+            .pipe(g.if(config.isDev, g.sourcemaps.init({identityMap: true}))) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
+            .pipe(g.if(includeExt([".spec.js"]), g.espower()))
             .pipe(g.if(config.isDev, g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot })))
             .pipe(g.size({ title: "scripts" }));
     }
@@ -134,6 +136,14 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             var basename = path.basename(file.path, ".ts");
             var extname = path.extname(basename);
             return !_.includes(excludeExtList, extname);
+        };
+    }
+
+    function includeExt(incExtList) {
+        return function (file) {
+            var basename = path.basename(file.path);
+            var result = _.some(incExtList, ext => _.endsWith(basename, ext));
+            return result;
         };
     }
 

@@ -10,6 +10,7 @@ module.exports = function (karma) {
             { pattern: "build/node_modules/@angular/**/*.map", included: false, watched: false },
             { pattern: "build/node_modules/karma-custom-log/**/*.js", included: false, watched: false },
             { pattern: "build/node_modules/karma-custom-log/**/*.map", included: false, watched: false },
+            { pattern: "build/node_modules/power-assert/**/*.js", included: false, watched: false },
             { pattern: "systemjs.config.js", included: false, watched: false },
             { pattern: "build/js/**/*.js", included: false, watched: true },
             { pattern: "build/js/**/*.js.map", included: false, watched: false },

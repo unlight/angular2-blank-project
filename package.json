@@ -33,6 +33,7 @@
     "gulp-sass-lint": "1.2.0"
   },
   "devDependencies": {
+    "@types/power-assert-formatter": "0.0.26",
     "autoprefixer": "^6.4.1",
     "browserify": "13.1.0",
     "codelyzer": "0.0.28",
@@ -57,6 +58,7 @@
     "gulp-debug": "2.1.2",
     "gulp-di": "0.0.33",
     "gulp-eslint": "3.0.1",
+    "gulp-espower": "1.0.2",
     "gulp-file": "0.3.0",
     "gulp-hash": "3.1.0",
     "gulp-if": "2.0.1",
@@ -89,6 +91,7 @@
     "merge2": "1.0.2",
     "phantomjs-prebuilt": "2.1.12",
     "pkg-dir": "1.0.0",
+    "power-assert": "github:unlight/power-assert",
     "remap-istanbul": "0.6.4",
     "save-stream": "0.2.1",
     "stream-combiner": "0.2.2",

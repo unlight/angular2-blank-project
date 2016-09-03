@@ -1,5 +1,5 @@
+import {Mock} from '../../services/mocks/mocks.spec';
 import {ComponentFixture} from '@angular/core/testing';
-import {Mock} from '../../mocks.spec';
 import {LocationStrategy} from '@angular/common';
 import {ActivatedRoute, Router, RouterOutletMap} from '@angular/router';
 import {TestComponentBuilder} from '@angular/core/testing';

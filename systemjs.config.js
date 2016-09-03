@@ -5,7 +5,8 @@
     // map tells the System loader where to look for things
     var map = {
         "@angular": "n:@angular",
-        "lodash": "n:lodash"
+        "lodash": "n:lodash",
+        "power-assert": "n:power-assert",
     };
 
     var meta = {
@@ -18,7 +19,8 @@
     // packages  tells the Syst em loader how to load when no filename and/or no extension
     var packages = {
         "js": { defaultExtension: "js" },
-        "n:": { defaultExtension: "js" }
+        "n:": { defaultExtension: "js" },
+        "power-assert": { main: "build/power-assert.js", defaultExtension: "js"  },
     };
 
     [
