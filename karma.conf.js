@@ -25,6 +25,7 @@ module.exports = function (karma) {
             "karma-slimerjs-launcher",
             // "karma-chrome-launcher",
             "karma-sourcemap-loader",
+            'karma-beep-reporter',
         ],
         frameworks: [
             "jasmine",
@@ -43,7 +44,7 @@ module.exports = function (karma) {
                 flags: {}
             }
         },
-        reporters: ["progress", "coverage"],
+        reporters: ["progress", 'beep', "coverage"],
         coverageReporter: {
             dir: ".coverage",
             reporters: [
