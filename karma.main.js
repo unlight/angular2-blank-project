@@ -19,7 +19,6 @@ function filterSystemConfig(config) {
         "@angular/platform-browser-dynamic": { main: "index", defaultExtension: "js" },
         "@angular/router": { main: "index", defaultExtension: "js" },
         "n:karma-custom-log": { main: "lib/index.js" },
-        "power-assert": { main: "build/power-assert.js", defaultExtension: "js" },
     });
 }
 
