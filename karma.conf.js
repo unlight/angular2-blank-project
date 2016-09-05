@@ -41,9 +41,8 @@ module.exports = function (karma) {
                 settings: {
                     userAgent: 'SlimerJS'
                 },
-                userAgent: 'SlimerJS',
-                flags: {}
-            }
+            },
+            flags: []
         },
         reporters: ["progress", 'beep', "coverage"],
         coverageReporter: {
