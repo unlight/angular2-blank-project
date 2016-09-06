@@ -45,10 +45,10 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             )))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true })))
-            .pipe(g.if(config.isDev, g.sourcemaps.init({identityMap: true}))) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
+            .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
-            .pipe(g.if(config.isDev, g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot })))
+            .pipe(g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot }))
             .pipe(g.size({ title: "scripts" }));
     }
 

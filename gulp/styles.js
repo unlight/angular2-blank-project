@@ -14,7 +14,7 @@ module.exports = (gulp, g, config, paths, debug, _) => {
         return sourceStream
             .pipe(debug("Reading styles"))
             .pipe(g.rename({ dirname: "" }))
-            .pipe(g.if(config.isDev, g.sourcemaps.init({ loadMaps: true, identityMap: true })))
+            .pipe(g.sourcemaps.init({ loadMaps: true, identityMap: true }))
             .pipe(g.if("*.scss", combine(
                 g.sassLint(),
                 g.sassLint.format(),
@@ -23,7 +23,7 @@ module.exports = (gulp, g, config, paths, debug, _) => {
             )))
             .pipe(g.if("*.less", g.less()))
             .pipe(g.postcss(postcssPlugins()))
-            .pipe(g.if(config.isDev, g.sourcemaps.write()))
+            .pipe(g.sourcemaps.write())
             .pipe(g.if(config.isProd, combine(
                 g.order(["main.css"]),
                 g.concat("main.css"),
