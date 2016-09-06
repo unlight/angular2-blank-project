@@ -16,8 +16,14 @@
     <!-- endinject -->
     <!-- @if isDev -->
     <script>
+    // SystemJS hot reload.
+    System.trace = true
+    System.import('capaj/systemjs-hot-reloader').then(function(HotReloader) {
+        var hr = new HotReloader.default('http://localhost:8080', p => {
+            return p.substr('build/'.length);
+        });
+    }, console.error);
     // The package name `js` matches the folder structure inside `/build`.
-    // And the `main` property points to the app entry file - `bootstrap.js`.
     System.import("./js/main.js").catch(console.error);
     </script>
     <!-- @endif -->

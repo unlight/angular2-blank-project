@@ -7,6 +7,13 @@
         "@angular": "n:@angular",
         "lodash": "n:lodash",
         "power-assert": "n:power-assert",
+        "capaj/systemjs-hot-reloader": "n:systemjs-hot-reloader",
+        "traceur": "n:bower-traceur",
+        "traceur-runtime": "n:bower-traceur-runtime",
+        "socket.io-client": "n:socket.io-client",
+        "weakee": "n:weakee",
+        "debug": "n:debug",
+        "ms": "n:ms",
     };
 
     var meta = {
@@ -29,11 +36,24 @@
         "@angular/platform-browser-dynamic": {main: "bundles/platform-browser-dynamic.umd.js"},
         "@angular/router": {main: "bundles/router.umd.js"},
         "power-assert": { main: "build/power-assert.js"},
+        "capaj/systemjs-hot-reloader": { main: "hot-reloader.js"},
+        "traceur": { main: "traceur.js"},
+        "traceur-runtime": { main: "traceur-runtime.js"},
+        "socket.io-client": { main: "socket.io.js"},
+        "weakee": { main: "weakee.js"},
+        "debug": { main: "browser.js", defaultExtension: "js"},
+        "ms": { main: "index.js", defaultExtension: "js"},
     };
 
     // packageConfigPaths.push('node_modules/*/package.json');
 
     var config = {
+        transpiler: "traceur",
+        traceurOptions: {
+            "annotations": true,
+            "memberVariables": true,
+            "types": true
+        },
         // defaultJSExtensions: true,
         paths: paths,
         map: map,

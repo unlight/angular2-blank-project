@@ -7,12 +7,16 @@ module.exports = (gulp, g, config) => {
         }
         var connect = g.connect.server({
             root: folders,
-            livereload: config.isDev,
+            livereload: false,
             port: config.PORT,
             middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
                 history()
             ]
         });
+
+        var chokidarEvEmitter = require('chokidar-socket-emitter');
+        require('chokidar-socket-emitter')({app: connect.server, path: './build/js/**/*.js'});
+
         connect.server.on("close", done);
     });
 };
