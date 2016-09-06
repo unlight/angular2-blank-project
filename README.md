@@ -74,6 +74,10 @@ To run unit tests in watch mode:
 ```
 gulp test watch
 ```
+If you already have launched `serve` task, then use:
+```
+gulp karma -w
+```
 
 ### RESOURCES
 * TypeScript Compiler Options - http://www.typescriptlang.org/docs/handbook/compiler-options.html
@@ -81,6 +85,11 @@ gulp test watch
 
 ### KNOWN ISSUES
 * Incremental rebuild does not work in production
+
+### FAQ
+* _Watch task is not started, because it is already running somewhere near._      
+  You are trying to start second task which contains `watch` task. If not, try to relaunch main task 
+  (e.g. `serve`) with `-f` argument (e.g. `gulp serve -f`)
 
 ### TODO
 

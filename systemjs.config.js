@@ -16,27 +16,20 @@
 
     var packageConfigPaths = [];
 
-    // packages  tells the Syst em loader how to load when no filename and/or no extension
+    // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
         "js": { defaultExtension: "js" },
         "n:": { defaultExtension: "js" },
-        "power-assert": { main: "build/power-assert.js", defaultExtension: "js"  },
+        "@angular/common": {main: "bundles/common.umd.js"},
+        "@angular/compiler": {main: "bundles/compiler.umd.js"},
+        "@angular/core": {main: "bundles/core.umd.js"},
+        "@angular/http": {main: "bundles/http.umd.js"},
+        "@angular/forms": {main: "bundles/forms.umd.js"},
+        "@angular/platform-browser": {main: "bundles/platform-browser.umd.js"},
+        "@angular/platform-browser-dynamic": {main: "bundles/platform-browser-dynamic.umd.js"},
+        "@angular/router": {main: "bundles/router.umd.js"},
+        "power-assert": { main: "build/power-assert.js"},
     };
-
-    [
-        "@angular/common",
-        "@angular/compiler",
-        "@angular/core",
-        "@angular/http",
-        "@angular/forms",
-        "@angular/platform-browser",
-        "@angular/platform-browser-dynamic",
-        "@angular/router"
-    ].forEach(function (name) {
-        var main = "bundles/" + name.slice(name.lastIndexOf("/") + 1) + ".umd.js";
-        packages[name] = { main: main };
-        // packageConfigPaths.push('node_modules/' + name + '/package.json');
-    });
 
     // packageConfigPaths.push('node_modules/*/package.json');
 

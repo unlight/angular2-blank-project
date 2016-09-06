@@ -19,12 +19,12 @@ const baseLibs = [
     new Lib("reflect-metadata", { polyfill: true, dev: true }),
     new Lib("systemjs/dist/system.src.js", { dev: true, test: true }),
     // new Lib("systemjs/dist/system-polyfills.js", { test: true }),
-    new Lib("zone.js/dist/long-stack-trace-zone.js", {test: true}),
-    new Lib("zone.js/dist/proxy.js", {test: true}),
-    new Lib("zone.js/dist/sync-test.js", {test: true}),
-    new Lib("zone.js/dist/jasmine-patch.js", {test: true}),
-    new Lib("zone.js/dist/async-test.js", {test: true}),
-    new Lib("zone.js/dist/fake-async-test.js", {test: true}),
+    new Lib("zone.js/dist/long-stack-trace-zone.js", { test: true }),
+    new Lib("zone.js/dist/proxy.js", { test: true }),
+    new Lib("zone.js/dist/sync-test.js", { test: true }),
+    new Lib("zone.js/dist/jasmine-patch.js", { test: true }),
+    new Lib("zone.js/dist/async-test.js", { test: true }),
+    new Lib("zone.js/dist/fake-async-test.js", { test: true }),
     new Lib("rxjs/bundles/Rx.js", { dev: true, test: true }),
     new Lib("./systemjs.config.js", { dev: true }),
 ];
@@ -94,7 +94,7 @@ const config = {
         return result;
     },
     get package() {
-    	return require(projectRoot + "/package.json");
+        return require(projectRoot + "/package.json");
     }
 };
 

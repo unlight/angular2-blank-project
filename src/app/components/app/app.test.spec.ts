@@ -7,6 +7,12 @@ describe('App test', () => {
         expect(NameListService).toBeDefined();
     });
 
+    xit('dummy', () => { // eslint-disable-line
+        var dummy = 'dummy';
+        var bunny = 'bunny';
+        assert.equal(dummy, bunny);
+    });
+
     xit('should fail', () => { // eslint-disable-line
         var ary = [1, 2, 3];
         var minusOne = -1;

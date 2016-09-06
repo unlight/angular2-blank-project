@@ -7,6 +7,9 @@ const saveStream = require("save-stream");
 const _ = require("lodash");
 const config = require("./env.conf");
 const args = g.util.env;
+const del = require('del');
+const fs = require("fs");
+const mkdirp = require("mkdirp");
 
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
@@ -17,6 +20,7 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("debug", debug)
     .provide("clearLastRun", clearLastRun)
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
+    .provide("watchHelper", watchHelper())
     .resolve();
 
 function debug(title, ns) {
@@ -47,6 +51,22 @@ function clearLastRun(task) {
     return function reset(done) {
         lastRun.release(fn);
         done();
+    };
+}
+
+function watchHelper() {
+    const lockFile = "node_modules/.tmp/watch.pid";
+    return {
+        lock() {
+            mkdirp.sync("node_modules/.tmp");
+            fs.writeFileSync(lockFile, process.pid);
+        },
+        unlock() {
+            del.sync(lockFile);
+        },
+        isLocked() {
+            return fs.existsSync(lockFile);
+        }
     };
 }
 

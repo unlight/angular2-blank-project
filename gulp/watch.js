@@ -1,9 +1,16 @@
 const fs = require("fs");
 
-module.exports = (gulp, g, config, paths, clearLastRun) => {
+module.exports = (gulp, g, args, config, paths, clearLastRun, watchHelper) => {
 
     gulp.task("watch", (done) => {
-        var watchOptions = {delay: 100};
+        if (watchHelper.isLocked() && args.f !== true) {
+            g.util.log(g.util.colors.red("WARNING!"));
+            g.util.log(g.util.colors.yellow("Watch task is not started, because it is already running somewhere near."));
+            // g.util.log(g.util.colors.yellow("If not, start task with -f argument"));
+            return done();
+        }
+        watchHelper.lock();
+        var watchOptions = { delay: 100 };
         const watchers = [
             gulp.watch(paths.srcApp("**/*.ts"), watchOptions, gulp.series("scripts")),
             // If we changnig *.html we must recompile corresponsding component,
@@ -19,6 +26,7 @@ module.exports = (gulp, g, config, paths, clearLastRun) => {
 
         process.on("SIGINT", () => {
             watchers.forEach(w => w.close());
+            watchHelper.unlock();
             done();
         });
     });
