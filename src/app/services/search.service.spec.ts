@@ -1,19 +1,27 @@
-import { inject, fakeAsync, tick, addProviders } from '@angular/core/testing';
+import {inject, fakeAsync, tick} from '@angular/core/testing';
 import {MockBackend} from '@angular/http/testing';
-import {provide} from '@angular/core';
-import 'rxjs/add/operator/map';
 import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from '@angular/http';
 import {SearchService} from './search.service';
+import {TestBed} from '@angular/core/testing';
+import 'rxjs/add/operator/map';
 
 describe('Search Service', () => {
+
     beforeEach(() => {
-        addProviders([BaseRequestOptions, MockBackend, SearchService,
-            provide(Http, {
-                useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
-                    return new Http(backend, defaultOptions);
-                }, deps: [MockBackend, BaseRequestOptions]
-            }),
-        ]);
+        TestBed.configureTestingModule({
+            declarations: [],
+            imports: [],
+            providers: [
+                BaseRequestOptions,
+                MockBackend,
+                SearchService,
+                {
+                    provide: Http,
+                    useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => new Http(backend, defaultOptions),
+                    deps: [MockBackend, BaseRequestOptions]
+                },
+            ]
+        });
     });
 
     // Should be skipped really, because we do not use http request.

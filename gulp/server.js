@@ -13,6 +13,15 @@ module.exports = (gulp, g, config) => {
                 history()
             ]
         });
+
+        if (config.hotreload) {
+            var chokidarEvEmitter = require("chokidar-socket-emitter");
+            chokidarEvEmitter({
+                app: connect.server,
+                path: "./build/js/**/*.js"
+            });
+        }
+
         connect.server.on("close", done);
     });
 };

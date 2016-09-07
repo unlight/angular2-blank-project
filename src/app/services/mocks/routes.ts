@@ -1,4 +1,3 @@
-import {provide} from '@angular/core';
 import {Router} from '@angular/router';
 
 class MockRouteSegment {
@@ -45,9 +44,7 @@ class MockRouterProvider {
 
     getProviders(): Array<any> {
         return [
-            provide(Router, { useValue: this.mockRouter })
-            // provide(RouteParams, { useValue: this.mockRouteParams }),
-            // provide(RouteSegment, { useClass: MockRouteSegment }),
+            { provide: Router, useValue: this.mockRouter }
         ];
     }
 }

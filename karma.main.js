@@ -8,17 +8,9 @@ __karma__.loaded = function () { };
 function filterSystemConfig(config) {
     config.baseURL = "/base/build";
     config.map["rxjs"] = "n:rxjs";
+    config.map["karma-custom-log"] = "n:karma-custom-log/lib/index.js";
     Object.assign(config.packages, {
         "rxjs": { defaultExtension: "js" },
-        "@angular/common": { main: "index", defaultExtension: "js" },
-        "@angular/compiler": { main: "index", defaultExtension: "js" },
-        "@angular/core": { main: "index", defaultExtension: "js" },
-        "@angular/forms": { main: "index", defaultExtension: "js" },
-        "@angular/http": { main: "index", defaultExtension: "js" },
-        "@angular/platform-browser": { main: "index", defaultExtension: "js" },
-        "@angular/platform-browser-dynamic": { main: "index", defaultExtension: "js" },
-        "@angular/router": { main: "index", defaultExtension: "js" },
-        "n:karma-custom-log": { main: "lib/index.js" },
     });
 }
 
@@ -28,13 +20,13 @@ System.import("base/systemjs.config.js")
         return Promise.all([
             System.import("@angular/core/testing"),
             System.import("@angular/platform-browser-dynamic/testing"),
-            System.import("n:karma-custom-log")
+            System.import("karma-custom-log")
         ]);
     })
     .then(function (providers) {
-        var testing = providers[0];
-        var testingBrowser = providers[1];
-        testing.TestBed.initTestEnvironment(testingBrowser.BrowserDynamicTestingModule, testingBrowser.platformBrowserDynamicTesting());
+        var coreTesting = providers[0];
+        var browserTesting = providers[1];
+        coreTesting.TestBed.initTestEnvironment(browserTesting.BrowserDynamicTestingModule, browserTesting.platformBrowserDynamicTesting());
         var k = providers[2];
         __karma__.result = k.karmaResult(__karma__.result, __karma__, {exclude: /node_modules/});
     })

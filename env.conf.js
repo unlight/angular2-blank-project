@@ -64,6 +64,7 @@ const config = {
         return baseLibs.filter(x => x.polyfill || x.test).map(x => x.main);
     },
     paths: {
+        src: createGlob("src"),
         srcApp: createGlob("src/app"),
         dest: "build",
         destJs: "build/js"
@@ -95,6 +96,9 @@ const config = {
     },
     get package() {
         return require(projectRoot + "/package.json");
+    },
+    get hotreload() {
+        return this.isDev && args.hot === true;
     }
 };
 
