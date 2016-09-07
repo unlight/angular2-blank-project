@@ -5,19 +5,10 @@ module.exports = (gulp) => {
 
     gulp.task("setup", (done) => {
 
-        var builder = new Builder({
-            defaultJSExtensions: true,
-            baseURL: './node_modules',
-            paths: {
-                "systemjs-hot-reloader": "systemjs-hot-reloader/hot-reloader.js",
-                "socket.io-client": "socket.io-client/socket.io.js",
-                "weakee": "weakee/weakee.js",
-                "debug": "debug/browser.js",
-                "ms": "ms/index.js",
-            }
-        });
+        var builder = new Builder('./', './systemjs.config.js');
 
-        return builder.bundle('systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', {
+        return builder.bundle('capaj/systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', {
+            runtime: true,
             sourceMaps: true,
             sourceMapContents: true,
             minify: false,

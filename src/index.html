@@ -17,7 +17,7 @@
     <!-- @if isDev -->
     <script>
     // SystemJS hot reload.
-    System.trace = true
+    System.trace = true;
     System.import('capaj/systemjs-hot-reloader').then(function(HotReloader) {
         var hr = new HotReloader.default('http://localhost:8080', p => {
             return p.substr('build/'.length);
