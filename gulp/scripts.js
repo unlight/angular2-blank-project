@@ -19,7 +19,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         return stream
             .pipe(gulp.dest(paths.destJs))
             .pipe(g.if(config.isProd, productionStream()))
-            .pipe(g.connect.reload());
+            .pipe(g.if(!config.hotreload, g.connect.reload()));
     });
 
     function appStream() {

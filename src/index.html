@@ -14,13 +14,14 @@
     <sd-app>Loading...</sd-app>
     <!-- inject:js -->
     <!-- endinject -->
-    <!-- @if isDev -->
+    <!-- @if hotreload -->
     <script src="node_modules/.tmp/beep.js"></script>
     <script>
     // SystemJS hot reload.
     System.trace = true;
     System.import("capaj/systemjs-hot-reloader").then(function(HotReloader) {
-        var hr = new HotReloader.default("http://localhost:8080", p => {
+        var backendUrl = '//localhost:' + '<!-- @echo PORT -->';
+        var hr = new HotReloader.default(backendUrl, p => {
             return p.substr("build/".length);
         });
         hr.on('error', err => {
@@ -28,6 +29,10 @@
             console.error(err);
         });
     });
+    </script>
+    <!-- @endif -->
+    <!-- @if isDev -->
+    <script>
     // The package name `js` matches the folder structure inside `/build`.
     System.import("./js/main.js").catch(console.error);
     </script>

@@ -28,6 +28,6 @@ module.exports = (gulp, g, paths, config) => {
             .pipe(g.inject(scripts, { addRootSlash: false, ignorePath: paths.dest }))
             .pipe(g.preprocess({ context: config }))
             .pipe(gulp.dest(paths.dest))
-            .pipe(g.connect.reload());
+            .pipe(g.if(!config.hotreload, g.connect.reload()));
     });
 };
