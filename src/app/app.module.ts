@@ -41,6 +41,6 @@ import {routes} from './app.routes';
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
     // bootstrap: [AppComponent, NavbarComponent, ToolbarComponent],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent], // BUG: In prod see README
 })
 export class AppModule { }
