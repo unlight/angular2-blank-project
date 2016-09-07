@@ -10,14 +10,6 @@ function filterSystemConfig(config) {
     config.map["rxjs"] = "n:rxjs";
     Object.assign(config.packages, {
         "rxjs": { defaultExtension: "js" },
-        "@angular/common": { main: "index", defaultExtension: "js" },
-        "@angular/compiler": { main: "index", defaultExtension: "js" },
-        "@angular/core": { main: "index", defaultExtension: "js" },
-        "@angular/forms": { main: "index", defaultExtension: "js" },
-        "@angular/http": { main: "index", defaultExtension: "js" },
-        "@angular/platform-browser": { main: "index", defaultExtension: "js" },
-        "@angular/platform-browser-dynamic": { main: "index", defaultExtension: "js" },
-        "@angular/router": { main: "index", defaultExtension: "js" },
         "n:karma-custom-log": { main: "lib/index.js" },
     });
 }
