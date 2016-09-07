@@ -14,8 +14,13 @@ module.exports = (gulp, g, config) => {
             ]
         });
 
-        var chokidarEvEmitter = require('chokidar-socket-emitter');
-        require('chokidar-socket-emitter')({app: connect.server, path: './build/js/**/*.js'});
+        if (config.hotreload) {
+            var chokidarEvEmitter = require("chokidar-socket-emitter");
+            chokidarEvEmitter({
+                app: connect.server,
+                path: "./build/js/**/*.js"
+            });
+        }
 
         connect.server.on("close", done);
     });
