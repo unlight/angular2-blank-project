@@ -15,14 +15,19 @@
     <!-- inject:js -->
     <!-- endinject -->
     <!-- @if isDev -->
+    <script src="node_modules/.tmp/beep.js"></script>
     <script>
     // SystemJS hot reload.
     System.trace = true;
-    System.import('capaj/systemjs-hot-reloader').then(function(HotReloader) {
-        var hr = new HotReloader.default('http://localhost:8080', p => {
-            return p.substr('build/'.length);
+    System.import("capaj/systemjs-hot-reloader").then(function(HotReloader) {
+        var hr = new HotReloader.default("http://localhost:8080", p => {
+            return p.substr("build/".length);
         });
-    }, console.error);
+        hr.on('error', err => {
+            if (typeof beepError === "function") beepError();
+            console.error(err);
+        });
+    });
     // The package name `js` matches the folder structure inside `/build`.
     System.import("./js/main.js").catch(console.error);
     </script>
