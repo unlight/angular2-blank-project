@@ -8,9 +8,9 @@ __karma__.loaded = function () { };
 function filterSystemConfig(config) {
     config.baseURL = "/base/build";
     config.map["rxjs"] = "n:rxjs";
+    config.map["karma-custom-log"] = "n:karma-custom-log/lib/index.js";
     Object.assign(config.packages, {
         "rxjs": { defaultExtension: "js" },
-        "n:karma-custom-log": { main: "lib/index.js" },
     });
 }
 
@@ -20,7 +20,7 @@ System.import("base/systemjs.config.js")
         return Promise.all([
             System.import("@angular/core/testing"),
             System.import("@angular/platform-browser-dynamic/testing"),
-            System.import("n:karma-custom-log")
+            System.import("karma-custom-log")
         ]);
     })
     .then(function (providers) {

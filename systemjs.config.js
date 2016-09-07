@@ -1,21 +1,12 @@
 (function (global) {
     var paths = {
         "n:*": "node_modules/*",
-        "capaj/systemjs-hot-reloader": "node_modules/systemjs-hot-reloader/hot-reloader.js",
-        "socket.io-client": "node_modules/socket.io-client/socket.io.js",
-        "weakee": "node_modules/weakee/weakee.js",
-        "debug": "node_modules/debug/browser.js",
-        "ms": "node_modules/ms/index.js",
-        "power-assert": "node_modules/build/power-assert.js",
-        "traceur": "node_modules/bower-traceur/traceur.js",
-        "traceur-runtime":"node_modules/bower-traceur-runtime/traceur-runtime.js",
     };
     // map tells the System loader where to look for things
     var map = {
         "@angular": "n:@angular",
         "lodash": "n:lodash",
-        "power-assert": "n:power-assert",
-        // angular bundles
+        // Angular bundles
         '@angular/core': 'n:@angular/core/bundles/core.umd.js',
         '@angular/common': 'n:@angular/common/bundles/common.umd.js',
         '@angular/compiler': 'n:@angular/compiler/bundles/compiler.umd.js',
@@ -24,7 +15,7 @@
         '@angular/http': 'n:@angular/http/bundles/http.umd.js',
         '@angular/router': 'n:@angular/router/bundles/router.umd.js',
         '@angular/forms': 'n:@angular/forms/bundles/forms.umd.js',
-        // angular testing umd bundles
+        // Angular testing umd bundles
         '@angular/core/testing': 'n:@angular/core/bundles/core-testing.umd.js',
         '@angular/common/testing': 'n:@angular/common/bundles/common-testing.umd.js',
         '@angular/compiler/testing': 'n:@angular/compiler/bundles/compiler-testing.umd.js',
@@ -33,6 +24,15 @@
         '@angular/http/testing': 'n:@angular/http/bundles/http-testing.umd.js',
         '@angular/router/testing': 'n:@angular/router/bundles/router-testing.umd.js',
         '@angular/forms/testing': 'n:@angular/forms/bundles/forms-testing.umd.js',
+        // Other
+        "power-assert": "n:power-assert/build/power-assert.js",
+        "capaj/systemjs-hot-reloader": "n:systemjs-hot-reloader/hot-reloader.js",
+        "socket.io-client": "n:socket.io-client/socket.io.js",
+        "weakee": "n:weakee/weakee.js",
+        "debug": "n:debug/browser.js",
+        "ms": "n:ms/index.js",
+        "traceur": "n:bower-traceur/traceur.js",
+        "traceur-runtime":"n:bower-traceur-runtime/traceur-runtime.js",
     };
 
     var meta = {
