@@ -13,10 +13,10 @@ export class MockSearchService {
     constructor() {
         this.spy = jasmine.createSpy;
         this.fakeResponse = null;
-        this.getAllSpy = this.spy('getAll').andReturn(this);
-        this.getByIdSpy = this.spy('get').andReturn(this);
-        this.searchSpy = this.spy('search').andReturn(this);
-        this.saveSpy = this.spy('save').andReturn(this);
+        this.getAllSpy = this.spy('getAll').and.returnValue(this);
+        this.getByIdSpy = this.spy('get').and.returnValue(this);
+        this.searchSpy = this.spy('search').and.returnValue(this);
+        this.saveSpy = this.spy('save').and.returnValue(this);
     }
 
     subscribe(callback: Function | any) {
