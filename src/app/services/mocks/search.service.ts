@@ -1,4 +1,3 @@
-import {provide} from '@angular/core';
 import {SearchService} from '../search.service';
 import Spy = jasmine.Spy; // eslint-disable-line no-undef
 
@@ -29,6 +28,8 @@ export class MockSearchService {
     }
 
     getProviders(): Array<any> {
-        return [provide(SearchService, { useValue: this })];
+        return [
+            { provide: SearchService, useValue: this }
+        ];
     }
 }

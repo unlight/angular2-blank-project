@@ -40,6 +40,6 @@ import {routes} from './app.routes';
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
-    bootstrap: [AppComponent, NavbarComponent, ToolbarComponent],
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

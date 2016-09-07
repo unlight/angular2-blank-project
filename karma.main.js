@@ -32,9 +32,9 @@ System.import("base/systemjs.config.js")
         ]);
     })
     .then(function (providers) {
-        var testing = providers[0];
-        var testingBrowser = providers[1];
-        testing.TestBed.initTestEnvironment(testingBrowser.BrowserDynamicTestingModule, testingBrowser.platformBrowserDynamicTesting());
+        var coreTesting = providers[0];
+        var browserTesting = providers[1];
+        coreTesting.TestBed.initTestEnvironment(browserTesting.BrowserDynamicTestingModule, browserTesting.platformBrowserDynamicTesting());
         var k = providers[2];
         __karma__.result = k.karmaResult(__karma__.result, __karma__, {exclude: /node_modules/});
     })
