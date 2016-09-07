@@ -2,6 +2,12 @@
 Light-weight and easy to use seed project for Angular 2 apps.  
 Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-project) and [mraible/angular2-tutorial](https://github.com/mraible/angular2-tutorial)
 
+### FEATURES
+- Gulp 4 incremental builds (since, lastRun)
+- Hot Reload!
+- Unit tests coverage (with remap to TypeScript source)
+- Merged pipeline of SASS, LESS and CSS + PostCSS
+
 ### STACK
 - [Gulp 4](http://gulpjs.com/)
 - [Angular 2](https://angular.io/)
@@ -9,13 +15,8 @@ Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-
 - [SystemJS](https://github.com/systemjs/systemjs)
 - [Typings](https://github.com/typings/typings)
 - [Karma](http://karma-runner.github.io/)
-- [Protractor](http://www.protractortest.org/)
 - [Codelyzer](https://github.com/mgechev/codelyzer)
-
-### FEATURES
-- Gulp 4 incremental builds (since, lastRun)
-- Unit tests coverage (with remap to TypeScript source)
-- Merged pipeline of SASS, LESS and CSS + PostCSS
+- [Protractor](http://www.protractortest.org/)
 
 ### GLOBAL DEPENDENCIES
 
@@ -69,6 +70,12 @@ To view the app please open a new tab and go to `http://localhost:8080/`.
   gulp build --production
   ```
 
+### HOT RELOAD
+To enable hot reload run:
+```
+gulp serve --hot
+```
+
 ### TESTS
 To run unit tests in watch mode:
 ```
@@ -93,6 +100,8 @@ gulp karma -w
 
 ### TODO
 
+* top menu in prod isn not showing https://github.com/angular/angular/issues/10618#issuecomment-243532360 look like it should be fixed in rc.6
+* fix several warning: Angular 2 is running in the development mode. probably of bootstrap: [AppComponent, NavbarComponent, ToolbarComponent],
 * Made static offline compiler
   import { platformBrowser } from '@angular/platform-browser';
   The app module factory produced by the static offline compiler

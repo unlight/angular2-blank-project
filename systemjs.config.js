@@ -1,6 +1,14 @@
 (function (global) {
     var paths = {
-        "n:*": "node_modules/*"
+        "n:*": "node_modules/*",
+        "capaj/systemjs-hot-reloader": "node_modules/systemjs-hot-reloader/hot-reloader.js",
+        "socket.io-client": "node_modules/socket.io-client/socket.io.js",
+        "weakee": "node_modules/weakee/weakee.js",
+        "debug": "node_modules/debug/browser.js",
+        "ms": "node_modules/ms/index.js",
+        "power-assert": "node_modules/build/power-assert.js",
+        "traceur": "node_modules/bower-traceur/traceur.js",
+        "traceur-runtime":"node_modules/bower-traceur-runtime/traceur-runtime.js",
     };
     // map tells the System loader where to look for things
     var map = {
@@ -38,12 +46,17 @@
     var packages = {
         "js": { defaultExtension: "js" },
         "n:": { defaultExtension: "js" },
-        "power-assert": { main: "build/power-assert.js"},
     };
 
     // packageConfigPaths.push('node_modules/*/package.json');
 
     var config = {
+        transpiler: "traceur",
+        traceurOptions: {
+            "annotations": true,
+            "memberVariables": true,
+            "types": true
+        },
         // defaultJSExtensions: true,
         paths: paths,
         map: map,

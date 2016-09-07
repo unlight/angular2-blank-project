@@ -95,6 +95,9 @@ const config = {
     },
     get package() {
         return require(projectRoot + "/package.json");
+    },
+    get hotreload() {
+        return this.isDev && args.hot === true;
     }
 };
 
