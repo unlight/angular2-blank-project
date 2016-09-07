@@ -1,19 +1,19 @@
 (function (global) {
     var paths = {
-        "n:*": "node_modules/*"
+        "n:*": "node_modules/*",
+        "capaj/systemjs-hot-reloader": "node_modules/systemjs-hot-reloader/hot-reloader.js",
+        "socket.io-client": "node_modules/socket.io-client/socket.io.js",
+        "weakee": "node_modules/weakee/weakee.js",
+        "debug": "node_modules/debug/browser.js",
+        "ms": "node_modules/ms/index.js",
+        "power-assert": "node_modules/build/power-assert.js",
+        "traceur": "node_modules/bower-traceur/traceur.js",
+        "traceur-runtime":"node_modules/bower-traceur-runtime/traceur-runtime.js",
     };
     // map tells the System loader where to look for things
     var map = {
         "@angular": "n:@angular",
         "lodash": "n:lodash",
-        "power-assert": "n:power-assert",
-        "capaj/systemjs-hot-reloader": "n:systemjs-hot-reloader",
-        "traceur": "n:bower-traceur",
-        "traceur-runtime": "n:bower-traceur-runtime",
-        "socket.io-client": "n:socket.io-client",
-        "weakee": "n:weakee",
-        "debug": "n:debug",
-        "ms": "n:ms",
     };
 
     var meta = {
@@ -35,14 +35,6 @@
         "@angular/platform-browser": {main: "bundles/platform-browser.umd.js"},
         "@angular/platform-browser-dynamic": {main: "bundles/platform-browser-dynamic.umd.js"},
         "@angular/router": {main: "bundles/router.umd.js"},
-        "power-assert": { main: "build/power-assert.js"},
-        "capaj/systemjs-hot-reloader": { main: "hot-reloader.js"},
-        "traceur": { main: "traceur.js"},
-        "traceur-runtime": { main: "traceur-runtime.js"},
-        "socket.io-client": { main: "socket.io.js"},
-        "weakee": { main: "weakee.js"},
-        "debug": { main: "browser.js", defaultExtension: "js"},
-        "ms": { main: "index.js", defaultExtension: "js"},
     };
 
     // packageConfigPaths.push('node_modules/*/package.json');
