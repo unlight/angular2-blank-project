@@ -64,6 +64,7 @@ const config = {
         return baseLibs.filter(x => x.polyfill || x.test).map(x => x.main);
     },
     paths: {
+        src: createGlob("src"),
         srcApp: createGlob("src/app"),
         dest: "build",
         destJs: "build/js"

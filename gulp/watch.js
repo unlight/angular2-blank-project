@@ -12,6 +12,8 @@ module.exports = (gulp, g, args, config, paths, clearLastRun, watchHelper) => {
         watchHelper.lock();
         var watchOptions = { delay: 100 };
         const watchers = [
+            gulp.watch(paths.src("**/*"), watchOptions)
+                .on('all', sourceAllHandler),
             gulp.watch(paths.srcApp("**/*.ts"), watchOptions, gulp.series("scripts")),
             // If we changnig *.html we must recompile corresponsding component,
             gulp.watch(paths.srcApp("**/*.html"), watchOptions)
@@ -45,6 +47,11 @@ module.exports = (gulp, g, args, config, paths, clearLastRun, watchHelper) => {
 
     function rebuildHtdocs(path) {
         gulp.series(clearLastRun("styles"), "styles", "htdocs").call();
+    }
+
+    function sourceAllHandler(type, file) {
+        var line = new Array((process.stdout.columns || 80) + 1).join('\u2500');
+        process.stdout.write(g.util.colors.gray.dim(line));
     }
 
 };
