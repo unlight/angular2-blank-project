@@ -100,8 +100,6 @@ gulp karma -w
 
 ### TODO
 
-* top menu in prod isn not showing https://github.com/angular/angular/issues/10618#issuecomment-243532360 look like it should be fixed in rc.6
-* fix several warning: Angular 2 is running in the development mode. probably of bootstrap: [AppComponent, NavbarComponent, ToolbarComponent],
 * Made static offline compiler
   import { platformBrowser } from '@angular/platform-browser';
   The app module factory produced by the static offline compiler
