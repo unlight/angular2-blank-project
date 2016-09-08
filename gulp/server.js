@@ -1,4 +1,6 @@
-module.exports = (gulp, g, config) => {
+var path = require("path");
+
+module.exports = (gulp, g, config, paths) => {
     gulp.task("server", function(done) {
         var history = require("connect-history-api-fallback");
         var folders = ["build"];
@@ -18,7 +20,7 @@ module.exports = (gulp, g, config) => {
             var chokidarEvEmitter = require("chokidar-socket-emitter");
             chokidarEvEmitter({
                 app: connect.server,
-                path: "./build/js/**/*.js"
+                path: path.join(paths.destJs, "**/*.js")
             });
         }
 
