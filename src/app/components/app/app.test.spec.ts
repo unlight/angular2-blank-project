@@ -7,6 +7,12 @@ describe('App test', () => {
         expect(NameListService).toBeDefined();
     });
 
+    xit('jasmine expect should fail', () => { // eslint-disable-line
+        var jasmine = 'jasmine';
+        var notj = 'notj';
+        expect(jasmine).toBe(notj);
+    });
+
     xit('dummy', () => { // eslint-disable-line
         var dummy = 'dummy';
         var bunny = 'bunny';

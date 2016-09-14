@@ -15,7 +15,7 @@ const projectRoot = pkgDir.sync();
 const baseLibs = [
     new Lib("tslib", { polyfill: true, dev: true, test: true }),
     new Lib("es6-shim", { polyfill: true, dev: true }),
-    new Lib("zone.js", { polyfill: true, dev: true }),
+    new Lib("zone.js/dist/zone.js", { polyfill: true, dev: true }),
     new Lib("reflect-metadata", { polyfill: true, dev: true }),
     new Lib("systemjs/dist/system.src.js", { dev: true, test: true }),
     // new Lib("systemjs/dist/system-polyfills.js", { test: true }),
