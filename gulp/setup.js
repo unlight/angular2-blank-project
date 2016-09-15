@@ -34,7 +34,7 @@ module.exports = (gulp) => {
         });
 
         var bundles = [
-            builder.bundle('capaj/systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', options),
+            // builder.bundle('capaj/systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', options),
             builder.bundle('rxjs', 'node_modules/.tmp/Rx.js', options),
         ];
 
