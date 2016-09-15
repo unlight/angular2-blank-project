@@ -11,15 +11,34 @@ module.exports = (gulp) => {
         mkdirp.sync('node_modules/.tmp');
         fs.writeFileSync('node_modules/.tmp/beep.js', beepError.toString());
 
-        var builder = new Builder('./', './systemjs.config.js');
-
-        return builder.bundle('capaj/systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', {
+        // SystemJS build options.
+        var options = {
+            normalize: true,
             runtime: false,
             sourceMaps: true,
             sourceMapContents: true,
             minify: false,
             mangle: false
+        };
+        var builder = new Builder('./', './systemjs.config.js');
+        builder.config({
+            paths: {
+                "rxjs/*": "node_modules/rxjs/*.js",
+            },
+            map: {
+                "rxjs": "n:rxjs",
+            },
+            packages: {
+                "rxjs": {main: "Rx.js", defaultExtension: "js"},
+            }
         });
+
+        var bundles = [
+            builder.bundle('capaj/systemjs-hot-reloader', 'node_modules/.tmp/systemjs-hot-reloader.js', options),
+            builder.bundle('rxjs', 'node_modules/.tmp/Rx.js', options),
+        ];
+
+        return Promise.all(bundles);
     });
 
     // This function will be global.

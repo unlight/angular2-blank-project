@@ -25,7 +25,7 @@ const baseLibs = [
     new Lib("zone.js/dist/jasmine-patch.js", { test: true }),
     new Lib("zone.js/dist/async-test.js", { test: true }),
     new Lib("zone.js/dist/fake-async-test.js", { test: true }),
-    new Lib("rxjs/bundles/Rx.js", { dev: true, test: true }),
+    new Lib(".tmp/Rx.js", { dev: true, test: true }),
     new Lib("./systemjs.config.js", { dev: true }),
 ];
 

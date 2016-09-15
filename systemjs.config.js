@@ -4,9 +4,7 @@
     };
     // map tells the System loader where to look for things
     var map = {
-        "@angular": "n:@angular",
-        "lodash": "n:lodash",
-        // Angular bundles
+        // Angular bundles.
         '@angular/core': 'n:@angular/core/bundles/core.umd.js',
         '@angular/common': 'n:@angular/common/bundles/common.umd.js',
         '@angular/compiler': 'n:@angular/compiler/bundles/compiler.umd.js',
@@ -15,7 +13,7 @@
         '@angular/http': 'n:@angular/http/bundles/http.umd.js',
         '@angular/router': 'n:@angular/router/bundles/router.umd.js',
         '@angular/forms': 'n:@angular/forms/bundles/forms.umd.js',
-        // Angular testing umd bundles
+        // Angular testing umd bundles.
         '@angular/core/testing': 'n:@angular/core/bundles/core-testing.umd.js',
         '@angular/common/testing': 'n:@angular/common/bundles/common-testing.umd.js',
         '@angular/compiler/testing': 'n:@angular/compiler/bundles/compiler-testing.umd.js',
@@ -24,7 +22,8 @@
         '@angular/http/testing': 'n:@angular/http/bundles/http-testing.umd.js',
         '@angular/router/testing': 'n:@angular/router/bundles/router-testing.umd.js',
         '@angular/forms/testing': 'n:@angular/forms/bundles/forms-testing.umd.js',
-        // Other
+        // Other npm.
+        "lodash": "n:lodash", // Note: there is es modules lodash-es, rxjs-es.
         "power-assert": "n:power-assert/build/power-assert.js",
         "capaj/systemjs-hot-reloader": "n:systemjs-hot-reloader/hot-reloader.js",
         "socket.io-client": "n:socket.io-client/socket.io.js",
