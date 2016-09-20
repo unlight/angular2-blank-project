@@ -51,6 +51,7 @@
     "eslint-plugin-perf-standard": "1.0.3",
     "eslint-plugin-prefer-spread": "1.0.3",
     "eslint-plugin-typescript": "0.0.1",
+    "eslint-plugin-unicorn": "1.0.0",
     "eslint-plugin-wix-editor": "1.1.1",
     "fs-symlink": "1.2.1",
     "gulp": "gulpjs/gulp#4.0",

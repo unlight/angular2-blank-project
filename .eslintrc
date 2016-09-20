@@ -7,6 +7,7 @@
   },
   "plugins": [
     "typescript",
+    "unicorn",
     "lodash",
     "lodash-smells",
     "perf-standard",
@@ -16,6 +17,7 @@
   ],
   "extends": [
     "eslint:recommended",
+    "plugin:unicorn/recommended",
     "plugin:lodash/recommended",
     "plugin:jasmine/recommended"
   ],
@@ -24,6 +26,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "unicorn/no-abusive-eslint-disable": 0,
     "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,
     "wix-editor/no-instanceof-array": 1,
