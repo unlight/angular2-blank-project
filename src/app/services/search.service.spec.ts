@@ -75,5 +75,3 @@ describe('Search Service', () => {
         }))
     );
 });
-
-
