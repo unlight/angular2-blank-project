@@ -26,6 +26,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-empty-function": 0,
     "unicorn/no-abusive-eslint-disable": 0,
     "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,

@@ -21,7 +21,6 @@
 		"pipe-naming": [true, "camelCase"],
 		"component-class-suffix": true,
 		"directive-class-suffix": true,
-
 		"ban": [true, ["_", "extend"],
 			["_", "isNull"],
 			["_", "isDefined"]
@@ -49,11 +48,8 @@
 			"trace"
 		],
 		"no-construct": true,
-		"no-debugger": true,
 		"no-duplicate-key": true,
 		"no-duplicate-variable": true,
-		"no-empty": true,
-		"no-eval": true,
 		"no-string-literal": true,
 		"trailing-comma": false,
 		"no-trailing-whitespace": true,
