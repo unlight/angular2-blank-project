@@ -2,6 +2,12 @@ import {async, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {AboutComponent} from './about.component';
 
+@Component({
+    selector: 'sd-test-cmp',
+    template: '<sd-about></sd-about>'
+})
+class TestComponent { }
+
 describe('About component', () => {
 
     beforeEach(() => {
@@ -34,9 +40,3 @@ describe('About component', () => {
     }));
 
 });
-
-@Component({
-    selector: 'sd-test-cmp',
-    template: '<sd-about></sd-about>'
-})
-class TestComponent { }

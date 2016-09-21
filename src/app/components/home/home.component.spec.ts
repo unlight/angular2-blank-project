@@ -5,7 +5,6 @@
 // import {__platform_browser_private__ as platformBrowser} from '@angular/platform-browser';
 // import {FORM_DIRECTIVES} from '@angular/forms';
 
-
 // describe('Home component', () => {
 
 //     it('should work', () => {
