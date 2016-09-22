@@ -106,7 +106,7 @@
     "tslint": "3.15.1",
     "tslint-stylish": "2.1.0-beta",
     "typescript": "1.8.10",
-    "typescript-eslint-parser": "0.3.0",
+    "typescript-eslint-parser": "0.3.1",
     "unixify": "0.2.1",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0"
