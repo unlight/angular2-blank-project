@@ -99,7 +99,12 @@ const config = {
     },
     get hotreload() {
         return this.isDev && args.hot === true;
-    }
+    },
+    // If true, then in production file names will be suffixed with hash.
+    // If false, hash will be added as get parameter (e.g. app.js?v=12345)
+    get hashNames() {
+        return false;
+    },
 };
 
 module.exports = config;
