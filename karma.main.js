@@ -7,10 +7,9 @@ __karma__.loaded = function () { };
 // Inject configuration to SystemJS config.
 function filterSystemConfig(config) {
     config.baseURL = "/base/build";
-    config.map["rxjs"] = "n:rxjs";
     config.map["karma-custom-log"] = "n:karma-custom-log/lib/index.js";
-    Object.assign(config.packages, {
-        "rxjs": { defaultExtension: "js" },
+    config.bundles = Object.assign(config.bundles || {}, {
+        "/base/node_modules/.tmp/Rx.js": ["rxjs/*"],
     });
 }
 
