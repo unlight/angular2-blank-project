@@ -7,7 +7,7 @@ const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
 
-module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe) => {
+module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, state, helpers) => {
 
     gulp.task("scripts", function scripts() {
         var stream = merge2();
@@ -119,6 +119,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe) => 
             useRelativePaths: true,
             removeLineBreaks: true,
             styleProcessor: function (filepath, ext, fileContents, callback) {
+                state.inlined.push(helpers.lib(filepath));
                 var transform = inlineTransforms[ext];
                 if (!transform) return callback(new Error(`I do not know how to transform '${ext}'`));
                 var fileStream = g.file(path.basename(filepath), fileContents, { src: true });

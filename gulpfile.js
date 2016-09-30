@@ -13,6 +13,10 @@ const mkdirp = require("mkdirp");
 const util = require("util");
 const combine = require("stream-combiner");
 
+var state = {
+    inlined: []
+};
+
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
     .provide("g", g)
@@ -25,11 +29,14 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("watchHelper", watchHelper())
     .provide("hashOptions", hashOptions())
     .provide("sassPipe", sassPipe)
+    .provide("state", state)
+    .provide("helpers", {lib: config._lib})
     .resolve();
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel("scripts", "styles", "assets"),
+    "scripts",
+    gulp.parallel("styles", "assets"),
     "htdocs",
     "symlinks"
 ));

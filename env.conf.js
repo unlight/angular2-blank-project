@@ -109,6 +109,7 @@ const config = {
 };
 
 module.exports = config;
+module.exports._lib = lib;
 
 // ==========================
 // Functions

@@ -2,7 +2,7 @@ const merge2 = require("merge2");
 const combine = require("stream-combiner");
 const del = require("del");
 
-module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
+module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, helpers) => {
 
     var postcssPlugins = _.constant([
         require("autoprefixer")({ browsers: ["last 3 version"] })
@@ -11,7 +11,8 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
     gulp.task("styles", function styles() {
         var lastRunStyles = gulp.lastRun("styles");
         var sourceStream = gulp.src(["src/design/*.{scss,less,css}", paths.srcApp("**/*.{scss,less,css}")], { since: lastRunStyles })
-            .pipe(g.ignore.exclude("_*"));
+            .pipe(g.ignore.exclude("_*"))
+            .pipe(g.ignore.exclude(checkInlined));
         return sourceStream
             .pipe(debug("Reading styles"))
             .pipe(g.rename({ dirname: "" }))
@@ -36,4 +37,10 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
         var pattern = `${paths.destStyle}/*.css`;
         return del(pattern);
     });
+
+    function checkInlined(file) {
+        var normalizedFilePath = helpers.lib(file.path);
+        return _.includes(state.inlined, normalizedFilePath);
+    }
+
 };
