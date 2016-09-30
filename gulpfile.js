@@ -11,6 +11,8 @@ const del = require("del");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
 const util = require("util");
+const path = require("path");
+const unixify = require("unixify");
 const combine = require("stream-combiner");
 
 var state = {
@@ -30,7 +32,7 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("hashOptions", hashOptions())
     .provide("sassPipe", sassPipe)
     .provide("state", state)
-    .provide("helpers", {lib: config._lib})
+    .provide("lib", lib)
     .resolve();
 
 gulp.task("build", gulp.series(
@@ -51,6 +53,11 @@ gulp.task("serve", gulp.series(
     "build",
     gulp.parallel("watch", "server")
 ));
+
+function lib(file) {
+    file = path.resolve(file).slice(config.projectRoot.length + 1);
+    return unixify(file);
+}
 
 function sassPipe() {
     return combine([

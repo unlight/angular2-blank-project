@@ -2,7 +2,7 @@ const merge2 = require("merge2");
 const combine = require("stream-combiner");
 const del = require("del");
 
-module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, helpers) => {
+module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, lib) => {
 
     var postcssPlugins = _.constant([
         require("autoprefixer")({ browsers: ["last 3 version"] })
@@ -39,7 +39,7 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, helpers) =>
     });
 
     function checkInlined(file) {
-        var normalizedFilePath = helpers.lib(file.path);
+        var normalizedFilePath = lib(file.path);
         return _.includes(state.inlined, normalizedFilePath);
     }
 

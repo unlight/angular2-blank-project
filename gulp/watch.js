@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-module.exports = (gulp, g, args, config, paths, clearLastRun, watchHelper) => {
+module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, state, lib) => {
 
     gulp.task("watch", (done) => {
         if (watchHelper.isLocked() && args.f !== true) {
@@ -34,8 +34,11 @@ module.exports = (gulp, g, args, config, paths, clearLastRun, watchHelper) => {
     });
 
     function checkComponentFile(fallbackTask) {
+        // TODO: Use state.inlined
+        // but we
         return function(path) {
-            var tsfile = g.util.replaceExtension(path, ".ts");
+            var tsfile = lib(g.util.replaceExtension(path, ".ts"));
+            // if (_.includes(state.inlined)
             if (fs.existsSync(tsfile)) {
                 var fd = fs.openSync(tsfile, "r+");
                 fs.futimesSync(fd, new Date(), new Date());
