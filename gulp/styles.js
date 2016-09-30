@@ -1,5 +1,6 @@
 const merge2 = require("merge2");
 const combine = require("stream-combiner");
+const del = require("del");
 
 module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
 
@@ -26,8 +27,13 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
                 g.csso()
             )))
             .pipe(g.size({ title: "styles" }))
-            .pipe(gulp.dest("build/design"))
+            .pipe(gulp.dest(paths.destStyle))
             .pipe(debug("Writing styles"))
             .pipe(g.connect.reload());
+    });
+
+    gulp.task("clean-styles", function () {
+        var pattern = `${paths.destStyle}/*.css`;
+        return del(pattern);
     });
 };
