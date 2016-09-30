@@ -1,7 +1,7 @@
 const merge2 = require("merge2");
 const combine = require("stream-combiner");
 
-module.exports = (gulp, g, config, paths, debug, _) => {
+module.exports = (gulp, g, config, paths, debug, _, sassPipe) => {
 
     var postcssPlugins = _.constant([
         require("autoprefixer")({ browsers: ["last 3 version"] })
@@ -15,12 +15,7 @@ module.exports = (gulp, g, config, paths, debug, _) => {
             .pipe(debug("Reading styles"))
             .pipe(g.rename({ dirname: "" }))
             .pipe(g.sourcemaps.init({ loadMaps: true, identityMap: true }))
-            .pipe(g.if("*.scss", combine(
-                g.sassLint(),
-                g.sassLint.format(),
-                g.if(config.isProd, g.sassLint.failOnError()),
-                g.sass()
-            )))
+            .pipe(g.if("*.scss", sassPipe()))
             .pipe(g.if("*.less", g.less()))
             .pipe(g.postcss(postcssPlugins()))
             .pipe(g.sourcemaps.write())

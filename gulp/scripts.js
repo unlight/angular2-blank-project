@@ -7,7 +7,7 @@ const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
 
-module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
+module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe) => {
 
     gulp.task("scripts", function scripts() {
         var stream = merge2();
@@ -43,7 +43,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
                 })
             )))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
-            .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true, removeLineBreaks: true })))
+            .pipe(g.if("!*.d.ts", inlineNg2Template()))
             .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
@@ -107,6 +107,33 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         }
         return b.bundle(function () {
             through.emit("end");
+        });
+    }
+
+    const inlineTransforms = {
+        ".scss": () => sassPipe(),
+    };
+
+    function inlineNg2Template() {
+        return g.inlineNg2Template({
+            useRelativePaths: true,
+            removeLineBreaks: true,
+            styleProcessor: function (filepath, ext, fileContents, callback) {
+                var transform = inlineTransforms[ext];
+                if (!transform) return callback(new Error(`I do not know how to transform '${ext}'`));
+                var fileStream = g.file(path.basename(filepath), fileContents, { src: true });
+                fileStream
+                    .pipe(transform()) // TODO: Add PostCss?
+                    .pipe(g.if(config.isProd, g.csso()))
+                    .pipe(through.obj((chunk, enc, cb) => {
+                        fileContents = chunk.contents.toString();
+                        cb();
+                    }))
+                    .on("error", (err) => callback(err))
+                    .on("finish", () => {
+                        callback(null, fileContents);
+                    });
+            },
         });
     }
 
