@@ -49,10 +49,14 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
     }
 
     function removeStyleHandler(path) {
-        delete state.inlined[lib(path)];
-        var tsfile = g.util.replaceExtension(path, ".ts");
-        if (fs.existsSync(tsfile)) {
-            touchFile(tsfile);
+        var normalized = lib(path);
+        var isInlined = state.inlined[normalized];
+        delete state.inlined[normalized];
+        if (isInlined) {
+            var tsfile = g.util.replaceExtension(path, ".ts");
+            if (fs.existsSync(tsfile)) {
+                touchFile(tsfile);
+            }
         } else {
             gulp.series(clearLastRun("styles"), "clean-styles", "styles", "htdocs").call();
         }
