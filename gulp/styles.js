@@ -21,13 +21,13 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, lib) => {
             .pipe(g.if("*.less", g.less()))
             .pipe(g.postcss(postcssPlugins()))
             .pipe(g.sourcemaps.write())
-            .pipe(g.if(config.isProd, combine(
+            .pipe(g.if(config.isProd, combine([
                 g.order(["main.css"]),
                 g.concat("main.css"),
                 g.if(config.hashNames, g.hash()),
-                g.csso()
-            )))
-            .pipe(g.size({ title: "styles" }))
+                g.if(config.minify, g.csso()),
+                g.size({ showFiles: true }),
+            ])))
             .pipe(gulp.dest(paths.destStyle))
             .pipe(debug("Writing styles"))
             .pipe(g.connect.reload());

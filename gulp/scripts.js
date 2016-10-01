@@ -48,7 +48,6 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
             .pipe(g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot }))
-            .pipe(g.size({ title: "scripts" }));
     }
 
     function productionStream() {
@@ -72,7 +71,8 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
             through.obj((file, encoding, callback) => {
                 outputFiles.push(file.relative);
                 callback(null, file);
-            })
+            }),
+            g.size({showFiles: true})
         );
         stream.on("end", () => {
             var rmpaths = [paths.destJs + "/**/*.*"];
