@@ -6,7 +6,6 @@ const deleteEmpty = require("delete-empty");
 const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
-const _ = require("lodash");
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -53,9 +52,10 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
     }
 
     function productionStream() {
+        var outputFiles = [];
         var stream = combine(
             g.ignore.include(["polyfills.js", "vendors.js", "main.js"]),
-            // g.sourcemaps.init({loadMaps:true}),
+            // g.sourcemaps.init({loadMaps:true}), // TODO: Load maps for production
             g.if("main.js", combine(
                 through.obj(function (file, encoding, callback) {
                     file.contents = browserifyContents(file.path, this);
@@ -65,24 +65,22 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             )),
             g.order(["polyfills.js", "vendors.js", "main.js"]),
             g.if(config.singleFile, g.concat("app.js")),
+            g.if(config.hashNames, g.hash()),
             g.if(config.minify, g.uglify()),
             // g.sourcemaps.write(".", {includeContent: true}),
-            gulp.dest(paths.destJs)
+            gulp.dest(paths.destJs),
+            through.obj((file, encoding, callback) => {
+                outputFiles.push(file.relative);
+                callback(null, file);
+            })
         );
-        stream.on("end", cleanup);
+        stream.on("end", () => {
+            var rmpaths = [paths.destJs + "/**/*.*"];
+            outputFiles.forEach(f => rmpaths.push("!" + path.join(paths.destJs, f)));
+            del.sync(rmpaths);
+            deleteEmpty.sync(paths.destJs);
+        });
         return stream;
-    }
-
-    function cleanup() {
-        var rmpaths = [paths.destJs + "/**/*.*"];
-        // TODO: Move to config.
-        if (config.singleFile) {
-            rmpaths.push("!build/js/app.js");
-        } else {
-            rmpaths.push("!build/js/polyfills.js", "!build/js/vendors.js", "!build/js/main.js");
-        }
-        del.sync(rmpaths);
-        deleteEmpty.sync(paths.destJs);
     }
 
     function polyfillsStream() {

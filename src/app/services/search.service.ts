@@ -14,7 +14,7 @@ export class SearchService {
     // }
 
     getAll() {
-        return Observable.create(function(observer: any) {
+        return Observable.create(function (observer: any) {
             observer.next([
                 {
                     'id': 1,
@@ -93,7 +93,6 @@ export class Address {
     city: string;
     state: string;
     zip: string;
-
 
     constructor(obj?: any) {
         this.street = obj && obj.street || null;

@@ -7,9 +7,10 @@ const saveStream = require("save-stream");
 const _ = require("lodash");
 const config = require("./env.conf");
 const args = g.util.env;
-const del = require('del');
+const del = require("del");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
+const util = require("util");
 
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
@@ -21,7 +22,27 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("clearLastRun", clearLastRun)
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .provide("watchHelper", watchHelper())
+    .provide("hashOptions", hashOptions())
     .resolve();
+
+gulp.task("build", gulp.series(
+    "clean",
+    gulp.parallel("scripts", "styles", "assets"),
+    "htdocs",
+    "symlinks"
+));
+
+gulp.task("test", gulp.series(
+    "build",
+    "karma",
+    "coverage"
+));
+
+gulp.task("serve", gulp.series(
+    "build",
+    gulp.parallel("watch", "server")
+));
+
 
 function debug(title, ns) {
     var arg = args.debug;
@@ -70,20 +91,14 @@ function watchHelper() {
     };
 }
 
-gulp.task("build", gulp.series(
-    "clean",
-    gulp.parallel("scripts", "styles", "assets"),
-    "htdocs",
-    "symlinks"
-));
-
-gulp.task("test", gulp.series(
-    "build",
-    "karma",
-    "coverage"
-));
-
-gulp.task("serve", gulp.series(
-    "build",
-    gulp.parallel("watch", "server")
-));
+function hashOptions() {
+    var version = config.package.version;
+    var hashVersionPrefix = util.format("%s.%s", version, g.util.date("yyyymmdd'T'HHMMss"));
+    var template = '<%= name %><%= ext %>?v=' + hashVersionPrefix + '-<%= hash %>';
+    return {
+        algorithm: 'md5',
+        hashLength: 6,
+        template: template,
+        version: version,
+    };
+}

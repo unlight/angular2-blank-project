@@ -27,6 +27,7 @@ module.exports = (gulp, g, config, paths, debug, _) => {
             .pipe(g.if(config.isProd, combine(
                 g.order(["main.css"]),
                 g.concat("main.css"),
+                g.if(config.hashNames, g.hash()),
                 g.csso()
             )))
             .pipe(g.size({ title: "styles" }))
