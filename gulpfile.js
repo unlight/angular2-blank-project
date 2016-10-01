@@ -16,7 +16,8 @@ const unixify = require("unixify");
 const combine = require("stream-combiner");
 
 var state = {
-    inlined: []
+    inlined: {}, // name => true
+    inlinedBy: {}, // ts => [html, css]
 };
 
 require("gulp-di")(gulp, { scope: [] })

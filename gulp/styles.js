@@ -40,7 +40,7 @@ module.exports = (gulp, g, config, paths, debug, _, sassPipe, state, lib) => {
 
     function checkInlined(file) {
         var normalizedFilePath = lib(file.path);
-        return _.includes(state.inlined, normalizedFilePath);
+        return Boolean(state.inlined[normalizedFilePath]);
     }
 
 };

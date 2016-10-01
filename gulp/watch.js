@@ -15,7 +15,7 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
             gulp.watch(paths.src("**/*"), watchOptions)
                 .on('all', sourceAllHandler),
             gulp.watch(paths.srcApp("**/*.ts"), watchOptions, gulp.series("scripts")),
-            // If we changnig *.html we must recompile corresponsding component,
+            // If we changnig *.html we must recompile corresponsding component.
             gulp.watch(paths.srcApp("**/*.html"), watchOptions)
                 .on("change", checkComponentFile("scripts")),
             gulp.watch("src/index.html", watchOptions, gulp.series("htdocs")),
@@ -35,8 +35,8 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
 
     function checkComponentFile(fallbackTask) {
         // TODO: Use state.inlined
-        // but we
         return function(path) {
+            // Get corresponsding component file, home.component.css => home.component.ts
             var tsfile = lib(g.util.replaceExtension(path, ".ts"));
             // if (_.includes(state.inlined)
             if (fs.existsSync(tsfile)) {
