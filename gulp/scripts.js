@@ -30,18 +30,17 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
         return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
-            .pipe(g.if(tsSourceAndSpecs(), combine(
+            .pipe(g.if(tsSourceAndSpecs(), combine([
                 g.tslint({ formatter: "stylish" }),
                 g.tslint.report({ emitError: false, summarizeFailureOutput: false }),
                 g.eslint(),
                 g.eslint.format(),
-                through.obj((file, encoding, callback) => {
-                    if (_.find(file.eslint.messages, ['fatal', true])) {
+                g.eslint.result(result => {
+                    if (_.find(result.messages, ['fatal', true])) {
                         g.util.beep();
                     }
-                    callback(null, file);
-                })
-            )))
+                }),
+            ])))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
             .pipe(g.if(includeExt([".component.ts"]), inlineNg2Template()))
             .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
