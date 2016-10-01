@@ -21,8 +21,8 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
             gulp.watch("src/index.html", watchOptions, gulp.series("htdocs")),
             gulp.watch(["src/**/*.{scss,less,css}", "!src/**/_*.{scss,less,css}"], watchOptions)
                 .on("change", checkComponentFile("styles"))
-                .on("add", addStyleHandler())
-                .on("unlink", removeStyleHandler()),
+                .on("add", addStyleHandler)
+                .on("unlink", removeStyleHandler),
             gulp.watch("src/**/_*.{scss,less}", watchOptions, gulp.series(clearLastRun("styles"), "styles")),
         ];
 
@@ -40,9 +40,7 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
             var tsfile = lib(g.util.replaceExtension(path, ".ts"));
             // if (_.includes(state.inlined)
             if (fs.existsSync(tsfile)) {
-                var fd = fs.openSync(tsfile, "r+");
-                fs.futimesSync(fd, new Date(), new Date());
-                fs.closeSync(fd);
+                touchFile(tsfile);
                 // Do not need to run scripts, watcher triggers it by itself.
             } else {
                 gulp.series(clearLastRun(fallbackTask), fallbackTask).call();
@@ -51,16 +49,28 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
     }
 
     function removeStyleHandler(path) {
-        return gulp.series(clearLastRun("styles"), "clean-styles", "styles", "htdocs");
+        delete state.inlined[lib(path)];
+        var tsfile = g.util.replaceExtension(path, ".ts");
+        if (fs.existsSync(tsfile)) {
+            touchFile(tsfile);
+        } else {
+            gulp.series(clearLastRun("styles"), "clean-styles", "styles", "htdocs").call();
+        }
     }
 
     function addStyleHandler(path) {
-        return gulp.series(clearLastRun("styles"), "styles", "htdocs");
+        gulp.series(clearLastRun("styles"), "styles", "htdocs").call();
     }
 
     function sourceAllHandler(type, file) {
         var line = new Array((process.stdout.columns || 80) + 1).join('\u2500');
         process.stdout.write(g.util.colors.gray.dim(line));
+    }
+
+    function touchFile(file) {
+        var fd = fs.openSync(file, "r+");
+        fs.futimesSync(fd, new Date(), new Date());
+        fs.closeSync(fd);
     }
 
 };
