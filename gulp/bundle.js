@@ -25,10 +25,9 @@ module.exports = (gulp) => {
             },
             map: {
                 "rxjs": "n:rxjs",
-                '@angular/core': "n:@angular/core",
             },
             packages: {
-                "js/": {defaultExtension: "js"},
+                "js": {defaultExtension: "js"},
                 "rxjs": {defaultExtension: "js"},
                 '@angular/core': {defaultExtension: "js", main: "index.js"},
                 '@angular/common': {defaultExtension: "js", main: "index.js"},
