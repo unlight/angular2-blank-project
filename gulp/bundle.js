@@ -9,45 +9,43 @@ module.exports = (gulp) => {
         var options = {
             normalize: true,
             runtime: false,
-            sourceMaps: true,
+            sourceMaps: false,
             sourceMapContents: true,
             minify: false,
             mangle: false,
-            externals: [
-                "n:*",
-                // "@angular/core",
-                // "@angular/common",
-                // "@angular/compiler",
-                // "@angular/platform",
-                // "@angular/platform",
-                // "@angular/http",
-                // "@angular/router",
-                // "@angular/forms",
-                // "@angular/core/testing",
-                // "@angular/common/testing",
-                // "@angular/compiler/testing",
-                // "@angular/platform-browser",
-                // "@angular/platform-browser",
-                // "@angular/http/testing",
-                // "@angular/router/testing",
-                // "@angular/forms/testing",
-                // "rxjs/*",
-                // "lodash",
-                // "lodash-es",
-            ],
+            // format: "cjs",
         };
-        var builder = new Builder("./build", "./systemjs.config.js");
+        var builder = new Builder("./build");
         builder.config({
             paths: {
+                "n:*": "node_modules/*",
+                "js/*": "js/*",
+                "@angular/*": "node_modules/@angular/*",
                 "rxjs/*": "node_modules/rxjs/*.js",
             },
             map: {
                 "rxjs": "n:rxjs",
+                '@angular/core': "n:@angular/core",
             },
             packages: {
-                "rxjs": {main: "Rx.js", defaultExtension: "js"},
+                "js/": {defaultExtension: "js"},
+                "rxjs": {defaultExtension: "js"},
+                '@angular/core': {defaultExtension: "js", main: "index.js"},
+                '@angular/common': {defaultExtension: "js", main: "index.js"},
+                '@angular/compiler': {defaultExtension: "js", main: "index.js"},
+                '@angular/platform-browser': {defaultExtension: "js", main: "index.js"},
+                '@angular/platform-browser-dynamic': {defaultExtension: "js", main: "index.js"},
+                '@angular/http': {defaultExtension: "js", main: "index.js"},
+                '@angular/router': {defaultExtension: "js", main: "index.js"},
+                '@angular/forms': {defaultExtension: "js", main: "index.js"},
+            },
+            bundles: {
+                // "node_modules/.tmp/Rx.js": "rxjs/*",
             }
         });
-        return builder.buildStatic("./build/js/main.js", "build.js", options);
+        // builder.trace('js/main.js').then(tree => {
+        //     console.log('tree', tree);
+        // });
+        return builder.bundle("js/main", "build.js", options);
     });
 };
