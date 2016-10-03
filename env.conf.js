@@ -67,7 +67,8 @@ const config = {
         src: createGlob("src"),
         srcApp: createGlob("src/app"),
         dest: "build",
-        destJs: "build/js"
+        destJs: "build/js",
+        destStyle: "build/design",
     },
     typings: [
         "node_modules/typescript/lib/lib.es6.d.ts",

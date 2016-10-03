@@ -7,7 +7,7 @@ const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
 
-module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
+module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, state, lib) => {
 
     gulp.task("scripts", function scripts() {
         var stream = merge2();
@@ -30,25 +30,23 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         return sourceStream
             .pipe(debug("Merged scripts", "scripts"))
             .pipe(g.if(config.isProd, g.ignore.include(tsSourceCondition())))
-            .pipe(g.if(tsSourceAndSpecs(), combine(
+            .pipe(g.if(tsSourceAndSpecs(), combine([
                 g.tslint({ formatter: "stylish" }),
                 g.tslint.report({ emitError: false, summarizeFailureOutput: false }),
                 g.eslint(),
                 g.eslint.format(),
-                through.obj((file, encoding, callback) => {
-                    if (_.find(file.eslint.messages, ['fatal', true])) {
+                g.eslint.result(result => {
+                    if (_.find(result.messages, ['fatal', true])) {
                         g.util.beep();
                     }
-                    callback(null, file);
-                })
-            )))
+                }),
+            ])))
             .pipe(g.if(fileNameCondition(["main.ts", "app.module.ts"]), g.preprocess({ context: config })))
-            .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true, removeLineBreaks: true })))
+            .pipe(g.if(includeExt([".component.ts"]), inlineNg2Template()))
             .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
             .pipe(g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot }))
-            .pipe(g.size({ title: "scripts" }));
     }
 
     function productionStream() {
@@ -72,7 +70,8 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             through.obj((file, encoding, callback) => {
                 outputFiles.push(file.relative);
                 callback(null, file);
-            })
+            }),
+            g.size({showFiles: true})
         );
         stream.on("end", () => {
             var rmpaths = [paths.destJs + "/**/*.*"];
@@ -107,6 +106,36 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
         }
         return b.bundle(function () {
             through.emit("end");
+        });
+    }
+
+    const inlineTransforms = {
+        ".scss": () => sassPipe(),
+    };
+
+    function inlineNg2Template() {
+        return g.inlineNg2Template({
+            useRelativePaths: true,
+            removeLineBreaks: true,
+            styleProcessor: function (filepath, ext, fileContents, callback) {
+                state.inlined[lib(filepath)] = true;
+                // TODO: How to get gulp file here?
+                // TODO: Also add gulp filw which inlines filepath
+                // state.inlinedBy[file.path] = (state.inlinedBy[file.path] || []).concat(lib(filepath));
+                var transform = inlineTransforms[ext];
+                if (!transform) return callback(new Error(`I do not know how to transform '${ext}'`));
+                g.file(path.basename(filepath), fileContents, { src: true })
+                    .pipe(transform()) // TODO: Add PostCss?
+                    .pipe(g.if(config.isProd, g.csso()))
+                    .pipe(through.obj((chunk, enc, cb) => {
+                        fileContents = chunk.contents.toString();
+                        cb();
+                    }))
+                    .on("error", (err) => callback(err))
+                    .on("finish", () => {
+                        callback(null, fileContents);
+                    });
+            },
         });
     }
 

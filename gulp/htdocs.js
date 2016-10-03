@@ -7,7 +7,7 @@ module.exports = (gulp, g, paths, config, hashOptions) => {
     gulp.task("htdocs", function htdocs() {
         var jsLibs = config.jsLibs;
         if (config.isProd) {
-            jsLibs = "build/js/*.js";
+            jsLibs = `${paths.destJs}/*.js`;
         }
         var scripts = combine(
             gulp.src(jsLibs, { read: false }),
@@ -16,8 +16,9 @@ module.exports = (gulp, g, paths, config, hashOptions) => {
                 g.if(!config.hashNames, g.hash(hashOptions)) // Already renamed by productionStream()
             ))
         );
+        var pattern = ["main*.css", "*.css"].map(p => `${paths.destStyle}/${p}`);
         var styles = combine(
-            gulp.src(["build/design/main*.css", "build/design/*.css"], { read: false }),
+            gulp.src(pattern, { read: false }),
             g.if(config.isProd, combine(
                 g.if(!config.hashNames, g.hash(hashOptions))
             ))
@@ -27,6 +28,6 @@ module.exports = (gulp, g, paths, config, hashOptions) => {
             .pipe(g.inject(scripts, { addRootSlash: false, ignorePath: paths.dest }))
             .pipe(g.preprocess({ context: config }))
             .pipe(gulp.dest(paths.dest))
-            .pipe(g.if(!config.hotreload, g.connect.reload()));
+            .pipe(g.connect.reload());
     });
 };

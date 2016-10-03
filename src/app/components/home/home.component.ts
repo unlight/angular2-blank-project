@@ -3,7 +3,8 @@ import {NameListService} from '../../services/name-list.service';
 
 @Component({
     selector: 'sd-home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
 

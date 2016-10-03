@@ -11,6 +11,14 @@ const del = require("del");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
 const util = require("util");
+const path = require("path");
+const unixify = require("unixify");
+const combine = require("stream-combiner");
+
+var state = {
+    inlined: {}, // name => true
+    inlinedBy: {}, // ts => [html, css]
+};
 
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
@@ -23,11 +31,15 @@ require("gulp-di")(gulp, { scope: [] })
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
     .provide("watchHelper", watchHelper())
     .provide("hashOptions", hashOptions())
+    .provide("sassPipe", sassPipe)
+    .provide("state", state)
+    .provide("lib", lib)
     .resolve();
 
 gulp.task("build", gulp.series(
     "clean",
-    gulp.parallel("scripts", "styles", "assets"),
+    "scripts",
+    gulp.parallel("styles", "assets"),
     "htdocs",
     "symlinks"
 ));
@@ -43,6 +55,19 @@ gulp.task("serve", gulp.series(
     gulp.parallel("watch", "server")
 ));
 
+function lib(file) {
+    file = path.resolve(file).slice(config.projectRoot.length + 1);
+    return unixify(file);
+}
+
+function sassPipe() {
+    return combine([
+        g.sassLint(),
+        g.sassLint.format(),
+        g.if(config.isProd, g.sassLint.failOnError()),
+        g.sass(),
+    ]);
+}
 
 function debug(title, ns) {
     var arg = args.debug;
