@@ -66,9 +66,14 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
         gulp.series(clearLastRun("styles"), "styles", "htdocs").call();
     }
 
+    var nextDecouple = -1;
+
     function sourceAllHandler(type, file) {
-        var line = new Array((process.stdout.columns || 80) + 1).join('\u2500');
-        process.stdout.write(g.util.colors.gray.dim(line));
+        if (Date.now() > nextDecouple) {
+            var line = new Array((process.stdout.columns || 80) + 1).join('\u2500');
+            process.stdout.write(g.util.colors.gray.dim(line));
+            nextDecouple = Date.now() + 1500;
+        }
     }
 
     function touchFile(file) {
