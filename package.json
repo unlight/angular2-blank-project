@@ -37,6 +37,7 @@
     "autoprefixer": "6.4.1",
     "bower-traceur": "jmcriffey/bower-traceur#0.0.111",
     "bower-traceur-runtime": "jmcriffey/bower-traceur-runtime#0.0.111",
+    "brfs": "1.4.3",
     "browserify": "13.1.0",
     "chokidar-socket-emitter": "0.5.4",
     "codelyzer": "0.0.28",
@@ -97,6 +98,7 @@
     "pkg-dir": "1.0.0",
     "power-assert": "unlight/power-assert",
     "remap-istanbul": "0.6.4",
+    "requiredetextify": "1.0.3",
     "save-stream": "0.2.1",
     "stream-combiner": "0.2.2",
     "systemjs": "0.19.39",
@@ -109,6 +111,7 @@
     "typescript-eslint-parser": "0.4.0",
     "unixify": "0.2.1",
     "vinyl-buffer": "1.0.0",
-    "vinyl-source-stream": "1.1.0"
+    "vinyl-source-stream": "1.1.0",
+    "vinyl-transform": "1.0.0"
   }
 }

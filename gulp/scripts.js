@@ -6,6 +6,9 @@ const deleteEmpty = require("delete-empty");
 const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
+var transform = require('vinyl-transform');
+var requiredetextify = require('requiredetextify');
+var brfs = require('brfs');
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
 
@@ -46,6 +49,12 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _) => {
             .pipe(g.if("!*.d.ts", g.inlineNg2Template({ useRelativePaths: true, removeLineBreaks: true })))
             .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
+           // .pipe(g.if((file) => _.endsWith(file.path, 'home.component.js'),
+           //      combine([
+           //          transform(requiredetextify),
+           //          transform(brfs),
+           //          ])
+           //      ))
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
             .pipe(g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot }))
             .pipe(g.size({ title: "scripts" }));
