@@ -75,6 +75,7 @@ To enable hot reload run:
 ```
 gulp serve --hot
 ```
+On every change console will be cleared, to disable add `--nocc`.
 
 ### TESTS
 To run unit tests in watch mode:

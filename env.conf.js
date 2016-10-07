@@ -106,6 +106,13 @@ const config = {
     get hashNames() {
         return false;
     },
+    get onChangeConsoleClear() {
+        var result = true;
+        if (args.nocc === true) {
+            result = false;
+        }
+        return result;
+    },
 };
 
 module.exports = config;

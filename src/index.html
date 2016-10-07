@@ -24,6 +24,11 @@
         var hr = new HotReloader.default(backendUrl, p => {
             return p.substr("build/".length);
         });
+        <!-- @if onChangeConsoleClear -->
+        hr.on('change', function(file) {
+            console.clear();
+        });
+        <!-- @endif -->
         hr.on('error', err => {
             if (typeof beepError === "function") beepError();
             console.error(err);
