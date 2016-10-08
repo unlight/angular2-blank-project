@@ -44,7 +44,7 @@ import {MyWindowComponent} from './components/home/my-window';
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
-    entryComponents: [MyWindowComponent],
+    entryComponents: [],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

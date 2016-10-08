@@ -78,8 +78,9 @@ export class WindowViewService {
         }
         // resolveComponentFactory(component: Type<T>) : ComponentFactory<T>
         let factory = this.componentResolver.resolveComponentFactory(Component);
-        var res: ComponentRef<T> = this.outlet.createComponent(factory);
-        return Promise.resolve(res);
+        var componentRef: ComponentRef<T> = this.outlet.createComponent(factory);
+        this.add(componentRef);
+        return Promise.resolve(componentRef);
     }
 
     /**
