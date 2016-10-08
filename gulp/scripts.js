@@ -111,6 +111,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
 
     const inlineTransforms = {
         ".scss": () => sassPipe(),
+        ".css": () => g.util.noop(),
     };
 
     function inlineNg2Template() {
@@ -123,7 +124,11 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
                 // TODO: Also add gulp filw which inlines filepath
                 // state.inlinedBy[file.path] = (state.inlinedBy[file.path] || []).concat(lib(filepath));
                 var transform = inlineTransforms[ext];
-                if (!transform) return callback(new Error(`I do not know how to transform '${ext}'`));
+                if (!transform) {
+                    throw new Error(`I do not know how to transform '${ext}'`);
+                    // TODO: Wait for fix https://github.com/ludohenin/gulp-inline-ng2-template/issues/68
+                    // return callback(new Error(`I do not know how to transform '${ext}'`));
+                }
                 g.file(path.basename(filepath), fileContents, { src: true })
                     .pipe(transform()) // TODO: Add PostCss?
                     .pipe(g.if(config.isProd, g.csso()))
