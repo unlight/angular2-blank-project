@@ -82,4 +82,10 @@ module.exports = (gulp, g, args, config, paths, _, clearLastRun, watchHelper, st
         fs.closeSync(fd);
     }
 
+    function touchFile(file) {
+        var fd = fs.openSync(file, "r+");
+        fs.futimesSync(fd, new Date(), new Date());
+        fs.closeSync(fd);
+    }
+
 };
