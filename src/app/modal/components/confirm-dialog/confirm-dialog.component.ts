@@ -7,7 +7,6 @@ import { WindowViewContainerComponent, WindowViewHasResult } from '../../';
     selector: 'confirm-dialog',
     templateUrl: 'confirm-dialog.component.html',
     styleUrls: ['confirm-dialog.component.css'],
-    directives: [WindowViewContainerComponent]
 })
 export class ConfirmDialogComponent implements WindowViewHasResult<boolean> {
     @Input()

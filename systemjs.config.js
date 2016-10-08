@@ -43,7 +43,11 @@
 
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-        "js": { defaultExtension: "js" },
+        "js": { defaultExtension: "js",
+            map: {
+                './modal': './modal/index'
+            }
+         },
         "n:": { defaultExtension: "js" },
     };
 

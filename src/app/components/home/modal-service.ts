@@ -1,5 +1,5 @@
-import tinyModal = require("tiny-modal");
-import {Directive, ElementRef, OnInit, HostListener, Input} from "@angular/core";
+import tinyModal = require('tiny-modal');
+import {Directive, ElementRef, OnInit, HostListener, Input} from '@angular/core';
 
 @Directive({
     selector: '[tm]'
@@ -13,10 +13,8 @@ export class TestModalDirective implements OnInit {
     @Input('tm')
     tm;
 
-
     @HostListener('click', ['$event'])
     open(e) {
-        debugger;
         var div = document.createElement('div');
         div.innerHTML = '<div style="">Modal</div>';
         document.body.appendChild(div);
@@ -26,7 +24,6 @@ export class TestModalDirective implements OnInit {
     }
 
     ngOnInit() {
-        console.log('tm', this.tm);
     }
 }
 

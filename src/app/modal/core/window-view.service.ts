@@ -1,9 +1,7 @@
-import {Injectable, Type, ViewContainerRef, ComponentRef, ComponentFactoryResolver, ResolvedReflectiveProvider} from '@angular/core';
+import { Injectable, Type, ViewContainerRef, ComponentRef, ComponentFactoryResolver, ResolvedReflectiveProvider } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { WindowViewCanClose } from './window-view-can-close';
-import { WindowViewHasResult } from './window-view-has-result';
 
 @Injectable()
 export class WindowViewService {
@@ -74,14 +72,14 @@ export class WindowViewService {
     /**
      * Add window to top.
      */
-    pushWindow<T>(Component: Type<T>, providers: ResolvedReflectiveProvider[] = []): Promise<ComponentRef<any>> {
+    pushWindow<T>(Component: Type<T>, providers: ResolvedReflectiveProvider[] = []): Promise<ComponentRef<T>> {
         if (!this.outlet) {
             throw new Error('[WindowViewService] pushWindow error. Not found window-view-outlet');
         }
         // resolveComponentFactory(component: Type<T>) : ComponentFactory<T>
         let factory = this.componentResolver.resolveComponentFactory(Component);
         var res: ComponentRef<T> = this.outlet.createComponent(factory);
-        return Promise.resolve(res.instance);
+        return Promise.resolve(res);
     }
 
     /**
@@ -96,7 +94,7 @@ export class WindowViewService {
     }
 
     private canCloseWindowView(componentRef: ComponentRef<WindowViewCanClose>) {
-        if (typeof componentRef.instance.windowViewCanClose !== 'function') {
+        if (typeof componentRef.instance.windowViewCanClose !== 'function') { // eslint-disable-line lodash/prefer-lodash-typecheck
             return true;
         }
         return componentRef.instance.windowViewCanClose();

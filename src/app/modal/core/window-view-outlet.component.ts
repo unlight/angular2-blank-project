@@ -2,16 +2,16 @@ import { Component, AfterViewInit, ViewContainerRef } from '@angular/core';
 import { WindowViewService } from './window-view.service';
 
 @Component({
-  selector: 'window-view-outlet',
-  template: ''
+    selector: 'window-view-outlet',
+    template: ''
 })
 export class WindowViewOutletComponent implements AfterViewInit {
 
-  constructor(private viewContainerRef: ViewContainerRef,
-              private windowView: WindowViewService) {}
+    constructor(private viewContainerRef: ViewContainerRef,
+        private windowView: WindowViewService) { }
 
-  ngAfterViewInit() {
-    this.windowView.setOutlet(this.viewContainerRef);
-  }
+    ngAfterViewInit() {
+        this.windowView.setOutlet(this.viewContainerRef);
+    }
 
 }

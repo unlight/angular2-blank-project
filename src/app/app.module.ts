@@ -16,6 +16,8 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AppComponent} from './components/app/app.component';
 import {routes} from './app.routes';
+import {ModalModule} from './modal';
+import {MyWindowComponent} from './components/home/my-window';
 
 @NgModule({
     imports: [
@@ -23,6 +25,7 @@ import {routes} from './app.routes';
         FormsModule,
         RouterModule,
         HttpModule,
+        ModalModule,
         RouterModule.forRoot(routes)
     ],
     declarations: [
@@ -32,7 +35,8 @@ import {routes} from './app.routes';
         AboutComponent,
         ToolbarComponent,
         SearchComponent,
-        EditComponent
+        EditComponent,
+        MyWindowComponent,
     ],
     providers: [
         NameListService,
@@ -40,6 +44,7 @@ import {routes} from './app.routes';
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
+    entryComponents: [MyWindowComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

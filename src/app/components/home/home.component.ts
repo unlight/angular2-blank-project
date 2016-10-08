@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {NameListService} from '../../services/name-list.service';
+import { MyWindowComponent } from './my-window';
+import {WindowViewService} from '../../modal';
 
 @Component({
     selector: 'sd-home',
@@ -10,7 +12,9 @@ export class HomeComponent {
 
     title: string = 'Welcome';
     newName: string;
-    constructor(public nameListService: NameListService) { }
+    constructor(
+        private windowView: WindowViewService,
+        public nameListService: NameListService) { }
 
     /*
      * @param newname  any text as input.
@@ -21,4 +25,10 @@ export class HomeComponent {
         this.newName = '';
         return false;
     }
+
+  openWindow() {
+    this.windowView.pushWindow(MyWindowComponent).then(componentRef => {
+        (componentRef.instance);
+    })
+  }
 }
