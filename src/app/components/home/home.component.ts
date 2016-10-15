@@ -26,9 +26,16 @@ export class HomeComponent {
         return false;
     }
 
-  openWindow() {
-    this.windowView.pushWindow(MyWindowComponent).then(componentRef => {
-        (componentRef.instance);
-    })
-  }
+    openWindow() {
+        this.windowView.pushWindow(MyWindowComponent).then(componentRef => {
+            (componentRef.instance);
+        });
+
+    }
+
+    openWindow2() {
+        this.windowView.openWindow(MyWindowComponent).then(componentRef => {
+            (componentRef.instance);
+        });
+    }
 }

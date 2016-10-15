@@ -5,11 +5,13 @@ import {WindowViewService} from './core/window-view.service';
 import {WindowViewLayerService} from './core/window-view-layer.service';
 import {WindowViewOutletComponent} from './core/window-view-outlet.component';
 import {WindowViewContainerComponent} from './core/window-view-container.component';
+import { COMPILER_PROVIDERS } from '@angular/compiler';
+// import {MyWindowComponent} from './../components/home/my-window';
 
 @NgModule({
     exports: [
         WindowViewOutletComponent,
-        WindowViewContainerComponent
+        // WindowViewContainerComponent
     ],
     imports: [
         BrowserModule
@@ -17,11 +19,15 @@ import {WindowViewContainerComponent} from './core/window-view-container.compone
     declarations: [
         WindowViewContainerComponent,
         WindowViewOutletComponent,
+        // MyWindowComponent,
     ],
     providers: [
+        COMPILER_PROVIDERS,
         WindowViewService,
         WindowViewLayerService,
     ],
-    entryComponents: []
+    entryComponents: [
+        // MyWindowComponent,
+    ]
 })
 export class ModalModule { }

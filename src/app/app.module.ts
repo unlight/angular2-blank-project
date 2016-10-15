@@ -16,8 +16,7 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {AppComponent} from './components/app/app.component';
 import {routes} from './app.routes';
-import {ModalModule} from './modal';
-import {MyWindowComponent} from './components/home/my-window';
+import {ModalModule} from './modal/modal.module';
 
 @NgModule({
     imports: [
@@ -36,7 +35,6 @@ import {MyWindowComponent} from './components/home/my-window';
         ToolbarComponent,
         SearchComponent,
         EditComponent,
-        MyWindowComponent,
     ],
     providers: [
         NameListService,
@@ -44,7 +42,8 @@ import {MyWindowComponent} from './components/home/my-window';
         { provide: APP_BASE_HREF, useValue: '/* @echo APP_BASE */' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
-    entryComponents: [],
+    entryComponents: [
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

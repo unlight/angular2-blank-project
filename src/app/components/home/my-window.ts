@@ -19,7 +19,7 @@ export class MyWindowComponent {
     windowViewContainer: WindowViewContainerComponent;
 
     ngOnInit() {
-        // this.windowViewContainer.close.subscribe(target => console.log('closed', target))
+        this.windowViewContainer.close.subscribe(target => console.log('closed', target))
     }
 
     close() {
