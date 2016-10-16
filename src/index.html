@@ -37,10 +37,7 @@
     </script>
     <!-- @endif -->
     <!-- @if isDev -->
-    <script>
-    // The package name `js` matches the folder structure inside `/build`.
-    System.import("./js/main.js").catch(console.error);
-    </script>
+    <script src="systemjs/init" data-main="./js/main"></script>
     <!-- @endif -->
 </body>
 </html>

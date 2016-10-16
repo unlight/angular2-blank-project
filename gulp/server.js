@@ -1,4 +1,5 @@
 var path = require("path");
+var systemjsMiddleware = require('systemjs-middleware/server/middleware');
 
 module.exports = (gulp, g, config, paths) => {
     gulp.task("server", function(done) {
@@ -11,9 +12,18 @@ module.exports = (gulp, g, config, paths) => {
             root: folders,
             livereload: config.isDev,
             port: config.PORT,
-            middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
-                history()
-            ]
+            middleware: (connect, opt) => {
+                systemjsMiddleware.configure({
+                    basePath: "build"
+                });
+                systemjsMiddleware.setup(opt.app);
+                // opt.app.use('/x', (req, res, next) => {
+                //     res.end('xxx');
+                // });
+                return [
+                    history()
+                ]
+            }
         });
 
         if (config.hotreload) {

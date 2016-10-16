@@ -102,6 +102,7 @@
     "systemjs": "0.19.39",
     "systemjs-builder": "0.15.32",
     "systemjs-hot-reloader": "capaj/systemjs-hot-reloader#0.6.0",
+    "systemjs-middleware": "1.0.13",
     "through2": "2.0.1",
     "tslint": "3.15.1",
     "tslint-stylish": "2.1.0-beta",
