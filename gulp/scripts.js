@@ -6,6 +6,7 @@ const deleteEmpty = require("delete-empty");
 const buffer = require("vinyl-buffer");
 const through = require("through2");
 const source = require("vinyl-source-stream");
+const webundler = require("gulp-webundler").default;
 
 module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, state, lib) => {
 
@@ -17,7 +18,7 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
         stream.add(appStream());
         return stream
             .pipe(gulp.dest(paths.destJs))
-            .pipe(g.if(config.isProd, productionStream()))
+            // .pipe(g.if(config.isProd, productionStream()))
             .pipe(g.if(!config.hotreload, g.connect.reload()));
     });
 
@@ -46,6 +47,16 @@ module.exports = (gulp, g, config, paths, typingsStream, debug, _, sassPipe, sta
             .pipe(g.sourcemaps.init({identityMap: true})) // TODO: move to upper pipe, when ready https://github.com/ludohenin/gulp-inline-ng2-template/issues/16
             .pipe(g.typescript(config.tsProject)).js
             .pipe(g.if(includeExt([".spec.js"]), g.espower()))
+            // .pipe(g.debug())
+            .pipe(webundler([
+                { name: "main", include: ['main'], exclude: [
+                    ...['@angular/core', '@angular/common', '@angular/compiler', '@angular/forms', '@angular/http', '@angular/platform-browser', '@angular/platform-browser-dynamic', '@angular/router', 'rxjs'],
+                ] },
+                { name: "vendors", include: ['vendors'], exclude: [
+                    "main",
+                ]
+            },
+            ]))
             .pipe(g.sourcemaps.write(".", { includeContent: true, sourceRoot: sourceRoot }))
     }
 
