@@ -1,5 +1,3 @@
-import {provide} from '@angular/core';
-import {SpyObject} from '@angular/testing/src/testing_internal';
 import {Router} from '@angular/router';
 
 class MockRouteSegment {
@@ -20,7 +18,7 @@ class MockRouteSegment {
     }
 }
 
-class MockRouteParams extends SpyObject {
+class MockRouteParams {
     private ROUTE_PARAMS = {};
 
     set(key: string, value: string) {
@@ -32,9 +30,8 @@ class MockRouteParams extends SpyObject {
     }
 }
 
-class MockRouter extends SpyObject {
-    constructor() { super(Router); }
-    isRouteActive(s: any) { return true; }
+class MockRouter {
+    isRouteActive(s: any) { return true; } // eslint-disable-line lodash/prefer-constant
 }
 
 class MockRouterProvider {
@@ -47,9 +44,7 @@ class MockRouterProvider {
 
     getProviders(): Array<any> {
         return [
-            provide(Router, { useValue: this.mockRouter })
-            // provide(RouteParams, { useValue: this.mockRouteParams }),
-            // provide(RouteSegment, { useClass: MockRouteSegment }),
+            { provide: Router, useValue: this.mockRouter }
         ];
     }
 }

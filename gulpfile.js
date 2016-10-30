@@ -7,16 +7,67 @@ const saveStream = require("save-stream");
 const _ = require("lodash");
 const config = require("./env.conf");
 const args = g.util.env;
+const del = require("del");
+const fs = require("fs");
+const mkdirp = require("mkdirp");
+const util = require("util");
+const path = require("path");
+const unixify = require("unixify");
+const combine = require("stream-combiner");
+
+var state = {
+    inlined: {}, // name => true
+    inlinedBy: {}, // ts => [html, css]
+};
 
 require("gulp-di")(gulp, { scope: [] })
     .tasks("gulp")
     .provide("g", g)
+    .provide("args", args)
     .provide("config", config)
     .provide("paths", config.paths)
     .provide("debug", debug)
     .provide("clearLastRun", clearLastRun)
     .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
+    .provide("watchHelper", watchHelper())
+    .provide("hashOptions", hashOptions())
+    .provide("sassPipe", sassPipe)
+    .provide("state", state)
+    .provide("lib", lib)
     .resolve();
+
+gulp.task("build", gulp.series(
+    "clean",
+    "scripts",
+    gulp.parallel("styles", "assets"),
+    "htdocs",
+    "symlinks"
+));
+
+gulp.task("test", gulp.series(
+    "build",
+    "karma",
+    "coverage"
+));
+
+gulp.task("serve", gulp.series(
+    "build",
+    gulp.parallel("watch", "server")
+));
+
+function lib(file) {
+    file = path.resolve(file).slice(config.projectRoot.length + 1);
+    return unixify(file);
+}
+
+function sassPipe() {
+    return combine([
+        g.sassLint(),
+        g.sassLint.format(),
+        g.if(config.isProd, g.sassLint.failOnError()),
+        g.sass(),
+    ]);
+}
 
 function debug(title, ns) {
     var arg = args.debug;
@@ -26,7 +77,7 @@ function debug(title, ns) {
     } else if (typeof arg === "string") {
         title = title.toLowerCase();
         arg = arg.toLowerCase();
-        if (title.indexOf(arg) !== -1 || (ns && ns.indexOf(arg) !== -1)) {
+        if (_.includes(title, arg) || (ns && _.includes(ns, arg))) {
             return debugStream;
         }
     }
@@ -49,20 +100,30 @@ function clearLastRun(task) {
     };
 }
 
-gulp.task("build", gulp.series(
-    "clean",
-    gulp.parallel("scripts", "styles", "assets"),
-    "htdocs",
-    "symlinks"
-));
+function watchHelper() {
+    const lockFile = "node_modules/.tmp/watch.pid";
+    return {
+        lock() {
+            mkdirp.sync("node_modules/.tmp");
+            fs.writeFileSync(lockFile, process.pid);
+        },
+        unlock() {
+            del.sync(lockFile);
+        },
+        isLocked() {
+            return fs.existsSync(lockFile);
+        }
+    };
+}
 
-gulp.task("test", gulp.series(
-    "build",
-    "karma",
-    "coverage"
-));
-
-gulp.task("serve", gulp.series(
-    "build",
-    gulp.parallel("watch", "server")
-));
+function hashOptions() {
+    var version = config.package.version;
+    var hashVersionPrefix = util.format("%s.%s", version, g.util.date("yyyymmdd'T'HHMMss"));
+    var template = '<%= name %><%= ext %>?v=' + hashVersionPrefix + '-<%= hash %>';
+    return {
+        algorithm: 'md5',
+        hashLength: 6,
+        template: template,
+        version: version,
+    };
+}

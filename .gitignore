@@ -1,10 +1,10 @@
 /node_modules
 /build
 /typings
-/.karma
+/.*
 /.protractor
 /.coverage/
-# Files
 npm-debug.log
 ~*
 /.idea/
+/.vscode/

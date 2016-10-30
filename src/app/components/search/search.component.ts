@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {ROUTER_DIRECTIVES, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Person, SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'sd-search',
-    templateUrl: './search.component.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: './search.component.html'
 })
 export class SearchComponent {
 
@@ -15,7 +14,7 @@ export class SearchComponent {
     searchResults: Array<Person>;
 
     constructor(public searchService: SearchService, r: ActivatedRoute ) {
-        const term: Observable<string> = r.params.map(p => p['term'])
+        const term: Observable<string> = r.params.map(p => p['term']) // tslint:disable-line:no-string-literal
             .map(p => decodeURIComponent(p));
         // TODO: Can be merged with search()
         term.subscribe(t => {

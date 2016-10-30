@@ -14,11 +14,32 @@
     <sd-app>Loading...</sd-app>
     <!-- inject:js -->
     <!-- endinject -->
+    <!-- @if hotreload -->
+    <script src="node_modules/.tmp/beep.js"></script>
+    <script>
+    // SystemJS hot reload.
+    System.trace = true;
+    System.import("capaj/systemjs-hot-reloader").then(function(HotReloader) {
+        var backendUrl = '//localhost:' + '<!-- @echo PORT -->';
+        var hr = new HotReloader.default(backendUrl, p => {
+            return p.substr("build/".length);
+        });
+        <!-- @if onChangeConsoleClear -->
+        hr.on('change', function(file) {
+            console.clear();
+        });
+        <!-- @endif -->
+        hr.on('error', err => {
+            if (typeof beepError === "function") beepError();
+            console.error(err);
+        });
+    });
+    </script>
+    <!-- @endif -->
     <!-- @if isDev -->
     <script>
     // The package name `js` matches the folder structure inside `/build`.
-    // And the `main` property points to the app entry file - `bootstrap.js`.
-    System.import("js").catch(console.error);
+    System.import("./js/main.js").catch(console.error);
     </script>
     <!-- @endif -->
 </body>

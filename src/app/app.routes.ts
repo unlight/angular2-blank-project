@@ -1,15 +1,17 @@
-import { provideRouter, RouterConfig } from '@angular/router';
-
+import {Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {AboutComponent} from './components/about/about.component';
 import {SearchComponent} from './components/search/search.component';
+import {EditComponent} from './components/edit/edit.component';
 
-const routes: RouterConfig = [
+export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent },
-    { path: 'search', component: SearchComponent }
+    { path: 'search', component: SearchComponent },
+    { path: 'edit/:id', component: EditComponent },
+    // { path: '**', component: PageNotFoundComponent }
 ];
 
 export const routeProviders = [
-    provideRouter(routes)
+    // provideRouter(routes)
 ];

@@ -1,10 +1,11 @@
 const karma = require("karma");
 
-module.exports = (gulp, g, config, _) => {
-    
+module.exports = (gulp, g, config, args, _) => {
+
     gulp.task("karma", done => {
         // Watch task is running, so run karma in watch mode.
-        if (!_.includes(g.util.env._, "watch")) {
+        var isWatch = _.includes(args._, "watch") || args.w === true;
+        if (!isWatch) {
             config.karma.singleRun = true;
         }
         karmaServer(config.karma, done);

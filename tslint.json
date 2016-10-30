@@ -21,7 +21,6 @@
 		"pipe-naming": [true, "camelCase"],
 		"component-class-suffix": true,
 		"directive-class-suffix": true,
-
 		"ban": [true, ["_", "extend"],
 			["_", "isNull"],
 			["_", "isDefined"]
@@ -30,7 +29,6 @@
 		"comment-format": [true,
 			"check-space"
 		],
-		"curly": true,
 		"eofline": false,
 		"forin": true,
 		"indent": [true, "spaces"],
@@ -40,22 +38,9 @@
 		"label-undefined": true,
 		"max-line-length": [true, 140],
 		"no-arg": true,
-		"no-bitwise": true,
-		"no-console": [true,
-			"debug",
-			"info",
-			"time",
-			"timeEnd",
-			"trace"
-		],
 		"no-construct": true,
-		"no-debugger": true,
-		"no-duplicate-key": true,
 		"no-duplicate-variable": true,
-		"no-empty": true,
-		"no-eval": true,
 		"no-string-literal": true,
-		"trailing-comma": false,
 		"no-trailing-whitespace": true,
 		"no-unused-expression": true,
 		"no-unused-variable": true,
@@ -67,9 +52,6 @@
 			"check-else",
 			"check-whitespace"
 		],
-		"quotemark": [true, "single"],
-		"radix": true,
-		"semicolon": true,
 		"triple-equals": [true, "allow-null-check"],
 		"typedef": [true,
 			"callSignature",

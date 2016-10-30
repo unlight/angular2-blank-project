@@ -14,7 +14,7 @@ export class SearchService {
     // }
 
     getAll() {
-        return Observable.create(function(observer: any) {
+        return Observable.create(function (observer: any) {
             observer.next([
                 {
                     'id': 1,
@@ -55,11 +55,7 @@ export class SearchService {
     }
 
     search(q: string) {
-        if (!q || q === '*') {
-            q = '';
-        } else {
-            q = q.toLowerCase();
-        }
+        q = (!q || q === '*') ? '' : q.toLowerCase();
         return this.getAll().map(data => {
             let results = [];
             data.map(item => {
@@ -67,7 +63,7 @@ export class SearchService {
                 if (localStorage['person' + item.id]) {
                     item = JSON.parse(localStorage['person' + item.id]);
                 }
-                if (JSON.stringify(item).toLowerCase().indexOf(q) !== -1) {
+                if (JSON.stringify(item).toLowerCase().indexOf(q) !== -1) { // eslint-disable-line lodash/prefer-includes
                     results.push(item);
                 }
                 // if (JSON.stringify(item).toLowerCase().includes(q)) {

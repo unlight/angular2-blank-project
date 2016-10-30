@@ -1,27 +1,35 @@
-import {it, expect, inject, fakeAsync, beforeEachProviders, tick} from '@angular/core/testing';
-import {xdescribe} from '@angular/core/testing';
+import {inject, fakeAsync, tick} from '@angular/core/testing';
 import {MockBackend} from '@angular/http/testing';
-import {provide} from '@angular/core';
-import 'rxjs/add/operator/map';
 import {Http, ConnectionBackend, BaseRequestOptions, Response, ResponseOptions} from '@angular/http';
 import {SearchService} from './search.service';
+import {TestBed} from '@angular/core/testing';
+import 'rxjs/add/operator/map';
 
-xdescribe('Search Service', () => {
-    beforeEachProviders(() => {
-        return [BaseRequestOptions, MockBackend, SearchService,
-            provide(Http, {
-                useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
-                    return new Http(backend, defaultOptions);
-                }, deps: [MockBackend, BaseRequestOptions]
-            }),
-        ];
+describe('Search Service', () => {
+
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            declarations: [],
+            imports: [],
+            providers: [
+                BaseRequestOptions,
+                MockBackend,
+                SearchService,
+                {
+                    provide: Http,
+                    useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => new Http(backend, defaultOptions),
+                    deps: [MockBackend, BaseRequestOptions]
+                },
+            ]
+        });
     });
 
-    it('should retrieve all search results',
-        inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
+    // Should be skipped really, because we do not use http request.
+    xit('should retrieve all search results', // eslint-disable-line jasmine/no-disabled-tests
+        inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, backend: MockBackend) => {
             var res: Response;
-            mockBackend.connections.subscribe(c => {
-                expect(c.request.url).toBe('data/people.json');
+            backend.connections.subscribe(c => {
+                expect(c.request.url).toBe('http://example.com/people.json');
                 let response = new ResponseOptions({ body: '[{"name": "John Elway"}, {"name": "Gary Kubiak"}]' });
                 c.mockRespond(new Response(response));
             });
@@ -33,7 +41,8 @@ xdescribe('Search Service', () => {
         }))
     );
 
-    it('should filter by search term',
+    // Should be skipped really, because we do not use http request.
+    xit('should filter by search term', // eslint-disable-line jasmine/no-disabled-tests
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {
@@ -49,7 +58,8 @@ xdescribe('Search Service', () => {
         }))
     );
 
-    it('should fetch by id',
+    // Should be skipped really, because we do not use http request.
+    xit('should fetch by id', // eslint-disable-line jasmine/no-disabled-tests
         inject([SearchService, MockBackend], fakeAsync((searchService: SearchService, mockBackend: MockBackend) => {
             var res: Array<any>;
             mockBackend.connections.subscribe(c => {
@@ -65,5 +75,3 @@ xdescribe('Search Service', () => {
         }))
     );
 });
-
-
