@@ -5,17 +5,14 @@ const through = require("through2");
 module.exports = (gulp, g, paths, config, hashOptions) => {
 
     gulp.task("htdocs", function htdocs() {
-        var jsLibs = config.jsLibs;
-        if (config.isProd) {
-            jsLibs = `${paths.destJs}/*.js`;
-        }
-        var scripts = combine(
+        const jsLibs = `${paths.destJs}/*.js`;
+        var scripts = combine([
             gulp.src(jsLibs, { read: false }),
             g.if(config.isProd, combine(
                 g.order(["polyfills*.js", "vendors*.js", "main*.js", "*.js"]),
                 g.if(!config.hashNames, g.hash(hashOptions)) // Already renamed by productionStream()
-            ))
-        );
+            )),
+        ]);
         var pattern = ["main*.css", "*.css"].map(p => `${paths.destStyle}/${p}`);
         var styles = combine(
             gulp.src(pattern, { read: false }),

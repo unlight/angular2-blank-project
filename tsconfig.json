@@ -1,24 +1,26 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "removeComments": false,
-    "declaration": false,
-    "allowJs": true,
-    "noEmitHelpers": true,
-    "sourceMap": false
-  },
-  "exclude": [
-    "gulpfile.js",
-    "karma.*",
-    "*.conf.js",
-    "*.config.js",
-    "gulp",
-    "node_modules",
-    "build"
-  ]
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "noImplicitAny": false,
+        "noImplicitUseStrict": false,
+        "removeComments": true,
+        "noEmitHelpers": false,
+        "noLib": false,
+        "outDir": "build/",
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "exclude": [],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": {
+        "rewriteTsconfig": false
+    }
 }

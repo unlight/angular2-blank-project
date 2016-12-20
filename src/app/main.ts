@@ -1,9 +1,10 @@
-import {AppModule} from './app.module';
-import {enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+// import 'tslib';
+import 'reflect-metadata';
+import 'zone.js/dist/zone';
 
-// @if isProd
-enableProdMode();
-// @endif
-
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
+import { AppModule } from './app.module';
+// enableProdMode();
 platformBrowserDynamic().bootstrapModule(AppModule);
+

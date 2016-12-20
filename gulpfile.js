@@ -40,8 +40,7 @@ gulp.task("build", gulp.series(
     "clean",
     "scripts",
     gulp.parallel("styles", "assets"),
-    "htdocs",
-    "symlinks"
+    "htdocs"
 ));
 
 gulp.task("test", gulp.series(
@@ -62,9 +61,9 @@ function lib(file) {
 
 function sassPipe() {
     return combine([
-        g.sassLint(),
-        g.sassLint.format(),
-        g.if(config.isProd, g.sassLint.failOnError()),
+        // g.sassLint(),
+        // g.sassLint.format(),
+        // g.if(config.isProd, g.sassLint.failOnError()),
         g.sass(),
     ]);
 }

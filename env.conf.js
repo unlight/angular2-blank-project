@@ -13,29 +13,29 @@ const args = g.util.env;
 const projectRoot = pkgDir.sync();
 
 const baseLibs = [
-    new Lib("tslib", { polyfill: true, dev: true, test: true }),
-    new Lib("es6-shim", { polyfill: true, dev: true }),
-    new Lib("zone.js/dist/zone.js", { polyfill: true, dev: true }),
-    new Lib("reflect-metadata", { polyfill: true, dev: true }),
-    new Lib("systemjs/dist/system.src.js", { dev: true, test: true }),
+    // new Lib("tslib", { polyfill: true, dev: true, test: true }),
+    // new Lib("es6-shim", { polyfill: true, dev: true }),
+    // new Lib("zone.js/dist/zone.js", { polyfill: true, dev: true }),
+    // new Lib("reflect-metadata", { polyfill: true, dev: true }),
+    // new Lib("systemjs/dist/system.src.js", { dev: true, test: true }),
     // new Lib("systemjs/dist/system-polyfills.js", { test: true }),
-    new Lib("zone.js/dist/long-stack-trace-zone.js", { test: true }),
-    new Lib("zone.js/dist/proxy.js", { test: true }),
-    new Lib("zone.js/dist/sync-test.js", { test: true }),
-    new Lib("zone.js/dist/jasmine-patch.js", { test: true }),
-    new Lib("zone.js/dist/async-test.js", { test: true }),
-    new Lib("zone.js/dist/fake-async-test.js", { test: true }),
-    new Lib(".tmp/Rx.js", { dev: true, test: true }),
-    new Lib("./systemjs.config.js", { dev: true }),
+    // new Lib("zone.js/dist/long-stack-trace-zone.js", { test: true }),
+    // new Lib("zone.js/dist/proxy.js", { test: true }),
+    // new Lib("zone.js/dist/sync-test.js", { test: true }),
+    // new Lib("zone.js/dist/jasmine-patch.js", { test: true }),
+    // new Lib("zone.js/dist/async-test.js", { test: true }),
+    // new Lib("zone.js/dist/fake-async-test.js", { test: true }),
+    // new Lib(".tmp/Rx.js", { dev: true, test: true }),
+    // new Lib("./systemjs.config.js", { dev: true }),
 ];
 
-var tsProject = _.once(() => {
-    var options = {
-        typescript: require("typescript"),
-        isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
-    };
-    return g.typescript.createProject("tsconfig.json", options);
-});
+// var tsProject = _.once(() => {
+//     var options = {
+//         typescript: require("typescript"),
+//         isolatedModules: Boolean(config.isDev && (args.isolatedModules || args.im))
+//     };
+//     return g.typescript.createProject("tsconfig.json", options);
+// });
 
 const config = {
     NODE_ENV: process.env.NODE_ENV,
@@ -80,10 +80,10 @@ const config = {
         "typings/globals/power-assert/index.d.ts",
     ],
     projectRoot: projectRoot,
-    get tsProject() {
-        return tsProject();
-    },
-    tscOptions: require("./tsconfig").compilerOptions,
+    // get tsProject() {
+    //     return tsProject();
+    // },
+    // tscOptions: require("./tsconfig").compilerOptions,
     karma: {
         configFile: projectRoot + "/karma.conf.js"
     },
