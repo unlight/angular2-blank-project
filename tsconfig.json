@@ -11,7 +11,7 @@
         "noImplicitAny": false,
         "noImplicitUseStrict": false,
         "removeComments": true,
-        "noEmitHelpers": false,
+        "noEmitHelpers": true,
         "noLib": false,
         "outDir": "build/",
         "preserveConstEnums": true,
@@ -19,8 +19,5 @@
     },
     "exclude": [],
     "compileOnSave": false,
-    "buildOnSave": false,
-    "atom": {
-        "rewriteTsconfig": false
-    }
+    "buildOnSave": false
 }

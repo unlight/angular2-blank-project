@@ -1,128 +1,82 @@
-"use strict";
-
 const gulp = require("gulp");
-const g = require("gulp-load-plugins")({ scope: ['devDependencies', 'optionalDependencies'] });
-const lastRun = require("last-run");
-const saveStream = require("save-stream");
-const _ = require("lodash");
-const config = require("./env.conf");
-const args = g.util.env;
+const g = require("gulp-load-plugins")();
+const fsbx = require("fuse-box");
+const Path = require("path");
 const del = require("del");
-const fs = require("fs");
-const mkdirp = require("mkdirp");
-const util = require("util");
-const path = require("path");
-const unixify = require("unixify");
-const combine = require("stream-combiner");
-
-var state = {
-    inlined: {}, // name => true
-    inlinedBy: {}, // ts => [html, css]
+const _ = require("lodash");
+const streamFromPromise = require('stream-from-promise');
+const source = require('vinyl-source-buffer');
+const config = {
+    isDev: true,
+    PORT: 8777,
+    dest: "build"
 };
 
-require("gulp-di")(gulp, { scope: [] })
-    .tasks("gulp")
-    .provide("g", g)
-    .provide("args", args)
-    .provide("config", config)
-    .provide("paths", config.paths)
-    .provide("debug", debug)
-    .provide("clearLastRun", clearLastRun)
-    .provide("typingsStream", _.once(() => gulp.src(config.typings).pipe(saveStream())))
-    .provide("watchHelper", watchHelper())
-    .provide("hashOptions", hashOptions())
-    .provide("sassPipe", sassPipe)
-    .provide("state", state)
-    .provide("lib", lib)
-    .resolve();
+const fuseBox = _.once(function createFuseBox() {
+    const fuseBox = new fsbx.FuseBox({
+        homeDir: "src/",
+        sourceMap: {
+            bundleReference: "sourcemaps.js.map",
+            outFile: "./build/sourcemaps.js.map",
+        },
+        cache: true,
+        outFile: "./build/app.js",
+        plugins: [
+            fsbx.TypeScriptHelpers(),
+            fsbx.CSSPlugin(),
+            fsbx.JSONPlugin(),
+            fsbx.HTMLPlugin({ useDefault: false }),
+        ]
+    });
+    return fuseBox;
+});
 
-gulp.task("build", gulp.series(
-    "clean",
-    "scripts",
-    gulp.parallel("styles", "assets"),
-    "htdocs"
-));
+gulp.task("build", () => {
+    var bundle = fuseBox().bundle(">main.ts")
+        .then(result => result.content);
+    return streamFromPromise(bundle)
+        .pipe(source('app.js'))
+        .pipe(g.connect.reload());
+});
 
-gulp.task("test", gulp.series(
-    "build",
-    "karma",
-    "coverage"
-));
+gulp.task("server", (done) => {
+    var history = require("connect-history-api-fallback");
+    var folders = ["build"];
+    var connect = g.connect.server({
+        root: folders,
+        livereload: config.isDev,
+        port: config.PORT,
+        middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
+            history()
+        ]
+    });
+    connect.server.on("close", done);
+});
 
-gulp.task("serve", gulp.series(
-    "build",
-    gulp.parallel("watch", "server")
-));
+gulp.task("clean", function clean() {
+    return del([".fusebox", "build"]);
+});
 
-function lib(file) {
-    file = path.resolve(file).slice(config.projectRoot.length + 1);
-    return unixify(file);
-}
-
-function sassPipe() {
-    return combine([
-        // g.sassLint(),
-        // g.sassLint.format(),
-        // g.if(config.isProd, g.sassLint.failOnError()),
-        g.sass(),
-    ]);
-}
-
-function debug(title, ns) {
-    var arg = args.debug;
-    var debugStream = g.debug({ title: title });
-    if (arg === true || arg === "*") {
-        return debugStream;
-    } else if (typeof arg === "string") {
-        title = title.toLowerCase();
-        arg = arg.toLowerCase();
-        if (_.includes(title, arg) || (ns && _.includes(ns, arg))) {
-            return debugStream;
-        }
-    }
-    return g.util.noop();
-}
-
-function clearLastRun(task) {
-    var fn = task;
-    if (typeof task === "string") {
-        fn = gulp._getTask(task);
-    }
-    var metadata = require("undertaker/lib/helpers/metadata");
-    var meta = metadata.get(fn);
-    if (meta) {
-        fn = meta.orig || fn;
-    }
-    return function reset(done) {
-        lastRun.release(fn);
+gulp.task("watch", (done) => {
+    const watchers = [
+        gulp.watch("src/**/*.*", gulp.series('build')),
+        gulp.watch("src/index.html", gulp.series("htdocs")),
+    ];
+    process.on("SIGINT", () => {
+        watchers.forEach(w => w.close());
         done();
-    };
-}
+    });
+});
 
-function watchHelper() {
-    const lockFile = "node_modules/.tmp/watch.pid";
-    return {
-        lock() {
-            mkdirp.sync("node_modules/.tmp");
-            fs.writeFileSync(lockFile, process.pid);
-        },
-        unlock() {
-            del.sync(lockFile);
-        },
-        isLocked() {
-            return fs.existsSync(lockFile);
-        }
-    };
-}
+gulp.task("htdocs", function htdocs() {
+    return gulp.src("src/index.html")
+        .pipe(gulp.dest(config.dest))
+        .pipe(g.connect.reload());
+});
 
-function hashOptions() {
-    var version = config.package.version;
-    var hashVersionPrefix = util.format("%s.%s", version, g.util.date("yyyymmdd'T'HHMMss"));
-    var template = '<%= name %><%= ext %>?v=' + hashVersionPrefix + '-<%= hash %>';
-    return {
-        algorithm: 'md5',
-        hashLength: 6,
-        template: template,
-        version: version,
-    };
-}
+gulp.task("start", gulp.series(
+    "clean",
+    "build",
+    "htdocs",
+    gulp.parallel("server", "watch")
+));
