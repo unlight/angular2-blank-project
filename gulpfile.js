@@ -15,6 +15,7 @@ const config = {
 const fuseBox = _.once(function createFuseBox() {
     const fuseBox = new fsbx.FuseBox({
         homeDir: "src/",
+        tsConfig: require('./tsconfig.json'),
         sourceMap: {
             bundleReference: "sourcemaps.js.map",
             outFile: "./build/sourcemaps.js.map",
