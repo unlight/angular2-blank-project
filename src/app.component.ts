@@ -6,7 +6,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   name = 'Angular';
-  onKey(event: any) {
-    this.name = event.target.value;
-  }
 }
