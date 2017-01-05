@@ -13,17 +13,18 @@ const config = {
     dest: "build"
 };
 
-const fuseBox = _.once(function createFuseBox() {
-    const fuseBox = fsbx.FuseBox.init({
+const fuseBox = _.once(function createFuseBox(options = {}) {
+    var appname = _.get(options, 'appname', 'app');
+    let settings = {
         homeDir: 'src/',
         log: false,
         sourceMap: {
-            bundleReference: "sourcemaps.js.map",
-            outFile: "./build/sourcemaps.js.map",
+            bundleReference: `${appname}.js.map`,
+            outFile: `./${config.dest}/${appname}.js.map`,
         },
         tsConfig: require('./tsconfig.json'),
         cache: true,
-        outFile: './build/app.js',
+        outFile: `./${config.dest}/${appname}.js`,
         plugins: [
             [
                 /\.ts$/,
@@ -35,7 +36,9 @@ const fuseBox = _.once(function createFuseBox() {
             fsbx.CSSPlugin({ write: true }),
             fsbx.HTMLPlugin({ useDefault: false }),
         ]
-    });
+    };
+    _.assign(settings, options);
+    const fuseBox = fsbx.FuseBox.init(settings);
     return fuseBox;
 });
 
@@ -47,9 +50,20 @@ gulp.task("build", () => {
         .pipe(g.connect.reload());
 });
 
+gulp.task("spec", () => {
+    const specOptions = {
+        appname: 'main.test'
+    };
+    const bundle = fuseBox(specOptions).bundle(">main.test.ts")
+        .then(result => result.content);
+    return streamFromPromise(bundle)
+        .pipe(source('app.js'))
+        .pipe(g.connect.reload());
+});
+
 gulp.task("server", (done) => {
     var history = require("connect-history-api-fallback");
-    var folders = ["build"];
+    var folders = [config.dest];
     var connect = g.connect.server({
         root: folders,
         livereload: config.DEV_MODE,
@@ -62,7 +76,7 @@ gulp.task("server", (done) => {
 });
 
 gulp.task("clean", function clean() {
-    return del([".fusebox", "build"]);
+    return del([".fusebox", config.dest]);
 });
 
 gulp.task("watch", (done) => {
