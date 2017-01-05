@@ -7,7 +7,7 @@ describe('App tests', () => {
     });
 
     it('instance', () => {
-        var appComponent = new AppComponent();
-        expect(appComponent.name).toBe('Angular1');
+        let appComponent = new AppComponent();
+        expect(appComponent.name).toBe('Angular');
     });
 });

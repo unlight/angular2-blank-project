@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "gulp start",
-    "test": "karma start --single-run"
+    "test": "karma start --single-run",
+    "test:w": "gulp spec && concurrently --prefix \"{name}:\" --names \"k,w\" \"karma start\" \"gulp spec:w\""
   },
   "license": "XNet",
   "dependencies": {
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/node": "6.0.57",
+    "concurrently": "3.1.0",
     "connect-history-api-fallback": "1.3.0",
     "del": "2.2.2",
     "fuse-box": "1.3.43",
@@ -35,6 +37,7 @@
     "gulp-preprocess": "2.0.0",
     "jasmine-core": "2.5.2",
     "karma": "1.3.0",
+    "karma-chrome-launcher": "2.0.0",
     "karma-jasmine": "1.1.0",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-sourcemap-loader": "0.3.7",

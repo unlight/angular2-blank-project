@@ -54,11 +54,17 @@ gulp.task("spec", () => {
     const specOptions = {
         appname: 'main.test'
     };
-    const bundle = fuseBox(specOptions).bundle(">main.test.ts")
-        .then(result => result.content);
-    return streamFromPromise(bundle)
-        .pipe(source('app.js'))
-        .pipe(g.connect.reload());
+    return fuseBox(specOptions).bundle(">main.test.ts");
+});
+
+gulp.task("spec:w", (done) => {
+    const watchers = [
+        gulp.watch("src/**/*.*", gulp.series('spec')),
+    ];
+    process.on("SIGINT", () => {
+        watchers.forEach(w => w.close());
+        done();
+    });
 });
 
 gulp.task("server", (done) => {
@@ -81,7 +87,7 @@ gulp.task("clean", function clean() {
 
 gulp.task("watch", (done) => {
     const watchers = [
-        gulp.watch("src/**/*.*", gulp.series('build')),
+        gulp.watch("src/**/!(*.spec).*", gulp.series('build')),
         gulp.watch("src/index.html", gulp.series("htdocs")),
     ];
     process.on("SIGINT", () => {
