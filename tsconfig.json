@@ -3,21 +3,19 @@
         "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
-        "isolatedModules": false,
-        "jsx": "react",
+        "noEmitHelpers": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": true,
-        "noImplicitAny": false,
-        "noImplicitUseStrict": false,
-        "removeComments": true,
-        "noEmitHelpers": true,
-        "noLib": false,
         "outDir": "build/",
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
+        "sourceMap": true,
+        "lib": [
+            "es2015"
+        ]
     },
-    "exclude": [],
+    "include": [
+        "src/**/*.ts"
+    ],
     "compileOnSave": false,
     "buildOnSave": false
 }

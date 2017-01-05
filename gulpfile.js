@@ -13,19 +13,18 @@ const config = {
 };
 
 const fuseBox = _.once(function createFuseBox() {
-    const fuseBox = new fsbx.FuseBox({
-        homeDir: "src/",
-        tsConfig: require('./tsconfig.json'),
+    const fuseBox = fsbx.FuseBox.init({
+        homeDir: 'src/',
         sourceMap: {
             bundleReference: "sourcemaps.js.map",
             outFile: "./build/sourcemaps.js.map",
         },
+        tsConfig: require('./tsconfig.json'),
         cache: true,
-        outFile: "./build/app.js",
+        outFile: './build/app.js',
         plugins: [
             fsbx.TypeScriptHelpers(),
-            fsbx.CSSPlugin(),
-            fsbx.JSONPlugin(),
+            fsbx.CSSPlugin({ write: true }),
             fsbx.HTMLPlugin({ useDefault: false }),
         ]
     });
