@@ -6,8 +6,9 @@ const del = require("del");
 const _ = require("lodash");
 const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
+const { GulpPlugin } = require('fusebox-gulp-plugin');
 const config = {
-    isDev: true,
+    DEV_MODE: true,
     PORT: 8777,
     dest: "build"
 };
@@ -15,6 +16,7 @@ const config = {
 const fuseBox = _.once(function createFuseBox() {
     const fuseBox = fsbx.FuseBox.init({
         homeDir: 'src/',
+        log: false,
         sourceMap: {
             bundleReference: "sourcemaps.js.map",
             outFile: "./build/sourcemaps.js.map",
@@ -23,7 +25,13 @@ const fuseBox = _.once(function createFuseBox() {
         cache: true,
         outFile: './build/app.js',
         plugins: [
-            fsbx.TypeScriptHelpers(),
+            [
+                /\.ts$/,
+                fsbx.TypeScriptHelpers(),
+                GulpPlugin([
+                    (file) => g.preprocess({context: config})
+                ]),
+            ],
             fsbx.CSSPlugin({ write: true }),
             fsbx.HTMLPlugin({ useDefault: false }),
         ]
@@ -44,7 +52,7 @@ gulp.task("server", (done) => {
     var folders = ["build"];
     var connect = g.connect.server({
         root: folders,
-        livereload: config.isDev,
+        livereload: config.DEV_MODE,
         port: config.PORT,
         middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
             history()
