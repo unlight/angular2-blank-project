@@ -4,6 +4,7 @@ const fsbx = require("fuse-box");
 const Path = require("path");
 const del = require("del");
 const _ = require("lodash");
+const through = require('through2');
 const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
@@ -50,7 +51,7 @@ gulp.task("build", () => {
         .pipe(g.connect.reload());
 });
 
-gulp.task("spec", () => {
+gulp.task("spec:bundle", () => {
     const specOptions = {
         appname: 'main.test'
     };
@@ -59,13 +60,34 @@ gulp.task("spec", () => {
 
 gulp.task("spec:w", (done) => {
     const watchers = [
-        gulp.watch("src/**/*.*", gulp.series('spec')),
+        gulp.watch("src/**/*.*", gulp.series('spec:bundle')),
     ];
     process.on("SIGINT", () => {
         watchers.forEach(w => w.close());
         done();
     });
 });
+
+gulp.task('spec:pre', () => {
+    let fileList = [];
+    return gulp.src('src/**/*.spec.ts', {read: false})
+        .pipe(through.obj((file, enc, cb) => {
+            fileList.push(file.path);
+            cb();
+        }, cb => {
+            let contents = fileList
+                .map(p => Path.relative('./src', p))
+                .map(p => `./${p.replace(/\\/g, '/')}`)
+                .map(p => p.replace(/\.ts$/, ''))
+                .map(p => `require('${p}')`)
+                .join('\n')
+            let file = new g.util.File({contents: Buffer.from(contents), path: '~tmp-spec-files.ts'})
+            cb(null, file);
+        }))
+        .pipe(gulp.dest('src'));
+});
+
+gulp.task("spec:build", gulp.series('spec:pre', 'spec:bundle'));
 
 gulp.task("server", (done) => {
     var history = require("connect-history-api-fallback");

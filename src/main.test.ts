@@ -8,5 +8,4 @@ import "zone.js/dist/jasmine-patch.js";
 import "zone.js/dist/async-test.js";
 import "zone.js/dist/fake-async-test.js";
 
-require('./app.component.spec');
-
+require('./~tmp-spec-files');

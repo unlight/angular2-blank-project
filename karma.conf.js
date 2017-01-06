@@ -2,7 +2,6 @@ module.exports = function (karma) {
     karma.set({
         files: [
             { pattern: "build/main.test.js" },
-            // { pattern: "build/*.map", included: false, watched: false },
         ],
         browsers: ["PhantomJS"],
         plugins: [
@@ -16,14 +15,12 @@ module.exports = function (karma) {
             "jasmine",
         ],
         preprocessors: {
-            // Source files, that you want to generate coverage for, do not include tests or libraries.
-            // "build/**/!(*.spec).js": ["coverage"],
             "build/**/*.js": ["sourcemap"]
         },
         reporters: ["progress"],
         autoWatch: true,
         singleRun: false,
         port: 9876,
-        logLevel: karma.LOG_ERROR
+        logLevel: karma.LOG_INFO
     });
 };
