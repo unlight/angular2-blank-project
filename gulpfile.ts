@@ -1,9 +1,9 @@
-const gulp = require("gulp");
-const g = require("gulp-load-plugins")();
-const fsbx = require("fuse-box");
-const Path = require("path");
-const del = require("del");
-const _ = require("lodash");
+import * as _ from 'lodash';
+const gulp = require('gulp');
+const g = require('gulp-load-plugins')();
+const fsbx = require('fuse-box');
+const Path = require('path');
+const del = require('del');
 const through = require('through2');
 const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
@@ -11,7 +11,7 @@ const { GulpPlugin } = require('fusebox-gulp-plugin');
 const config = {
     DEV_MODE: true,
     PORT: 8777,
-    dest: "build"
+    dest: 'build'
 };
 
 const fuseBox = _.once(function createFuseBox(options = {}) {
@@ -43,26 +43,26 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
     return fuseBox;
 });
 
-gulp.task("build", () => {
-    var bundle = fuseBox().bundle(">main.ts")
+gulp.task('build', () => {
+    var bundle = fuseBox().bundle('>main.ts')
         .then(result => result.content);
     return streamFromPromise(bundle)
         .pipe(source('app.js'))
         .pipe(g.connect.reload());
 });
 
-gulp.task("spec:bundle", () => {
+gulp.task('spec:bundle', () => {
     const specOptions = {
         appname: 'main.test'
     };
-    return fuseBox(specOptions).bundle(">main.test.ts");
+    return fuseBox(specOptions).bundle('>main.test.ts');
 });
 
-gulp.task("spec:w", (done) => {
+gulp.task('spec:w', (done) => {
     const watchers = [
-        gulp.watch("src/**/*.*", gulp.series('spec:bundle')),
+        gulp.watch('src/**/*.*', gulp.series('spec:bundle')),
     ];
-    process.on("SIGINT", () => {
+    process.on('SIGINT', () => {
         watchers.forEach(w => w.close());
         done();
     });
@@ -87,10 +87,10 @@ gulp.task('spec:pre', () => {
         .pipe(gulp.dest('src'));
 });
 
-gulp.task("spec:build", gulp.series('spec:pre', 'spec:bundle'));
+gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle'));
 
-gulp.task("server", (done) => {
-    var history = require("connect-history-api-fallback");
+gulp.task('server', (done) => {
+    var history = require('connect-history-api-fallback');
     var folders = [config.dest];
     var connect = g.connect.server({
         root: folders,
@@ -100,33 +100,33 @@ gulp.task("server", (done) => {
             history()
         ]
     });
-    connect.server.on("close", done);
+    connect.server.on('close', done);
 });
 
-gulp.task("clean", function clean() {
-    return del([".fusebox", config.dest]);
+gulp.task('clean', function clean() {
+    return del(['.fusebox', config.dest]);
 });
 
-gulp.task("watch", (done) => {
+gulp.task('watch', (done) => {
     const watchers = [
-        gulp.watch("src/**/!(*.spec).*", gulp.series('build')),
-        gulp.watch("src/index.html", gulp.series("htdocs")),
+        gulp.watch('src/**/!(*.spec).*', gulp.series('build')),
+        gulp.watch('src/index.html', gulp.series('htdocs')),
     ];
-    process.on("SIGINT", () => {
+    process.on('SIGINT', () => {
         watchers.forEach(w => w.close());
         done();
     });
 });
 
-gulp.task("htdocs", function htdocs() {
-    return gulp.src("src/index.html")
+gulp.task('htdocs', function htdocs() {
+    return gulp.src('src/index.html')
         .pipe(gulp.dest(config.dest))
         .pipe(g.connect.reload());
 });
 
-gulp.task("start", gulp.series(
-    "clean",
-    "build",
-    "htdocs",
-    gulp.parallel("server", "watch")
+gulp.task('start', gulp.series(
+    'clean',
+    'build',
+    'htdocs',
+    gulp.parallel('server', 'watch')
 ));

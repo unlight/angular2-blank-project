@@ -13,9 +13,6 @@
             "es2015"
         ]
     },
-    "include": [
-        "src/**/*.ts"
-    ],
     "compileOnSave": false,
     "buildOnSave": false
 }
