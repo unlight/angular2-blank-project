@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "gulp start",
-    "test": "karma start --single-run",
+    "karma": "karma start --single-run",
+    "test": "gulp spec:build && npm run karma --silent",
     "test:w": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w\" \"karma start\" \"gulp spec:w\""
   },
   "license": "XNet",

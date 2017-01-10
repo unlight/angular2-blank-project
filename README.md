@@ -5,3 +5,6 @@
 npm i 
 npm run start
 ```
+
+## TODO
+* Lazy loading
