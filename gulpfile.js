@@ -130,3 +130,10 @@ gulp.task("start", gulp.series(
     "htdocs",
     gulp.parallel("server", "watch")
 ));
+
+gulp.task('eslint', () => {
+    return gulp.src("src/**/*.ts")
+        .pipe(g.ignore.exclude('~tmp-spec-files.ts'))
+        .pipe(g.eslint())
+        .pipe(g.eslint.format());
+});
