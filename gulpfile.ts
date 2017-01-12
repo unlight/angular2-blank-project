@@ -1,4 +1,3 @@
-/// <reference path="node_modules/@types/node/index.d.ts"/>
 import * as _ from 'lodash';
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
