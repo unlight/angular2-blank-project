@@ -26,6 +26,7 @@
     "sourceType": "module"
   },
   "rules": {
+    "no-unused-vars": [0, {"vars": "all", "args": "after-used"}],
     "unicorn/no-abusive-eslint-disable": 0,
     "typescript/type-annotation-spacing": 1,
     "wix-editor/augmented-assignment": 1,
@@ -51,7 +52,6 @@
     "no-empty-function": 0,
     "one-var": ["warn", "never"],
     "no-underscore-dangle": 0,
-    "no-unused-vars": [0, {"vars": "all", "args": "after-used"}],
     "space-after-keywords": 0,
     "space-before-keywords": 0,
     "no-undef": 0,

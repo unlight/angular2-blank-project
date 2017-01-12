@@ -9,23 +9,23 @@ const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
 const config = {
-    DEV_MODE: true,
+    DEV_MODE: g.util.env.prod !== true,
     PORT: 8777,
     dest: 'build'
 };
 
 const fuseBox = _.once(function createFuseBox(options = {}) {
-    var appname = _.get(options, 'appname', 'app');
+    var main = _.get(options, 'main', 'app');
     let settings = {
         homeDir: 'src/',
         log: false,
         sourceMap: {
-            bundleReference: `${appname}.js.map`,
-            outFile: `./${config.dest}/${appname}.js.map`,
+            bundleReference: `${main}.js.map`,
+            outFile: `./${config.dest}/${main}.js.map`,
         },
         tsConfig: require('./tsconfig.json'),
         cache: true,
-        outFile: `./${config.dest}/${appname}.js`,
+        outFile: `./${config.dest}/${main}.js`,
         plugins: [
             [
                 /\.ts$/,
@@ -34,13 +34,18 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
                     (file) => g.preprocess({context: config})
                 ]),
             ],
-            fsbx.CSSPlugin({ write: true }),
+            [
+                /\.css$/,
+                GulpPlugin([
+                    (file) => g.if(!config.DEV_MODE, g.csso()),
+                ]),
+                fsbx.CSSPlugin({ write: true }),
+            ],
             fsbx.HTMLPlugin({ useDefault: false }),
         ]
     };
     _.assign(settings, options);
-    const fuseBox = fsbx.FuseBox.init(settings);
-    return fuseBox;
+    return fsbx.FuseBox.init(settings);
 });
 
 gulp.task('build', () => {
@@ -53,7 +58,7 @@ gulp.task('build', () => {
 
 gulp.task('spec:bundle', () => {
     const specOptions = {
-        appname: 'main.test'
+        main: 'main.test'
     };
     return fuseBox(specOptions).bundle('>main.test.ts');
 });
@@ -130,3 +135,10 @@ gulp.task('start', gulp.series(
     'htdocs',
     gulp.parallel('server', 'watch')
 ));
+
+gulp.task('eslint', () => {
+    return gulp.src("src/**/*.ts")
+        .pipe(g.ignore.exclude('~tmp-spec-files.ts'))
+        .pipe(g.eslint())
+        .pipe(g.eslint.format());
+});
