@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 const gulp = require('gulp');
+const fs = require('fs');
 const g = require('gulp-load-plugins')();
 const fsbx = require('fuse-box');
 const Path = require('path');
@@ -31,7 +32,7 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
                 /\.ts$/,
                 fsbx.TypeScriptHelpers(),
                 GulpPlugin([
-                    (file) => g.preprocess({context: config})
+                    (file) => g.preprocess({ context: config })
                 ]),
             ],
             [
@@ -56,14 +57,18 @@ gulp.task('build', () => {
         .pipe(g.connect.reload());
 });
 
-gulp.task('spec:bundle', () => {
+gulp.task('spec:bundle', (done) => {
     const specOptions = {
         main: 'main.test'
     };
-    return fuseBox(specOptions).bundle('>main.test.ts');
+    fuseBox(specOptions)
+        .bundle('>main.test.ts')
+        .then(() => {
+            setTimeout(done, 100);
+        });
 });
 
-gulp.task('spec:w', (done) => {
+gulp.task('spec:watch', (done) => {
     const watchers = [
         gulp.watch('src/**/*.*', gulp.series('spec:bundle')),
     ];
@@ -75,7 +80,7 @@ gulp.task('spec:w', (done) => {
 
 gulp.task('spec:pre', () => {
     let fileList = [];
-    return gulp.src('src/**/*.spec.ts', {read: false})
+    return gulp.src('src/**/*.spec.ts', { read: false })
         .pipe(through.obj((file, enc, cb) => {
             fileList.push(file.path);
             cb();
@@ -86,13 +91,21 @@ gulp.task('spec:pre', () => {
                 .map(p => p.replace(/\.ts$/, ''))
                 .map(p => `require('${p}')`)
                 .join('\n')
-            let file = new g.util.File({contents: Buffer.from(contents), path: '~tmp-spec-files.ts'})
+            let file = new g.util.File({ contents: Buffer.from(contents), path: '~tmp-spec-files.ts' })
             cb(null, file);
         }))
         .pipe(gulp.dest('src'));
 });
 
-gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle'));
+gulp.task('spec:postbundle', (done) => {
+    var contents = fs.readFileSync('./build/main.test.js', 'utf8');
+    var lastLine = _.last(contents.split('\n'));
+    contents = contents.replace(/\/\/# sourceMappingURL=.+/gm, '\n') + lastLine;
+    fs.writeFileSync('./build/main.test.js', contents);
+    done();
+});
+
+gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle', 'spec:postbundle'));
 
 gulp.task('server', (done) => {
     var history = require('connect-history-api-fallback');
@@ -109,7 +122,7 @@ gulp.task('server', (done) => {
 });
 
 gulp.task('clean', function clean() {
-    return del(['.fusebox', config.dest]);
+    return del(['.fusebox', '.coverage', config.dest]);
 });
 
 gulp.task('watch', (done) => {
