@@ -1,9 +1,10 @@
+/// <reference path="node_modules/@types/node/index.d.ts" />
 import * as _ from 'lodash';
+import * as fs from 'fs';
+import * as Path from 'path';
+import { TypeScriptHelpers, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
 const gulp = require('gulp');
-const fs = require('fs');
 const g = require('gulp-load-plugins')();
-const fsbx = require('fuse-box');
-const Path = require('path');
 const del = require('del');
 const through = require('through2');
 const streamFromPromise = require('stream-from-promise');
@@ -30,23 +31,33 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
         plugins: [
             [
                 /\.ts$/,
-                fsbx.TypeScriptHelpers(),
+                TypeScriptHelpers(),
                 GulpPlugin([
                     (file) => g.preprocess({ context: config })
                 ]),
+            ],
+            [
+                /\.component\.css$/,
+                GulpPlugin([
+                    (file) => g.if(!config.DEV_MODE, g.csso()),
+                ]),
+                RawPlugin({}),
             ],
             [
                 /\.css$/,
                 GulpPlugin([
                     (file) => g.if(!config.DEV_MODE, g.csso()),
                 ]),
-                fsbx.CSSPlugin({ write: true }),
+                CSSPlugin({ write: true }),
             ],
-            fsbx.HTMLPlugin({ useDefault: false }),
+            HTMLPlugin({ useDefault: false }),
         ]
     };
+    if (!config.DEV_MODE) {
+        settings.plugins.push(UglifyJSPlugin({}) as any);
+    }
     _.assign(settings, options);
-    return fsbx.FuseBox.init(settings);
+    return FuseBox.init(settings);
 });
 
 gulp.task('build', () => {
