@@ -8,11 +8,11 @@ import 'zone.js/dist/jasmine-patch.js';
 import 'zone.js/dist/async-test.js';
 import 'zone.js/dist/fake-async-test.js';
 
-// import { TestBed } from '@angular/core/testing';
-// import { TestBed } from '@angular/core/bundles/core-testing.umd.js';
-// import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-// import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js';
-
+// const { TestBed } = require('@angular/core/bundles/core-testing.umd');
+// require('@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd');
+// const { BrowserDynamicTestingModule, platformBrowserDynamicTesting } = require('@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd');
+// console.log('platformBrowserDynamicTesting', platformBrowserDynamicTesting);
+// console.log('BrowserDynamicTestingModule', BrowserDynamicTestingModule);
 // TestBed.initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 
 require('./~tmp-spec-files');

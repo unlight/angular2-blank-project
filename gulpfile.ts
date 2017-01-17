@@ -97,7 +97,7 @@ gulp.task('spec:pre', () => {
         .pipe(gulp.dest('src'));
 });
 
-gulp.task('spec:postbundle', (done) => {
+gulp.task('spec:post', (done) => {
     var contents = fs.readFileSync('./build/main.test.js', 'utf8');
     var lastLine = _.last(contents.split('\n'));
     contents = contents.replace(/\/\/# sourceMappingURL=.+/gm, '\n') + lastLine;
@@ -105,7 +105,7 @@ gulp.task('spec:postbundle', (done) => {
     done();
 });
 
-gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle', 'spec:postbundle'));
+gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle', 'spec:post'));
 
 gulp.task('server', (done) => {
     var history = require('connect-history-api-fallback');
