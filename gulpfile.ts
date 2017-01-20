@@ -75,7 +75,7 @@ gulp.task('build', () => {
         .pipe(g.connect.reload());
 });
 
-gulp.task('release', () => {
+gulp.task('build:optimize', () => {
     const {version} = readPkg.sync();
     const suffix = ['', version, g.util.date("yyyymmdd'T'HHMMss")].join('.');
     return gulp.src(`${config.dest}/*.{js,css}`)
@@ -214,3 +214,10 @@ gulp.task('delay', (done) => {
     const delay = _.get(args, 'delay', 1000);
     setTimeout(done, delay);
 });
+
+gulp.task('release', gulp.series(
+    'clean',
+    'build',
+    'delay',
+    'build:optimize'
+));

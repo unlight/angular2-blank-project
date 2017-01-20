@@ -15,8 +15,7 @@
     "coverage": "karma start --single-run --coverage",
     "test:coverage": "gulp spec:build && npm run coverage",
     "karma": "karma start --single-run",
-    "release": "npm run clean && gulp build && gulp delay && gulp release",
-    "release:prod": "npm run clean && gulp build --prod && gulp delay && gulp release",
+    "release:prod": "gulp release --prod",
     "test": "gulp spec:build && npm run karma --silent",
     "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w\" \"karma start\" \"gulp spec:watch\"",
     "tsc:check": "tsc --project tsconfig.json --noEmit --watch"
