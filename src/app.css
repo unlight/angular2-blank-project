@@ -1,3 +1,7 @@
+.grid {
+    display: grid;
+}
+
 body {
     font-family: Verdana;
 }

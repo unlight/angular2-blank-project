@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as Path from 'path';
-import { FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
+import { PostCSS, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
 const del = require('del');
@@ -16,6 +16,9 @@ const config = {
     PORT: 8777,
     dest: 'build'
 };
+const postcssPlugins = _.constant([
+    require('autoprefixer')({ browsers: ['last 3 version'] }),
+]);
 
 const fuseBox = _.once(function createFuseBox(options = {}) {
     var main = _.get(options, 'main', 'app');
@@ -38,6 +41,7 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
             ],
             [
                 /\.component\.css$/,
+                PostCSS(postcssPlugins()),
                 GulpPlugin([
                     (file) => g.if(!config.DEV_MODE, g.csso()),
                 ]),
@@ -45,6 +49,7 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
             ],
             [
                 /\.css$/,
+                PostCSS(postcssPlugins()),
                 GulpPlugin([
                     (file) => g.if(!config.DEV_MODE, g.csso()),
                 ]),
