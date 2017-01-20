@@ -210,7 +210,7 @@ gulp.task('bump', () => {
         .on('end', onEnd);
 });
 
-gulp.task('delay', (done) => {
+gulp.task('wait', (done) => {
     const delay = _.get(args, 'delay', 1000);
     setTimeout(done, delay);
 });
@@ -218,6 +218,6 @@ gulp.task('delay', (done) => {
 gulp.task('release', gulp.series(
     'clean',
     'build',
-    'delay',
+    'wait',
     'build:optimize'
 ));
