@@ -5,6 +5,8 @@ import * as Path from 'path';
 import { PostCSS, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
 import del = require('del');
 import through = require('through2');
+import { execSync } from 'child_process';
+const readPkg = require('read-pkg');
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
 const streamFromPromise = require('stream-from-promise');
@@ -74,7 +76,7 @@ gulp.task('build', () => {
 });
 
 gulp.task('release', () => {
-    const {version} = require('./package');
+    const {version} = readPkg.sync();
     const suffix = ['', version, g.util.date("yyyymmdd'T'HHMMss")].join('.');
     return gulp.src(`${config.dest}/*.{js,css}`)
         .pipe(through.obj((file, enc, callback) => {
@@ -194,9 +196,18 @@ gulp.task('bump', () => {
     if (args.m) {
         options.type = 'minor';
     }
+    let onEnd = () => { };
+    if (args.commit) {
+        onEnd = () => {
+            const {version} = readPkg.sync();
+            execSync(`git add package.json`);
+            execSync(`git commit -m "${version}"`);
+        };
+    }
     return gulp.src('./package.json')
         .pipe(g.bump())
-        .pipe(gulp.dest('.'));
+        .pipe(gulp.dest('.'))
+        .on('end', onEnd);
 });
 
 gulp.task('delay', (done) => {
