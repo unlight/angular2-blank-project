@@ -1,12 +1,31 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import { HttpModule } from '@angular/http';
+import { Routes, RouterModule } from '@angular/router';
+import { HashLocationStrategy, LocationStrategy, APP_BASE_HREF, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+declare var FuseBox;
+
+const routes: Routes = [
+    {
+        path: 'about', loadChildren: () => {
+            return new Promise((resolve, reject) => {
+                FuseBox.import('./about.module.js', ({FuseBox}) => {
+                    const { AboutModule } = FuseBox.import('./about.module');
+                    resolve(AboutModule);
+                });
+            });
+        }
+    },
+];
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, HttpModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent]
+    imports: [CommonModule, BrowserModule, FormsModule, RouterModule.forRoot(routes)],
+    declarations: [AppComponent],
+    bootstrap: [AppComponent],
+    providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+    ]
 })
 export class AppModule { }

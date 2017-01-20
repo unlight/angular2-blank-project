@@ -1,3 +1,10 @@
 <input [(ngModel)]="name">
 
 <p>Hello {{name}}</p>
+
+<div>
+  <a [routerLink]="['/']">Home</a>
+  <a [routerLink]="['about']">About</a> (loading lazy)
+</div>
+
+<router-outlet></router-outlet>

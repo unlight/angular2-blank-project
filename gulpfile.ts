@@ -75,6 +75,15 @@ gulp.task('build', () => {
         .pipe(g.connect.reload());
 });
 
+gulp.task('build:about', () => {
+    const options = {
+        main: 'about.module',
+        // package: 'about.module',
+    };
+    return fuseBox(options).bundle('>[about.module.ts]')
+        .then(result => result.content);
+});
+
 gulp.task('build:optimize', () => {
     const {version} = readPkg.sync();
     const suffix = ['', version, g.util.date("yyyymmdd'T'HHMMss")].join('.');
