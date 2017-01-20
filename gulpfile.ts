@@ -132,6 +132,11 @@ gulp.task('server', (done) => {
     connect.server.on('close', done);
 });
 
+gulp.task('server:dev', () => {
+	gulp.series('htdocs').call();
+	fuseBox().devServer('>main.ts', { port: 8083, root: config.dest });
+});
+
 gulp.task('clean', function clean() {
     return del(['.fusebox', '.coverage', config.dest]);
 });
