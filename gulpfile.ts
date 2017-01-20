@@ -3,10 +3,10 @@ import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as Path from 'path';
 import { PostCSS, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
+import del = require('del');
+import through = require('through2');
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
-const del = require('del');
-const through = require('through2');
 const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
@@ -73,6 +73,18 @@ gulp.task('build', () => {
         .pipe(g.connect.reload());
 });
 
+gulp.task('release', () => {
+    const {version} = require('./package');
+    const suffix = ['', version, g.util.date("yyyymmdd'T'HHMMss")].join('.');
+    return gulp.src(`${config.dest}/*.{js,css}`)
+        .pipe(through.obj((file, enc, callback) => {
+            del.sync(file.path);
+            callback(null, file);
+        }))
+        .pipe(g.rename({ suffix }))
+        .pipe(gulp.dest(config.dest));
+});
+
 gulp.task('spec:bundle', (done) => {
     const specOptions = {
         main: 'main.test'
@@ -108,7 +120,7 @@ gulp.task('spec:pre', () => {
                 .map(p => `require('${p}')`)
                 .join('\n')
             let file = new g.util.File({ contents: Buffer.from(contents), path: '~tmp-spec-files.ts' })
-            cb(null, file);
+            cb();
         }))
         .pipe(gulp.dest('src'));
 });
@@ -138,8 +150,8 @@ gulp.task('server', (done) => {
 });
 
 gulp.task('server:dev', () => {
-	gulp.series('htdocs').call();
-	fuseBox().devServer('>main.ts', { port: 8083, root: config.dest });
+    gulp.series('htdocs').call();
+    fuseBox().devServer('>main.ts', { port: 8083, root: config.dest });
 });
 
 gulp.task('clean', function clean() {
@@ -177,7 +189,7 @@ gulp.task('eslint', () => {
         .pipe(g.eslint.format());
 });
 
-gulp.task("bump", () => {
+gulp.task('bump', () => {
     const options: any = {};
     if (args.m) {
         options.type = 'minor';
@@ -185,4 +197,9 @@ gulp.task("bump", () => {
     return gulp.src('./package.json')
         .pipe(g.bump())
         .pipe(gulp.dest('.'));
+});
+
+gulp.task('delay', (done) => {
+    const delay = _.get(args, 'delay', 1000);
+    setTimeout(done, delay);
 });
