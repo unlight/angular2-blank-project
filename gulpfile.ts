@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as Path from 'path';
-import { TypeScriptHelpers, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
+import { FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
 const del = require('del');
@@ -10,6 +10,7 @@ const through = require('through2');
 const streamFromPromise = require('stream-from-promise');
 const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
+const args = g.util.env;
 const config = {
     DEV_MODE: g.util.env.prod !== true,
     PORT: 8777,
@@ -31,7 +32,6 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
         plugins: [
             [
                 /\.ts$/,
-                TypeScriptHelpers(),
                 GulpPlugin([
                     (file) => g.preprocess({ context: config })
                 ]),
@@ -170,4 +170,14 @@ gulp.task('eslint', () => {
         .pipe(g.ignore.exclude('~tmp-spec-files.ts'))
         .pipe(g.eslint())
         .pipe(g.eslint.format());
+});
+
+gulp.task("bump", () => {
+    const options: any = {};
+    if (args.m) {
+        options.type = 'minor';
+    }
+    return gulp.src('./package.json')
+        .pipe(g.bump())
+        .pipe(gulp.dest('.'));
 });
