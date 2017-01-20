@@ -12,7 +12,7 @@ const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
 const args = g.util.env;
 const config = {
-    DEV_MODE: g.util.env.prod !== true,
+    DEV_MODE: args.prod !== true,
     PORT: 8777,
     dest: 'build'
 };
