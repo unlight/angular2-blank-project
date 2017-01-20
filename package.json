@@ -1,7 +1,14 @@
 {
-  "name": "fusebox",
-  "version": "0.0.0",
-  "description": "",
+  "name": "angular2-blank-project",
+  "private": true,
+  "version": "0.0.1",
+  "description": "angular2-blank-project - fuse-box",
+  "author": "",
+  "license": "Xnet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unlight/angular2-blank-project/tree/fuse-box"
+  },
   "scripts": {
     "start": "gulp start",
     "clean": "gulp clean",
@@ -12,7 +19,6 @@
     "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w\" \"karma start\" \"gulp spec:watch\"",
     "tsc:check": "tsc --project tsconfig.json --noEmit --watch"
   },
-  "license": "Xnet",
   "dependencies": {
     "@angular/common": "2.4.4",
     "@angular/compiler": "2.4.4",
@@ -46,7 +52,8 @@
     "eslint-plugin-wix-editor": "1.1.1",
     "fuse-box": "1.3.65",
     "fusebox-gulp-plugin": "1.0.1",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-bump": "2.5.1",
     "gulp-connect": "5.0.0",
     "gulp-csso": "2.0.0",
     "gulp-debug": "3.0.0",
