@@ -78,9 +78,9 @@ gulp.task('build', () => {
 gulp.task('build:about', () => {
     const options = {
         main: 'about.module',
-        // package: 'about.module',
+        // package: 'about',
     };
-    return fuseBox(options).bundle('>[about.module.ts]')
+    return fuseBox(options).bundle('[about.module.ts]')
         .then(result => result.content);
 });
 
