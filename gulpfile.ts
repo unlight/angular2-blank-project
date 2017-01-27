@@ -22,8 +22,9 @@ const postcssPlugins = _.constant([
     require('autoprefixer')({ browsers: ['last 3 version'] }),
 ]);
 
-const fuseBox = _.once(function createFuseBox(options = {}) {
-    var main = _.get(options, 'main', 'app');
+const fuseBox = _.memoize(function createFuseBox(options = {}) {
+    const config: any = _.get(options, 'config');
+    let main = _.get(options, 'main', 'app');
     let settings = {
         homeDir: 'src/',
         log: false,
@@ -68,23 +69,20 @@ const fuseBox = _.once(function createFuseBox(options = {}) {
 });
 
 gulp.task('build', () => {
-    var bundle = fuseBox().bundle('>main.ts')
+    var bundle = fuseBox({ config }).bundle('>main.ts')
         .then(result => result.content);
     return streamFromPromise(bundle)
         .pipe(source('app.js'))
         .pipe(g.connect.reload());
 });
 
-gulp.task('build:about', () => {
-    const options = {
-        main: 'about.module',
-        // package: 'about',
-    };
-    return fuseBox(options).bundle('[about.module.ts]')
-        .then(result => result.content);
+gulp.task('build:modules', () => {
+    const names = ['about.module'];
+    const plist = names.map(main => fuseBox({ config, main }).bundle(`[${main}.ts]`));
+    return Promise.all(plist);
 });
 
-gulp.task('build:optimize', () => {
+gulp.task('build:rev', () => {
     const {version} = readPkg.sync();
     const suffix = ['', version, g.util.date("yyyymmdd'T'HHMMss")].join('.');
     return gulp.src(`${config.dest}/*.{js,css}`)
@@ -97,10 +95,7 @@ gulp.task('build:optimize', () => {
 });
 
 gulp.task('spec:bundle', (done) => {
-    const specOptions = {
-        main: 'main.test'
-    };
-    fuseBox(specOptions)
+    fuseBox({ config, main: 'main.test' })
         .bundle('>main.test.ts')
         .then(() => {
             setTimeout(done, 100);
@@ -162,7 +157,7 @@ gulp.task('server', (done) => {
 
 gulp.task('server:dev', () => {
     gulp.series('htdocs').call();
-    fuseBox().devServer('>main.ts', { port: 8083, root: config.dest });
+    fuseBox({ config }).devServer('>main.ts', { port: 8083, root: config.dest });
 });
 
 gulp.task('clean', function clean() {
@@ -181,17 +176,14 @@ gulp.task('watch', (done) => {
 });
 
 gulp.task('htdocs', function htdocs() {
+    let scripts = gulp.src(`${config.dest}/app*.js`, { read: false });
+    let styles = gulp.src(`${config.dest}/*.css`, { read: false });
     return gulp.src('src/index.html')
+        .pipe(g.inject(styles, { addRootSlash: false, ignorePath: config.dest }))
+        .pipe(g.inject(scripts, { addRootSlash: false, ignorePath: config.dest }))
         .pipe(gulp.dest(config.dest))
         .pipe(g.connect.reload());
 });
-
-gulp.task('start', gulp.series(
-    'clean',
-    'build',
-    'htdocs',
-    gulp.parallel('server', 'watch')
-));
 
 gulp.task('eslint', () => {
     return gulp.src("src/**/*.ts")
@@ -224,9 +216,20 @@ gulp.task('wait', (done) => {
     setTimeout(done, delay);
 });
 
+gulp.task('start', gulp.series(
+    'clean',
+    'build',
+    'build:modules',
+    'wait',
+    'htdocs',
+    gulp.parallel('server', 'watch')
+));
+
 gulp.task('release', gulp.series(
     'clean',
     'build',
+    'build:modules',
     'wait',
-    'build:optimize'
+    'build:rev',
+    'htdocs'
 ));
