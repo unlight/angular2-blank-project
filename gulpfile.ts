@@ -56,7 +56,7 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 GulpPlugin([
                     (file) => g.if(!config.DEV_MODE, g.csso()),
                 ]),
-                CSSPlugin({ write: true }),
+                CSSPlugin({ write: !config.DEV_MODE }),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
@@ -155,9 +155,8 @@ gulp.task('server', (done) => {
     connect.server.on('close', done);
 });
 
-gulp.task('server:dev', () => {
-    gulp.series('htdocs').call();
-    fuseBox({ config }).devServer('>main.ts', { port: 8083, root: config.dest });
+gulp.task('devserver', () => {
+    fuseBox({ config }).devServer('>main.ts', { port: 8083 });
 });
 
 gulp.task('clean', function clean() {

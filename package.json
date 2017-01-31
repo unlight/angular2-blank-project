@@ -17,8 +17,9 @@
     "karma": "karma start --single-run",
     "release:prod": "gulp release --prod",
     "test": "gulp spec:build && npm run karma --silent",
-    "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w\" \"karma start\" \"gulp spec:watch\"",
-    "tsc:check": "tsc --project tsconfig.json --noEmit --watch"
+    "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w,t\" \"karma start\" \"gulp spec:watch\" \"npm run tsc:check\"",
+    "tsc:noemit": "tsc --project . --noEmit",
+    "tsc:check": "tsc --project . --noEmit --watch"
   },
   "dependencies": {
     "@angular/common": "2.4.4",

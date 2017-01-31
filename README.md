@@ -7,4 +7,5 @@ npm run start
 ```
 
 ## TODO
-* Lazy loading
+* Production css (fusebox error)
+* typings error
