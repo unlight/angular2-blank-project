@@ -8,4 +8,3 @@ npm run start
 
 ## TODO
 * Production css (fusebox error)
-* typings error

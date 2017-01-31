@@ -68,12 +68,13 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
     return FuseBox.init(settings);
 });
 
-gulp.task('build', () => {
-    var bundle = fuseBox({ config }).bundle('>main.ts')
-        .then(result => result.content);
-    return streamFromPromise(bundle)
-        .pipe(source('app.js'))
-        .pipe(g.connect.reload());
+gulp.task('build', (done) => {
+    fuseBox({ config }).bundle('>main.ts', () => {
+        streamFromPromise(Promise.resolve(''))
+            .pipe(source('app.js'))
+            .pipe(g.connect.reload());
+        done();
+    });
 });
 
 gulp.task('build:modules', () => {
@@ -96,10 +97,7 @@ gulp.task('build:rev', () => {
 
 gulp.task('spec:bundle', (done) => {
     fuseBox({ config, main: 'main.test' })
-        .bundle('>main.test.ts')
-        .then(() => {
-            setTimeout(done, 100);
-        });
+        .bundle('>main.test.ts', () => done());
 });
 
 gulp.task('spec:watch', (done) => {
@@ -118,15 +116,15 @@ gulp.task('spec:pre', () => {
         .pipe(through.obj((file, enc, cb) => {
             fileList.push(file.path);
             cb();
-        }, cb => {
+        }, (cb: any) => {
             let contents = fileList
                 .map(p => Path.relative('./src', p))
                 .map(p => `./${p.replace(/\\/g, '/')}`)
                 .map(p => p.replace(/\.ts$/, ''))
                 .map(p => `require('${p}')`)
                 .join('\n')
-            let file = new g.util.File({ contents: Buffer.from(contents), path: '~tmp-spec-files.ts' })
-            cb();
+            let file = new g.util.File({ contents: Buffer.from(contents), path: '~tmp-spec-files.ts' });
+            cb(null, file);
         }))
         .pipe(gulp.dest('src'));
 });
@@ -210,16 +208,10 @@ gulp.task('bump', () => {
         .on('end', onEnd);
 });
 
-gulp.task('wait', (done) => {
-    const delay = _.get(args, 'delay', 1000);
-    setTimeout(done, delay);
-});
-
 gulp.task('start', gulp.series(
     'clean',
     'build',
     'build:modules',
-    'wait',
     'htdocs',
     gulp.parallel('server', 'watch')
 ));
@@ -228,7 +220,6 @@ gulp.task('release', gulp.series(
     'clean',
     'build',
     'build:modules',
-    'wait',
     'build:rev',
     'htdocs'
 ));
