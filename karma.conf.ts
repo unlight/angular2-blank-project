@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { Config } from 'karma';
 const argv = require('minimist')(process.argv.slice(2));
+const specBundleFile = 'spec.bundle.js';
 
 module.exports = (config: any) => {
 
@@ -9,7 +10,7 @@ module.exports = (config: any) => {
     karma.set({
         basePath: './build',
         files: [
-            { pattern: 'main.test.js' },
+            { pattern: specBundleFile },
         ],
         browsers: ['PhantomJS'],
         plugins: [
@@ -24,7 +25,7 @@ module.exports = (config: any) => {
             'jasmine',
         ],
         preprocessors: {
-            'main.test.js': ['sourcemap'],
+            [specBundleFile]: ['sourcemap'],
         },
         reporters: ['progress'],
         autoWatch: true,
@@ -53,7 +54,7 @@ module.exports = (config: any) => {
                 html: '.coverage'
             },
         })
-        config.preprocessors['main.test.js'] = ['coverage'];
+        config.preprocessors[specBundleFile] = ['coverage'];
         config.reporters = ['progress', 'coverage', 'remap-coverage'];
     }
 };

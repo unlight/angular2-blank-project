@@ -16,7 +16,8 @@ const args = g.util.env;
 const config = {
     DEV_MODE: args.prod !== true,
     PORT: 8777,
-    dest: 'build'
+    dest: 'build',
+    specBundle: 'spec.bundle',
 };
 const postcssPlugins = _.constant([
     require('autoprefixer')({ browsers: ['last 3 version'] }),
@@ -96,8 +97,8 @@ gulp.task('build:rev', () => {
 });
 
 gulp.task('spec:bundle', (done) => {
-    fuseBox({ config, main: 'main.test' })
-        .bundle('>main.test.ts', () => done());
+    fuseBox({ config, main: `${config.specBundle}` })
+        .bundle(`>${config.specBundle}.ts`, () => done());
 });
 
 gulp.task('spec:watch', (done) => {
@@ -130,10 +131,10 @@ gulp.task('spec:pre', () => {
 });
 
 gulp.task('spec:post', (done) => {
-    var contents = fs.readFileSync('./build/main.test.js', 'utf8');
+    var contents = fs.readFileSync(`./${config.dest}/${config.specBundle}.js`, 'utf8');
     var lastLine = _.last(contents.split('\n'));
     contents = contents.replace(/\/\/# sourceMappingURL=.+/gm, '\n') + lastLine;
-    fs.writeFileSync('./build/main.test.js', contents);
+    fs.writeFileSync(`./${config.dest}/${config.specBundle}.js`, contents);
     done();
 });
 
