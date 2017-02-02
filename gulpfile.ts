@@ -217,7 +217,7 @@ gulp.task('bump', () => {
 gulp.task('start', gulp.series(
     'clean',
     'build',
-    'build:modules',
+    // 'build:modules',
     'htdocs',
     gulp.parallel('server', 'watch')
 ));
@@ -225,7 +225,7 @@ gulp.task('start', gulp.series(
 gulp.task('release', gulp.series(
     'clean',
     'build',
-    'build:modules',
+    // 'build:modules',
     // 'build:rev',
     'htdocs'
 ));
