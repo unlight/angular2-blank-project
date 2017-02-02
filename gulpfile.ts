@@ -57,7 +57,10 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 GulpPlugin([
                     (file) => g.if(!config.DEV_MODE, g.csso()),
                 ]),
-                CSSPlugin({ write: !config.DEV_MODE }),
+                CSSPlugin((() => {
+                    // TODO: Use serve option to rename css file for prod.
+                    return { write: !config.DEV_MODE};
+                })()),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
@@ -223,7 +226,7 @@ gulp.task('release', gulp.series(
     'clean',
     'build',
     'build:modules',
-    'build:rev',
+    // 'build:rev',
     'htdocs'
 ));
 
