@@ -65,8 +65,8 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
     if (!config.DEV_MODE) {
         settings.plugins.push(UglifyJSPlugin({}) as any);
     }
-    _.assign(settings, options);
-    return FuseBox.init(settings);
+	const fuse = FuseBox.init({...settings, ...options});
+    return fuse;
 });
 
 gulp.task('build', (done) => {
