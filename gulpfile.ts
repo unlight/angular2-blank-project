@@ -65,15 +65,13 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
     if (!config.DEV_MODE) {
         settings.plugins.push(UglifyJSPlugin({}) as any);
     }
-	const fuse = FuseBox.init({...settings, ...options});
+    const fuse = FuseBox.init({ ...settings, ...options });
     return fuse;
 });
 
 gulp.task('build', (done) => {
     fuseBox({ config }).bundle('>main.ts', () => {
-        streamFromPromise(Promise.resolve(''))
-            .pipe(source('app.js'))
-            .pipe(g.connect.reload());
+        liveReload();
         done();
     });
 });
@@ -173,6 +171,10 @@ gulp.task('watch', (done) => {
     });
 });
 
+gulp.task('clean', function clean() {
+    return del(['.fusebox', '.coverage', config.dest]);
+});
+
 gulp.task('htdocs', function htdocs() {
     let scripts = gulp.src(`${config.dest}/app*.js`, { read: false });
     let styles = gulp.src(`${config.dest}/*.css`, { read: false });
@@ -224,3 +226,11 @@ gulp.task('release', gulp.series(
     'build:rev',
     'htdocs'
 ));
+
+function liveReload(callback?: Function) {
+    const stream = g.file('app.js', '', { src: true });
+    if (callback) {
+        stream.on('end', callback)
+    }
+    stream.pipe(g.connect.reload());
+}
