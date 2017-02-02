@@ -59,7 +59,7 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 ]),
                 CSSPlugin((() => {
                     // TODO: Use serve option to rename css file for prod.
-                    return { write: !config.DEV_MODE};
+                    return { write: !config.DEV_MODE };
                 })()),
             ],
             HTMLPlugin({ useDefault: false }),
@@ -73,10 +73,10 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
 });
 
 gulp.task('build', (done) => {
-    fuseBox({ config }).bundle('>main.ts', () => {
-        liveReload();
-        done();
-    });
+    return fuseBox({ config }).bundle({
+        [`${config.dest}/app.js`]: `>main.ts`,
+        [`${config.dest}/about.module.js`]: `[about.module.ts]`,
+    }).then(() => liveReload());
 });
 
 gulp.task('build:modules', () => {
