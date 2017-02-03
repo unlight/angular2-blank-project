@@ -12,14 +12,14 @@
   "scripts": {
     "start": "gulp start",
     "clean": "gulp clean",
-    "coverage": "karma start --single-run --coverage",
+    "coverage": "npm run karma -- --coverage",
     "test:coverage": "gulp spec:build && npm run coverage",
     "karma": "karma start --single-run",
     "release:prod": "gulp release --prod",
     "test": "gulp spec:build && npm run karma --silent",
-    "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w,t\" \"karma start\" \"gulp spec:watch\" \"npm run tsc:check\"",
+    "test:watch": "gulp spec:build && concurrently -k -p \"{name}:\" -n \"k,w,t,e\" \"karma start\" \"gulp spec:watch\" \"npm run tsc:check\" \"gulp eslint:watch\"",
     "tsc:noemit": "tsc --project . --noEmit",
-    "tsc:check": "tsc --project . --noEmit --watch"
+    "tsc:check": "npm run tsc:noemit -- --watch"
   },
   "dependencies": {
     "@angular/common": "2.4.5",
@@ -67,6 +67,7 @@
     "gulp-ignore": "2.0.2",
     "gulp-inject": "4.2.0",
     "gulp-load-plugins": "1.4.0",
+    "gulp-memory-cache": "0.3.0",
     "gulp-preprocess": "2.0.0",
     "gulp-rename": "1.2.2",
     "gulp-util": "3.0.8",
