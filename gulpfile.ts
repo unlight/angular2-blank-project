@@ -10,12 +10,12 @@ const readPkg = require('read-pkg');
 const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
 const streamFromPromise = require('stream-from-promise');
-const source = require('vinyl-source-buffer');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
 const args = g.util.env;
 const config = {
-    DEV_MODE: args.prod !== true,
-    PORT: 8777,
+    devMode: args.prod !== true,
+    port: 8083,
+    socketPort: 8084,
     dest: 'build',
     specBundle: 'spec.bundle',
 };
@@ -47,36 +47,57 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 /\.component\.css$/,
                 PostCSS(postcssPlugins()),
                 GulpPlugin([
-                    (file) => g.if(!config.DEV_MODE, g.csso()),
+                    (file) => g.if(!config.devMode, g.csso()),
                 ]),
-                RawPlugin({}),
+                (function() {
+                    const rawPlugin = RawPlugin({});
+                    rawPlugin.transform = function(file) {
+                        let context = file.context;
+                        if (context.useCache) {
+                            let cached = context.cache.getStaticCache(file);
+                            if (cached) {
+                                file.isLoaded = true;
+                                file.contents = cached.contents;
+                                return;
+                            }
+                        }
+                        file.loadContents();
+                        file.contents = `module.exports = ${JSON.stringify(file.contents)}`;
+                        context.emitJavascriptHotReload(file);
+                        context.cache.writeStaticCache(file, file.sourceMap);
+                    };
+                    return rawPlugin;
+                })(),
             ],
             [
                 /\.css$/,
                 PostCSS(postcssPlugins()),
                 GulpPlugin([
-                    (file) => g.if(!config.DEV_MODE, g.csso()),
+                    (file) => g.if(!config.devMode, g.csso()),
                 ]),
                 CSSPlugin((() => {
                     // TODO: Use serve option to rename css file for prod.
-                    return { write: !config.DEV_MODE };
+                    return { write: !config.devMode };
                 })()),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
     };
-    if (!config.DEV_MODE) {
+    if (!config.devMode) {
         settings.plugins.push(UglifyJSPlugin({}) as any);
     }
     const fuse = FuseBox.init({ ...settings, ...options });
     return fuse;
 });
 
+const bundles: any = {
+    [`${config.dest}/app.js`]: `>main.ts`,
+    [`${config.dest}/about.module.js`]: `[about.module.ts]`,
+};
+
 gulp.task('build', (done) => {
-    return fuseBox({ config }).bundle({
-        [`${config.dest}/app.js`]: `>main.ts`,
-        [`${config.dest}/about.module.js`]: `[about.module.ts]`,
-    }).then(() => liveReload());
+    return fuseBox({ config }).bundle(bundles)
+        .then(() => liveReload());
 });
 
 gulp.task('build:modules', () => {
@@ -146,8 +167,8 @@ gulp.task('server', (done) => {
     var folders = [config.dest];
     var connect = g.connect.server({
         root: folders,
-        livereload: config.DEV_MODE,
-        port: config.PORT,
+        livereload: config.devMode,
+        port: config.port,
         middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
             history()
         ]
@@ -155,8 +176,34 @@ gulp.task('server', (done) => {
     connect.server.on('close', done);
 });
 
-gulp.task('devserver', () => {
-    fuseBox({ config }).devServer('>main.ts', { port: 8083 });
+gulp.task('devserver', (done) => {
+    const files = {};
+    const ds = fuseBox({ config }).devServer(`>main.ts`, {
+        port: config.socketPort,
+        httpServer: false,
+        emitter: (self, fileInfo) => {
+            files[fileInfo.path] = fileInfo;
+        }
+    });
+
+    let w = gulp.watch('src/**/*.*')
+        .on('all', (...args) => {
+            _.delay((event, file) => {
+                let k = Path.relative('src', file);
+                let fileInfo = _.get(files, k);
+                if (fileInfo && event === 'changed') {
+                    ds.socketServer.send('source-changed', fileInfo);
+                } else {
+                    liveReload();
+                }
+            }, 200, ...args);
+        });
+
+    process.on('SIGINT', () => {
+        ds.socketServer.server.close();
+        w.close();
+        done();
+    });
 });
 
 gulp.task('clean', function clean() {
@@ -166,7 +213,6 @@ gulp.task('clean', function clean() {
 gulp.task('watch', (done) => {
     const watchers = [
         gulp.watch('src/**/!(*.spec).*', gulp.series('build')),
-        gulp.watch('src/index.html', gulp.series('htdocs')),
     ];
     process.on('SIGINT', () => {
         watchers.forEach(w => w.close());
@@ -186,6 +232,14 @@ gulp.task('htdocs', function htdocs() {
         .pipe(g.inject(scripts, { addRootSlash: false, ignorePath: config.dest }))
         .pipe(gulp.dest(config.dest))
         .pipe(g.connect.reload());
+});
+
+gulp.task('htdocs:watch', done => {
+    let w = gulp.watch('src/index.html', gulp.series('htdocs'));
+    process.on('SIGINT', () => {
+        w.close();
+        done();
+    });
 });
 
 gulp.task('eslint', () => {
@@ -217,9 +271,8 @@ gulp.task('bump', () => {
 gulp.task('start', gulp.series(
     'clean',
     'build',
-    // 'build:modules',
     'htdocs',
-    gulp.parallel('server', 'watch')
+    gulp.parallel('devserver', 'server', 'htdocs:watch')
 ));
 
 gulp.task('release', gulp.series(
