@@ -6,6 +6,9 @@ import { HashLocationStrategy, LocationStrategy, APP_BASE_HREF, CommonModule } f
 import { FormsModule } from '@angular/forms';
 declare var FuseBox;
 
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './reducers';
+
 const routes: Routes = [
     {
         path: 'about', loadChildren: () => {
@@ -20,7 +23,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [CommonModule, BrowserModule, FormsModule, RouterModule.forRoot(routes)],
+    imports: [
+        CommonModule,
+        BrowserModule,
+        FormsModule,
+        RouterModule.forRoot(routes),
+        StoreModule.provideStore({ counter: counterReducer }),
+    ],
     declarations: [AppComponent],
     bootstrap: [AppComponent],
     providers: [
@@ -29,3 +38,5 @@ const routes: Routes = [
     ]
 })
 export class AppModule { }
+
+
