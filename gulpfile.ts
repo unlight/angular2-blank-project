@@ -2,7 +2,7 @@
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import * as Path from 'path';
-import { PostCSS, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin } from 'fuse-box';
+import { PostCSS, FuseBox, RawPlugin, CSSPlugin, HTMLPlugin, UglifyJSPlugin, SassPlugin } from 'fuse-box';
 import del = require('del');
 import through = require('through2');
 import { execSync } from 'child_process';
@@ -22,6 +22,39 @@ const config = {
 const postcssPlugins = _.constant([
     require('autoprefixer')({ browsers: ['last 3 version'] }),
 ]);
+
+const customRawPlugin = function() {
+    const customRawPlugin = RawPlugin({});
+    customRawPlugin.transform = function(file) {
+        let context = file.context;
+        if (context.useCache) {
+            let cached = context.cache.getStaticCache(file);
+            if (cached) {
+                file.isLoaded = true;
+                file.contents = cached.contents;
+                return;
+            }
+        }
+        file.loadContents();
+        file.contents = `module.exports = ${JSON.stringify(file.contents)}`;
+        context.emitJavascriptHotReload(file);
+        context.cache.writeStaticCache(file, file.sourceMap);
+    };
+    return customRawPlugin;
+}
+
+function cssChain() {
+    return [
+        PostCSS(postcssPlugins()),
+        GulpPlugin([
+            (file) => g.if(!config.devMode, g.csso()),
+        ]),
+        CSSPlugin((() => {
+            // TODO: Use serve option to rename css file for prod.
+            return { write: !config.devMode };
+        })()),
+    ];
+}
 
 const fuseBox = _.memoize(function createFuseBox(options = {}) {
     const config: any = _.get(options, 'config');
@@ -44,41 +77,22 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 ]),
             ],
             [
-                /\.component\.css$/,
+                /\.component\.scss$/,
+                SassPlugin({}),
                 PostCSS(postcssPlugins()),
                 GulpPlugin([
                     (file) => g.if(!config.devMode, g.csso()),
                 ]),
-                (function() {
-                    const rawPlugin = RawPlugin({});
-                    rawPlugin.transform = function(file) {
-                        let context = file.context;
-                        if (context.useCache) {
-                            let cached = context.cache.getStaticCache(file);
-                            if (cached) {
-                                file.isLoaded = true;
-                                file.contents = cached.contents;
-                                return;
-                            }
-                        }
-                        file.loadContents();
-                        file.contents = `module.exports = ${JSON.stringify(file.contents)}`;
-                        context.emitJavascriptHotReload(file);
-                        context.cache.writeStaticCache(file, file.sourceMap);
-                    };
-                    return rawPlugin;
-                })(),
+                customRawPlugin(),
+            ],
+            [
+                /\.scss$/,
+                SassPlugin({}),
+                ...cssChain(),
             ],
             [
                 /\.css$/,
-                PostCSS(postcssPlugins()),
-                GulpPlugin([
-                    (file) => g.if(!config.devMode, g.csso()),
-                ]),
-                CSSPlugin((() => {
-                    // TODO: Use serve option to rename css file for prod.
-                    return { write: !config.devMode };
-                })()),
+                ...cssChain(),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
@@ -163,15 +177,15 @@ gulp.task('spec:post', (done) => {
 gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle', 'spec:post'));
 
 gulp.task('server', (done) => {
-    var history = require('connect-history-api-fallback');
+    // var history = require('connect-history-api-fallback');
     var folders = [config.dest];
     var connect = g.connect.server({
         root: folders,
         livereload: config.devMode,
         port: config.port,
-        middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
-            history()
-        ]
+        // middleware: (connect, opt) => [ // eslint-disable-line no-unused-vars
+        //     history()
+        // ]
     });
     connect.server.on('close', done);
 });
@@ -191,10 +205,10 @@ gulp.task('devserver', (done) => {
             _.delay((event, file) => {
                 let k = Path.relative('src', file);
                 let fileInfo = _.get(files, k);
-                if (fileInfo && event === 'changed') {
+                if (fileInfo && event === 'change') {
                     ds.socketServer.send('source-changed', fileInfo);
                 } else {
-                    liveReload();
+                    setTimeout(liveReload, 800);
                 }
             }, 200, ...args);
         });
