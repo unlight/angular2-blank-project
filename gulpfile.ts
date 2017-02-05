@@ -78,7 +78,16 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
             ],
             [
                 /\.component\.scss$/,
-                SassPlugin({}),
+                SassPlugin({
+                    sourceMapContents: false
+                }),
+                {
+                    transform: (file) => {
+                        var sourceMapObj = JSON.parse(file.sourceMap);
+                        sourceMapObj.sources[0] = file.info.fuseBoxPath;
+                        file.sourceMap = JSON.stringify(sourceMapObj);
+                    }
+                },
                 PostCSS(postcssPlugins()),
                 GulpPlugin([
                     (file) => g.if(!config.devMode, g.csso()),
@@ -106,7 +115,7 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
 
 const bundles: any = {
     [`${config.dest}/app.js`]: `>main.ts`,
-    [`${config.dest}/about.module.js`]: `[about.module.ts]`,
+    [`${config.dest}/about.module.js`]: `[app/about/about.module.ts]`,
 };
 
 gulp.task('build', (done) => {
@@ -114,11 +123,11 @@ gulp.task('build', (done) => {
         .then(() => liveReload());
 });
 
-gulp.task('build:modules', () => {
-    const names = ['about.module'];
-    const plist = names.map(main => fuseBox({ config, main }).bundle(`[${main}.ts]`));
-    return Promise.all(plist);
-});
+// gulp.task('build:modules', () => {
+//     const names = ['about.module'];
+//     const plist = names.map(main => fuseBox({ config, main }).bundle(`[${main}.ts]`));
+//     return Promise.all(plist);
+// });
 
 gulp.task('build:rev', () => {
     const {version} = readPkg.sync();
@@ -170,7 +179,7 @@ gulp.task('spec:pre', () => {
 gulp.task('spec:post', (done) => {
     var contents = fs.readFileSync(`./${config.dest}/${config.specBundle}.js`, 'utf8');
     var lastLine = _.last(contents.split('\n'));
-    contents = contents.replace(/\/\/# sourceMappingURL=.+/gm, '\n') + lastLine;
+    contents = contents.replace(/\/\/# sourceMappingURL=.+/gm, '//# ') + lastLine;
     fs.writeFileSync(`./${config.dest}/${config.specBundle}.js`, contents);
     done();
 });
@@ -204,7 +213,7 @@ gulp.task('devserver', (done) => {
     let w = gulp.watch('src/**/*.*')
         .on('all', (...args) => {
             _.delay((event, file) => {
-                let k = Path.relative('src', file);
+                let k = Path.relative('src', file).replace(/\\/g, '/');
                 let fileInfo = _.get(files, k);
                 if (fileInfo && event === 'change') {
                     ds.socketServer.send('source-changed', fileInfo);
