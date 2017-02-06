@@ -153,7 +153,7 @@ gulp.task('spec:pre', () => {
         .pipe(through.obj((file, enc, cb) => {
             fileList.push(file.path);
             cb();
-        }, (cb: any) => {
+        }, function(cb: any) {
             let contents = fileList
                 .map(p => Path.relative('./src', p))
                 .map(p => `./${p.replace(/\\/g, '/')}`)
@@ -161,7 +161,8 @@ gulp.task('spec:pre', () => {
                 .map(p => `require('${p}')`)
                 .join('\n')
             let file = new g.util.File({ contents: Buffer.from(contents), path: '~tmp-spec-files.ts' });
-            cb(null, file);
+            this.push(file);
+            cb();
         }))
         .pipe(gulp.dest('src'));
 });
