@@ -220,10 +220,6 @@ gulp.task('devserver', (done) => {
     });
 });
 
-gulp.task('clean', function clean() {
-    return del(['.fusebox', '.coverage', config.dest]);
-});
-
 gulp.task('watch', (done) => {
     const watchers = [
         gulp.watch('src/**/!(*.spec).*', gulp.series('build')),
