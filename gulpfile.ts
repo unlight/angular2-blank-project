@@ -43,7 +43,7 @@ const customRawPlugin = function() {
     return customRawPlugin;
 }
 
-function cssChain() {
+const cssChain = function cssChain() {
     return [
         PostCSS(postcssPlugins()),
         GulpPlugin([
@@ -54,7 +54,7 @@ function cssChain() {
             return { write: !config.devMode };
         })()),
     ];
-}
+};
 
 const fuseBox = _.memoize(function createFuseBox(options = {}) {
     const config: any = _.get(options, 'config');
@@ -78,16 +78,7 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
             ],
             [
                 /\.component\.scss$/,
-                SassPlugin({
-                    sourceMapContents: false
-                }),
-                {
-                    transform: (file) => {
-                        var sourceMapObj = JSON.parse(file.sourceMap);
-                        sourceMapObj.sources[0] = file.info.fuseBoxPath;
-                        file.sourceMap = JSON.stringify(sourceMapObj);
-                    }
-                },
+                SassPlugin({ sourceMap: false }),
                 PostCSS(postcssPlugins()),
                 GulpPlugin([
                     (file) => g.if(!config.devMode, g.csso()),
@@ -210,18 +201,17 @@ gulp.task('devserver', (done) => {
         }
     });
 
-    let w = gulp.watch('src/**/*.*')
-        .on('all', (...args) => {
-            _.delay((event, file) => {
-                let k = Path.relative('src', file).replace(/\\/g, '/');
-                let fileInfo = _.get(files, k);
-                if (fileInfo && event === 'change') {
-                    ds.socketServer.send('source-changed', fileInfo);
-                } else {
-                    setTimeout(liveReload, 800);
-                }
-            }, 200, ...args);
-        });
+    let w = gulp.watch('src/**/*.*').on('all', (...args) => {
+        _.delay((event, file) => {
+            let k = Path.relative('src', file).replace(/\\/g, '/');
+            let fileInfo = _.get(files, k);
+            if (fileInfo && event === 'change') {
+                ds.socketServer.send('source-changed', fileInfo);
+            } else {
+                setTimeout(liveReload, 800);
+            }
+        }, 200, ...args);
+    });
 
     process.on('SIGINT', () => {
         ds.socketServer.server.close();
