@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -19,6 +19,15 @@ const routes: Routes = [
     },
 ];
 
+@Injectable()
+class AppErrorHandler extends ErrorHandler {
+
+    handleError(err: any) {
+        throw err;
+    }
+}
+
+
 @NgModule({
     imports: [CommonModule, BrowserModule, FormsModule, RouterModule.forRoot(routes)],
     declarations: [AppComponent],
@@ -26,6 +35,7 @@ const routes: Routes = [
     providers: [
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: ErrorHandler, useClass: AppErrorHandler },
     ]
 })
 export class AppModule { }

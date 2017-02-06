@@ -204,6 +204,7 @@ gulp.task('devserver', (done) => {
     let w = gulp.watch('src/**/*.*').on('all', (...args) => {
         _.delay((event, file) => {
             let k = Path.relative('src', file).replace(/\\/g, '/');
+            if (_.endsWith(k, '.ts')) k = `${k.slice(0, -3)}.js`;
             let fileInfo = _.get(files, k);
             if (fileInfo && event === 'change') {
                 ds.socketServer.send('source-changed', fileInfo);
