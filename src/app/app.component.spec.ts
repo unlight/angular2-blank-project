@@ -1,6 +1,6 @@
 import { AppComponent } from './app.component';
 
-describe('App tests', () => {
+describe('App component', () => {
 
     it('smoke', () => {
         expect(AppComponent).toBeDefined();

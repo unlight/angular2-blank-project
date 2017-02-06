@@ -231,7 +231,7 @@ gulp.task('watch', (done) => {
 });
 
 gulp.task('clean', function clean() {
-    return del(['.fusebox', '.coverage', config.dest]);
+    return del(['.fusebox', '.testresults', config.dest]);
 });
 
 gulp.task('htdocs', function htdocs() {
