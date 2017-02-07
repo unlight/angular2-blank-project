@@ -179,8 +179,11 @@ gulp.task('spec:build', gulp.series('spec:pre', 'spec:bundle', 'spec:post'));
 
 gulp.task('server', (done) => {
     // var history = require('connect-history-api-fallback');
-    var folders = [config.dest];
-    var connect = g.connect.server({
+    const folders = [config.dest];
+    if (config.devMode) {
+        folders.push('src'); // Serve sourcemaps.
+    }
+    const connect = g.connect.server({
         root: folders,
         livereload: config.devMode,
         port: config.port,
