@@ -11,6 +11,7 @@ const gulp = require('gulp');
 const g = require('gulp-load-plugins')();
 const streamFromPromise = require('stream-from-promise');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
+const revPath = require('rev-path');
 const args = g.util.env;
 const config = {
     devMode: args.prod !== true,
@@ -43,16 +44,34 @@ const customRawPlugin = function() {
     return customRawPlugin;
 }
 
+const cssWriteHashify = function cssWriteHashify(rev: string): any[] {
+    return [
+        {
+            transform(file) {
+                file.info.fuseBoxPath = revPath(file.info.fuseBoxPath, rev);
+            }
+        },
+        CSSPlugin({ write: true }),
+    ];
+};
+
+const cssServeHashify = function cssServeHashify(rev) {
+    return [
+        CSSPlugin({
+            serve: p => {
+                console.log('p', p);
+                return `./${revPath(p, rev)}`;
+            }
+        }),
+    ];
+};
+
 const cssChain = function cssChain() {
     return [
         PostCSS(postcssPlugins()),
         GulpPlugin([
             (file) => g.if(!config.devMode, g.csso()),
         ]),
-        CSSPlugin((() => {
-            // TODO: Use serve option to rename css file for prod.
-            return { write: !config.devMode };
-        })()),
     ];
 };
 
@@ -89,10 +108,7 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 /\.scss$/,
                 SassPlugin({}),
                 ...cssChain(),
-            ],
-            [
-                /\.css$/,
-                ...cssChain(),
+                ...cssServeHashify('xxx'),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
@@ -102,6 +118,25 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
     }
     const fuse = FuseBox.init({ ...settings, ...options });
     return fuse;
+});
+
+gulp.task('style', (done) => {
+    fuseBox({
+        config,
+        plugins: [
+            [
+                /style\.scss$/,
+                SassPlugin({}),
+                ...cssChain(),
+                ...cssWriteHashify('xxx'),
+            ],
+            [
+                SassPlugin({}),
+                CSSPlugin({})
+            ],
+            HTMLPlugin({}),
+        ]
+    }).bundle(`>main.ts`, done);
 });
 
 const bundles: any = {
