@@ -12,6 +12,7 @@ const g = require('gulp-load-plugins')();
 const streamFromPromise = require('stream-from-promise');
 const { GulpPlugin } = require('fusebox-gulp-plugin');
 const revPath = require('rev-path');
+const rename = require('rename');
 const args = g.util.env;
 const config = {
     devMode: args.prod !== true,
@@ -19,6 +20,7 @@ const config = {
     socketPort: 8084,
     dest: 'build',
     specBundle: 'spec.bundle',
+    hashify: args.hashify,
 };
 const postcssPlugins = _.constant([
     require('autoprefixer')({ browsers: ['last 3 version'] }),
@@ -44,7 +46,7 @@ const customRawPlugin = function() {
     return customRawPlugin;
 }
 
-const cssWriteHashify = function cssWriteHashify(rev: string): any[] {
+const cssWrite = function cssWrite(rev: string): any[] {
     return [
         {
             transform(file) {
@@ -55,15 +57,13 @@ const cssWriteHashify = function cssWriteHashify(rev: string): any[] {
     ];
 };
 
-const cssServeHashify = function cssServeHashify(rev) {
-    return [
-        CSSPlugin({
-            serve: p => {
-                console.log('p', p);
-                return `./${revPath(p, rev)}`;
-            }
-        }),
-    ];
+const cssServe = function cssServe(rev) {
+    return CSSPlugin({
+        serve: p => {
+            p = rename(p, { extname: '.css' });
+            return `${revPath(p, rev)}`;
+        }
+    });
 };
 
 const cssChain = function cssChain() {
@@ -108,7 +108,12 @@ const fuseBox = _.memoize(function createFuseBox(options = {}) {
                 /\.scss$/,
                 SassPlugin({}),
                 ...cssChain(),
-                ...cssServeHashify('xxx'),
+                (function() {
+                    if (config.devMode) {
+                        return CSSPlugin({write: false});
+                    }
+                    return cssServe('xxx');
+                })(),
             ],
             HTMLPlugin({ useDefault: false }),
         ]
@@ -128,7 +133,7 @@ gulp.task('style', (done) => {
                 /style\.scss$/,
                 SassPlugin({}),
                 ...cssChain(),
-                ...cssWriteHashify('xxx'),
+                ...cssWrite('xxx'),
             ],
             [
                 SassPlugin({}),
