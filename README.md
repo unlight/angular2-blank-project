@@ -1,4 +1,6 @@
 ## Angular 2 - Project
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/unlight/angular2-blank-project.svg)](https://greenkeeper.io/)
 Light-weight and easy to use seed project for Angular 2 apps.  
 Based on [ghpabs/angular2-seed-project](https://github.com/ghpabs/angular2-seed-project) and [mraible/angular2-tutorial](https://github.com/mraible/angular2-tutorial)
 
